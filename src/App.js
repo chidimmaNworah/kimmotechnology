@@ -1,13 +1,16 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import {About, Footer, Header, Skills, Testimonial, Work} from './container'
 import {Navbar} from './components'
-import ReactGA from "react-ga"
 import './App.scss'
-
-const TRACKING_ID = "G-133CQWN80N"
-ReactGA.initialize(TRACKING_ID)
+import ReactGa from 'react-ga'
 
 const App = () => {
+  useEffect(() => {
+    ReactGa.initialize('G-QS69FP9SY4')
+
+    ReactGa.pageview('/')
+  }, [])
+
   return (
     <div className='app'>
       <Navbar />
