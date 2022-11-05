@@ -181,7 +181,9 @@
     z-index: 1;
 
     @media screen and (min-width: 1200px) {
-      object-fit: cover;
+      // object-fit: scale-down;
+      width: 140%;
+      height: 90%;
     }
   }
 
