@@ -41,15 +41,15 @@ import darkLogoEffect from '../assets/DARK_logo_effect.png'
 //     Kimmotech_Logo
 // }
 
-export default {
-    kimmotechLogo,
-    darkLogoEffect,
-    flutter,
-    redux,
-    sass,
-    circle,
-  email,
-  mobile,
+const imageEffects = {
+  kimmotechLogo,
+  darkLogoEffect,
+  flutter,
+  redux,
+  sass,
+  circle,
+email,
+mobile,
 //   api,
 //   cpp,
 //   css,
@@ -64,11 +64,11 @@ export default {
 //   react,
 //   typescript,
 //   vue,
-  about01,
-  about02,
-  about03,
-  about04,
-  profile
+about01,
+about02,
+about03,
+about04,
+profile
 //   logo,
 //   adidas,
 //   amazon,
@@ -77,4 +77,6 @@ export default {
 //   nb,
 //   skype,
 //   spotify
-};
+}
+
+export default imageEffects

@@ -53,7 +53,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <h5 className="p-text"><a href="mailto:chidimmaNworah@gmail.com?subject=Reviews for Kimmotech" target="_blank" style={{textDecoration: 'none', color: '#6b7688'}}>click here to send reviews <br /></a> Ps. Attach your photo & company</h5>
+          <h5 className="p-text"><a href="mailto:admin@kimmotechnology.com?subject=Reviews for Kimmotech" target="_blank" rel='noreferrer' style={{textDecoration: 'none', color: '#6b7688'}}>click here to send reviews <br /></a> Ps. Attach your photo & company</h5>
         </>
       )}
 

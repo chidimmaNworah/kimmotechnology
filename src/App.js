@@ -2,13 +2,18 @@ import React, { useEffect } from 'react'
 import {About, Footer, Header, Skills, Testimonial, Work} from './container'
 import {Navbar} from './components'
 import './App.scss'
-import ReactGa from 'react-ga'
+import TagManager from 'react-gtm-module'
 
 const App = () => {
-  useEffect(() => {
-    ReactGa.initialize('G-QS69FP9SY4')
+  
 
-    ReactGa.pageview('/')
+  useEffect(() => {
+    const gtmId = process.env.NEXT_PUBLIC_GTM_ID;
+
+    const tagManagerArgs = {
+      gtmId
+    }
+    TagManager.initialize(tagManagerArgs)
   }, [])
 
   return (
