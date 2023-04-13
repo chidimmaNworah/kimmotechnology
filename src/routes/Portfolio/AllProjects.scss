@@ -1,10 +1,15 @@
 .head-text {
-  margin-bottom: 1.5rem;
+  padding-top: 4rem;
 }
 
-.view-all a {
-  text-decoration: none;
-  color: gray;
+.view-all {
+  text-align: center;
+
+  a {
+    text-decoration: none;
+    color: gray;
+    text-align: center;
+  }
 
   &:hover {
     background-color: var(--secondary-color);
@@ -23,7 +28,7 @@
 .app__work-filter {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   flex-wrap: wrap;
 
