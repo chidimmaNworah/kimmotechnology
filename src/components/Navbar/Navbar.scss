@@ -123,6 +123,19 @@
 
     /* top box shadow */
     box-shadow: 0px 0px 20px rgba(168, 168, 168, 0.15);
+    animation-name: slide-in;
+    animation-duration: 0.85s;
+    animation-timing-function: ease-out;
+    animation-fill-mode: forwards;
+
+    @keyframes slide-in {
+      0% {
+        transform: translateX(300px);
+      }
+      100% {
+        transform: translateX(0);
+      }
+    }
 
     svg {
       width: 35px;

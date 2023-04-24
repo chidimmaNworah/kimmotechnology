@@ -14,7 +14,6 @@ import {
 const HomeScreen = () => {
   return (
     <div className="app">
-      <Navbar />
       <Header />
       <About />
       <Work />

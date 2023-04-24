@@ -38,15 +38,16 @@ const Navbar = () => {
         <HiMenuAlt4 onClick={() => setToggle(true)} />
 
         {toggle && (
-          <motion.div
-            whileInView={{ x: [300, 0] }}
-            transition={{ duration: 0.85, ease: 'easeOut' }}
-          >
+          <div>
+            {/* <motion.div
+              whileInView={{ x: [300, 0] }}
+              transition={{ duration: 0.85, ease: 'easeOut' }}
+            > */}
             <HiX onClick={() => setToggle(false)} />
             <ul>
               {['home', 'about', 'work', 'skills', 'contact'].map((item) => (
                 <li key={item}>
-                  <a href={`/#${item}`} onClick={() => setToggle(false)}>
+                  <a href={`#${item}`} onClick={() => setToggle(false)}>
                     {item}
                   </a>
                 </li>
@@ -61,7 +62,8 @@ const Navbar = () => {
                 </a>
               </li>
             </ul>
-          </motion.div>
+            {/* </motion.div> */}
+          </div>
         )}
       </div>
     </nav>

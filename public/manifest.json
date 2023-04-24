@@ -1,19 +1,19 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Kimmotechnology Website",
+  "name": "Kimmotechnology Website For Futuristic Technologies",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "headLogo.png",
       "sizes": "64x64 32x32 24x24 16x16",
       "type": "image/x-icon"
     },
     {
-      "src": "logo192.png",
+      "src": "headLogo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "headLogo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

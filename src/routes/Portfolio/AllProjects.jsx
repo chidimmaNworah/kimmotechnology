@@ -38,7 +38,6 @@ const AllProjects = () => {
 
   return (
     <>
-      <Navbar />
       <div className="app">
         <h2 className="head-text">
           Works & <span>Projects</span>
