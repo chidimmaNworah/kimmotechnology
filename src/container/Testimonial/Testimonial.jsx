@@ -33,7 +33,10 @@ const Testimonial = () => {
       {testimonials.length && (
         <>
           <div className="app__testimonial-item app__flex">
-            <img src={urlFor(testimonials[currentIndex].imageurl)} alt={testimonials[currentIndex].name} />
+            <img
+              src={urlFor(testimonials[currentIndex].imageurl)}
+              alt={testimonials[currentIndex].name}
+            />
             <div className="app__testimonial-content">
               <p className="p-text">{testimonials[currentIndex].feedback}</p>
               <div>
@@ -43,7 +46,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <div className="app__testimonial-btns app__flex">
+          {/* <div className="app__testimonial-btns app__flex">
             <div className="app__flex" onClick={() => handleClick(currentIndex === 0 ? testimonials.length - 1 : currentIndex - 1)}>
               <HiChevronLeft />
             </div>
@@ -53,7 +56,7 @@ const Testimonial = () => {
             </div>
           </div>
 
-          <h5 className="p-text"><a href="mailto:admin@kimmotechnology.com?subject=Reviews for Kimmotech" target="_blank" rel='noreferrer' style={{textDecoration: 'none', color: '#6b7688'}}>click here to send reviews <br /></a> Ps. Attach your photo & company</h5>
+          <h5 className="p-text"><a href="mailto:admin@kimmotechnology.com?subject=Reviews for Kimmotech" target="_blank" rel='noreferrer' style={{textDecoration: 'none', color: '#6b7688'}}>click here to send reviews <br /></a> Ps. Attach your photo & company</h5> */}
         </>
       )}
 
@@ -75,5 +78,5 @@ const Testimonial = () => {
 export default AppWrap(
   MotionWrap(Testimonial, 'app__testimonial'),
   'testimonials',
-  'app__primarybg',
+  'app__primarybg'
 );
