@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-import { images } from '../../constants';
-import { AppWrap, MotionWrap } from '../../wrapper';
-import { client } from '../../client';
-import './Footer.scss';
+import { images } from "../../constants";
+import { AppWrap, MotionWrap } from "../../wrapper";
+import { client } from "../../client";
+import "./Footer.scss";
 
 const Footer = () => {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    message: '',
+    name: "",
+    email: "",
+    message: "",
   });
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -25,7 +25,7 @@ const Footer = () => {
     setLoading(true);
 
     const contact = {
-      _type: 'contact',
+      _type: "contact",
       name: formData.username,
       email: formData.email,
       message: formData.message,
@@ -47,14 +47,14 @@ const Footer = () => {
       <div className="app__footer-cards">
         <div className="app__footer-card ">
           <img src={images.email} alt="email" />
-          <a href="mailto:mail@kimmotechnology.com" className="p-text">
-            mail@kimmotechnology.com
+          <a href="mailto:chidimmanworah12@gmail.com" className="p-text">
+            chidimmanworah12@gmail.com
           </a>
         </div>
         <div className="app__footer-card">
           <img src={images.mobile} alt="phone" />
           <a href="tel:+234 907 036 1277" className="p-text">
-            +234 906 310 6069
+            +234 907 036 1277
           </a>
         </div>
       </div>
@@ -90,7 +90,7 @@ const Footer = () => {
             />
           </div>
           <button type="button" className="p-text" onClick={handleSubmit}>
-            {!loading ? 'Send Message' : 'Sending...'}
+            {!loading ? "Send Message" : "Sending..."}
           </button>
         </div>
       ) : (
@@ -103,7 +103,7 @@ const Footer = () => {
 };
 
 export default AppWrap(
-  MotionWrap(Footer, 'app__footer'),
-  'contact',
-  'app__whitebg'
+  MotionWrap(Footer, "app__footer"),
+  "contact",
+  "app__whitebg"
 );

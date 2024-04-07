@@ -21,11 +21,13 @@
 }
 
 .app__work-filter {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
+  // display: flex;
+  // flex-direction: row;
+  // justify-content: flex-start;
+  // align-items: center;
+  // flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 
   margin: 2rem 0 2rem;
 
@@ -58,10 +60,12 @@
 }
 
 .app__work-portfolio {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
+  // display: flex;
+  // flex-wrap: wrap;
+  // justify-content: center;
+  // align-items: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 
   .app__work-item {
     width: 270px;
