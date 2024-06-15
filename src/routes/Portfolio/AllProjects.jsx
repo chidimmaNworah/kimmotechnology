@@ -118,8 +118,6 @@ const AllProjects = () => {
             ))}
         </motion.div>
       </div>
-      <About />
-      <Footer />
     </>
   );
 };

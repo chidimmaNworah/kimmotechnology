@@ -2,23 +2,6 @@
   padding-top: 4rem;
 }
 
-.view-all {
-  text-align: center;
-
-  a {
-    text-decoration: none;
-    color: gray;
-    text-align: center;
-  }
-
-  &:hover {
-    background-color: var(--secondary-color);
-    color: #fff;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-  }
-}
-
 .app__works {
   flex: 1;
   width: 100%;

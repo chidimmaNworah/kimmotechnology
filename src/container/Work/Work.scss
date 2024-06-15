@@ -68,9 +68,9 @@
   grid-template-columns: repeat(2, 1fr);
 
   .app__work-item {
-    width: 270px;
+    width: 350px;
     flex-direction: column;
-
+    height: fit-content;
     margin: 2rem;
     padding: 1rem;
     border-radius: 0.5rem;
@@ -85,7 +85,7 @@
     }
 
     @media screen and (min-width: 2000px) {
-      width: 470px;
+      // width: 470px;
       padding: 1.25rem;
       border-radius: 0.75rem;
     }

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './App.scss';
 import TagManager from 'react-gtm-module';
-import { AllProjects, HomeScreen } from './routes';
+import { AllProjects, HomeScreen, Certification } from './routes';
 import { Navbar } from './components';
 
 const App = () => {
@@ -27,6 +27,9 @@ const App = () => {
             </Routes>
             <Routes>
               <Route path="/portfolio/allprojects" element={<AllProjects />} />
+            </Routes>
+            <Routes>
+              <Route path="/portfolio/certifications" element={<Certification />} />
             </Routes>
           </div>
         </div>

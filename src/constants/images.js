@@ -21,15 +21,20 @@ import about03 from '../assets/about03.png';
 import about04 from '../assets/about04.png';
 
 import profile from '../assets/profile.png';
-// import logo from '../assets/logo.png';
+import cert1 from '../assets/certificates/1.png'
+import cert2 from '../assets/certificates/2.png'
+import cert4 from '../assets/certificates/4.png'
+import cert5 from '../assets/certificates/5.png'
+import cert6 from '../assets/certificates/6.png'
+import cert7 from '../assets/certificates/7.png'
+import cert8 from '../assets/certificates/8.png'
+import cert9 from '../assets/certificates/9.png'
+import cert10 from '../assets/certificates/10.png'
+import cert11 from '../assets/certificates/11.png'
+import cert12 from '../assets/certificates/12.png'
+import cert3 from '../assets/certificates/3.png'
 
-// import adidas from '../assets/adidas.png';
-// import amazon from '../assets/amazon.png';
-// import asus from '../assets/asus.png';
-// import bolt from '../assets/bolt.png';
-// import nb from '../assets/nb.png';
-// import skype from '../assets/skype.png';
-// import spotify from '../assets/spotify.png';
+
 import flutter from '../assets/flutter.png';
 import redux from '../assets/redux.png';
 import sass from '../assets/sass.png';
@@ -68,7 +73,7 @@ about01,
 about02,
 about03,
 about04,
-profile
+profile,
 //   logo,
 //   adidas,
 //   amazon,
@@ -77,6 +82,18 @@ profile
 //   nb,
 //   skype,
 //   spotify
+cert1,
+cert2,
+cert3,
+cert4,
+cert5,
+cert6,
+cert7,
+cert8,
+cert9,
+cert10,
+cert11,
+cert12,
 }
 
 export default imageEffects

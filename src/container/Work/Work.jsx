@@ -119,6 +119,7 @@ const Work = () => {
             </div>
           ))}
       </motion.div>
+
     </>
   );
 };
