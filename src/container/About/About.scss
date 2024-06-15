@@ -5,29 +5,30 @@
 }
 
 .app__profiles {
-  // display: flex;
-  // justify-content: center;
-  // align-items: flex-start;
-  // flex-wrap: wrap;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  // display: grid;
+  // grid-template-columns: repeat(2, 1fr);
   // width: 100%;
-  gap: 40px;
-  margin-top: 2rem;
+  // gap: 40px;
+  // margin-top: 2rem;
 
   @media screen and (max-width: 900px) {
-    grid-template-columns: 1fr;
+    // grid-template-columns: 1fr;
   }
 }
 
 .app__profile-item {
-  // width: 190px;
-  width: 100%;
+  width: 290px;
+  // width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: flex-start;
   flex-direction: column;
-  margin: 2rem;
+  margin: 1rem;
 
   img {
     width: 100%;
