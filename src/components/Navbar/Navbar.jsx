@@ -46,6 +46,12 @@ const Navbar = () => {
                   <a href='/portfolio/allprojects' rel='noreferrer' target='_blank'>
                     All Projects
                     </a>
+                    <a href='https://blog.kimmotech.net/privacy-policy' rel='noreferrer' target='_blank'>
+                    Privacy Policy
+                    </a>
+                    <a href='https://blog.kimmotech.net/terms-of-use' rel='noreferrer' target='_blank'>
+                    Terms of use
+                    </a>
                 </span>
               
                 )
@@ -74,7 +80,7 @@ const Navbar = () => {
               ))}
               <li className="app__flex p-text">
                 <a
-                  href="https://www.kimmotech.blog/"
+                  href="https://blog.kimmotech.net/"
                   target="_blank"
                   rel="noreferrer"
                 >
