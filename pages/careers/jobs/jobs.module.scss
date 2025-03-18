@@ -1,0 +1,91 @@
+.jobshome {
+  &_heroImage {
+    background-image: url("https://res.cloudinary.com/kimmoramicky/image/upload/v1741807531/kimmotech/remotejobs_pw0eku.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: 40% 80%;
+    height: 15rem;
+    width: 100%;
+
+    &_div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+    }
+  }
+}
+
+.form {
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin: 0 auto;
+
+  div {
+    width: 100%;
+    // display: flex;
+    // // justify-content: center;
+    // // align-items: center;
+    // // flex-direction: column;
+    margin: 0.75rem 0;
+    border-radius: 10px;
+    cursor: pointer;
+
+    transition: all 0.3s ease-in-out;
+
+    input,
+    textarea {
+      width: 100%;
+      padding: 0.95rem;
+      border: none;
+      border-radius: 7px;
+      // background-color: #cccccc80;
+      background-color: var(--primary-color);
+      font-family: var(--font-base);
+      color: #000;
+      outline: none;
+      &::placeholder {
+        color: #00000090;
+      }
+    }
+
+    textarea {
+      height: 100px;
+    }
+
+    &:hover {
+      box-shadow: 0 0 25px #000;
+    }
+  }
+
+  button {
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    border: none;
+    background-color: var(--secondary-color);
+
+    font-weight: 500;
+    color: var(--white-color);
+    outline: none;
+    margin: 2rem 0 0 0;
+    font-family: var(--font-base);
+
+    transition: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+    cursor: pointer;
+
+    &:hover {
+      background-color: #2430af;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    margin: 1rem 0;
+  }
+}

@@ -1,0 +1,33 @@
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    font-weight: 800;
+    font-size: xx-large;
+    margin-bottom: 2rem;
+  }
+  form {
+    div {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      input {
+        background: transparent;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+      }
+      textarea {
+        background: transparent;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 100%;
+      }
+    }
+    button {
+      color: green;
+    }
+  }
+}

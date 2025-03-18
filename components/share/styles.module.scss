@@ -1,0 +1,27 @@
+.share {
+  margin: 1rem 0 1rem 0;
+  display: flex;
+  gap: 10px;
+  svg {
+    border-radius: 50%;
+    transition: transform 0.1s ease;
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+  // &__sharer {
+  //   span {
+  //     svg {
+  //       width: 135px;
+  //       height: 35px;
+  //       font-size: 2rem;
+  //       fill: $dark-red-color;
+  //       border-radius: 50%;
+  //       transition: transform 0.1s ease;
+  //       &:hover {
+  //         transform: scale(1.1);
+  //       }
+  //     }
+  //   }
+  // }
+}

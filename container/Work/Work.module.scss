@@ -1,0 +1,200 @@
+.head-text {
+  margin-bottom: 1.5rem;
+}
+
+.viewall {
+  text-align: center;
+  a {
+    text-decoration: none;
+    color: gray;
+
+    &:hover {
+      background-color: var(--secondary-color);
+      color: #fff;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
+  }
+}
+
+.app__works {
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+}
+
+.app {
+  &__work {
+    &_filter {
+      // display: grid;
+      // grid-template-columns: repeat(2, 1fr);
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      margin: 2rem 0 2rem;
+      &_item {
+        padding: 0.5rem 1rem;
+        border-radius: 0.5rem;
+        background-color: #fff;
+        color: #000;
+        font-weight: 800;
+
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin: 0.5rem;
+
+        &:hover {
+          background-color: var(--secondary-color);
+          color: #fff;
+        }
+        @media screen and (min-width: 2000px) {
+          padding: 1rem 2rem;
+          border-radius: 0.85rem;
+        }
+      }
+    }
+
+    &_portfolio {
+      width: 100%;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      justify-items: center;
+      align-content: flex-start;
+      flex-wrap: wrap;
+
+      @media screen and (max-width: 900px) {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      @media screen and (max-width: 600px) {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    &_item {
+      width: 100%;
+      height: 400px !important;
+      flex-direction: column;
+      height: fit-content;
+      overflow: hidden;
+      padding: 1rem;
+      border-radius: 0.5rem;
+      background-color: #fff;
+      color: #000;
+
+      cursor: pointer;
+      transition: all 0.3s ease;
+
+      &:hover {
+        box-shadow: 0 0 25px rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    &_img {
+      width: 100%;
+      height: 200px;
+
+      position: relative;
+      img {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.5rem;
+        object-fit: cover;
+        box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+      }
+
+      @media screen and (min-width: 2000px) {
+        height: 350px;
+      }
+    }
+
+    &_hover {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+
+      border-radius: 0.5rem;
+      opacity: 0;
+      transition: all 0.3s ease;
+
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      a {
+        div {
+          width: 50px;
+          height: 50px;
+          border-radius: 50%;
+          background-color: rgba(0, 0, 0, 0.5);
+          color: #fff;
+
+          margin: 1rem;
+          font-family: var(--font-base);
+          font-weight: 800;
+          cursor: pointer;
+          transition: all 0.3s ease;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+
+          svg {
+            width: 50%;
+            height: 50%;
+            color: var(--white-color);
+          }
+        }
+      }
+    }
+
+    &_content {
+      padding: 0.5rem;
+      width: 100%;
+      position: relative;
+      flex-direction: column;
+
+      h4 {
+        margin-top: 1rem;
+        line-height: 1.2rem;
+
+        @media screen and (min-width: 2000px) {
+          margin-top: 3rem;
+        }
+      }
+      p {
+        line-height: 0.9rem;
+        text-align: justify;
+        // @media screen and (max-width: 900px) {
+        //   line-clamp: 4;
+        //   -webkit-line-clamp: 4;
+        //   -webkit-box-orient: vertical;
+        //   overflow: hidden;
+        //   text-overflow: ellipsis;
+        //   display: -webkit-box;
+        // }
+      }
+    }
+
+    &_tag {
+      position: absolute;
+
+      padding: 0.5rem 1rem;
+      border-radius: 10px;
+      background-color: #fff;
+      top: -25px;
+    }
+  }
+}
+
+.itemactive {
+  background-color: var(--secondary-color);
+  color: #fff;
+}

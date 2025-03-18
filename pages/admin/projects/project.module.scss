@@ -1,0 +1,58 @@
+.about {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  h1 {
+    font-weight: 800;
+    font-size: xx-large;
+    margin-bottom: 2rem;
+  }
+  form {
+    div {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1rem;
+      input {
+        background: transparent;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        outline: none;
+      }
+      textarea {
+        background: transparent;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        height: 100%;
+      }
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: white;
+        color: #333;
+        font-size: 16px;
+        cursor: pointer;
+        appearance: none; // Removes default dropdown styling in some browsers
+        -webkit-appearance: none;
+        -moz-appearance: none;
+
+        &:focus {
+          outline: none;
+          border-color: #007bff;
+        }
+
+        option {
+          background-color: white;
+          color: black;
+          font-size: 16px;
+          padding: 10px;
+        }
+      }
+    }
+    button {
+      color: green;
+    }
+  }
+}

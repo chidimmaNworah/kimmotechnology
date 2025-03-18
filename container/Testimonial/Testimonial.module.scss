@@ -1,0 +1,91 @@
+.app__testimonial {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // gap: 2rem;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+
+  h2 {
+    margin-bottom: 2rem;
+  }
+
+  &_container {
+    @media screen and (max-width: 600px) {
+      padding: 0 2rem;
+    }
+  }
+
+  &_items {
+    text-align: center;
+    position: relative;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1);
+    background: blue;
+    color: #fff;
+    width: 36rem;
+    height: 100%;
+    padding: 0.8rem 1rem;
+    border-radius: 10px;
+    @media screen and (max-width: 600px) {
+      width: 100%;
+      // margin: 0 1rem;
+    }
+  }
+
+  &_personImage {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    margin-top: 2rem;
+    .img {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      img {
+        background: #fff;
+        object-fit: cover;
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50%;
+        cursor: pointer;
+        transition: all ease-in-out 0.3s;
+        &:hover {
+          border: 1px solid rgba(0, 0, 255, 0.616);
+        }
+      }
+      .speechBubble {
+        position: absolute;
+        top: 1px;
+        margin-top: -28px;
+        transform: translateY(-50%);
+        width: 0;
+        height: 0;
+        border-left: 10px solid transparent;
+        border-right: 10px solid transparent;
+        border-top: 10px solid blue;
+        &_hidden {
+          display: none;
+        }
+      }
+    }
+    .borderblue {
+      border: 2px solid blue;
+    }
+    .bordergray {
+      border: 1px solid gray;
+    }
+
+    @media screen and (max-width: 600px) {
+      gap: 0.5rem;
+      padding: 0 0.5rem !important;
+      img {
+        width: 4rem !important;
+        height: 4rem !important;
+      }
+    }
+  }
+}

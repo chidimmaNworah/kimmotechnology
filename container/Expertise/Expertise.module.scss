@@ -1,0 +1,208 @@
+.app__expertises {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex: 1;
+  width: 100%;
+  flex-direction: column;
+  padding: 2rem 4rem;
+  @media screen and (max-width: 600px) {
+    padding: 0 1rem;
+  }
+}
+
+.app {
+  &__skills {
+    &_container {
+      width: 100%;
+      height: 100%;
+      div {
+        width: 80%;
+        @media screen and (max-width: 600px) {
+          width: 60%;
+        }
+      }
+    }
+
+    &_item {
+      background: #161616;
+      margin: 1rem;
+      // width: 100%;
+      padding: 10px 10px 0 10px;
+      transition: all 0.3s ease-in-out;
+      border-radius: 10px;
+      outline: #fff;
+      position: relative;
+      z-index: 0;
+      transition: transform 0.3s ease-in-out;
+      text-align: center;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+
+      &::after {
+        content: "";
+        position: absolute;
+        background: #161616;
+        width: 100%;
+        height: 100%;
+        left: 0;
+        top: 0;
+        border-radius: 10px;
+        z-index: -1;
+      }
+      &::before {
+        content: "";
+        background: linear-gradient(
+          45deg,
+          #6b6dfa,
+          #7cffff,
+          #fffb00,
+          #48ff00,
+          #00ffd5,
+          #002bff,
+          #ff00c8,
+          #4400ff
+        );
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        background-size: 800%;
+        z-index: -1;
+        width: calc(100% + 4px);
+        height: calc(100% + 4px);
+        filter: blur(8px);
+      }
+
+      @media screen and (min-width: 900px) {
+        // width: 300px;
+      }
+      h3 {
+        margin-bottom: 1rem;
+        text-align: left;
+      }
+
+      p {
+        text-align: justify;
+        margin-bottom: 1rem;
+        font-size: 12px;
+        letter-spacing: 1px;
+
+        &:last-child {
+          font-size: 9px;
+        }
+      }
+
+      div {
+        display: flex;
+        flex-direction: column;
+        // justify-content: center;
+        align-items: center;
+        justify-self: end;
+        .img_div {
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: #fef4f5;
+
+          img {
+            width: 60%;
+            height: 60%;
+          }
+
+          &:hover {
+            box-shadow: 0 0 25px #fef4f5;
+          }
+        }
+      }
+
+      @media screen and (min-width: 2000px) {
+        margin: 1rem 2rem;
+
+        p {
+          margin-top: 1rem;
+        }
+      }
+    }
+  }
+
+  &_exp {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    flex-direction: column;
+
+    @media screen and (max-width: 900px) {
+      margin-top: 2rem;
+    }
+
+    &_item {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      align-items: flex-start;
+      margin: 1rem 0;
+    }
+    &_works {
+      flex: 1;
+
+      &_work {
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: flex-start;
+        margin-bottom: 1rem;
+        cursor: pointer;
+
+        h4 {
+          font-weight: 500;
+        }
+
+        p {
+          font-weight: 400;
+          color: var(--gray-color);
+          margin-top: 5px;
+        }
+      }
+    }
+    &_year {
+      margin-right: 3rem;
+
+      p {
+        font-weight: 800;
+        color: var(--secondary-color);
+      }
+
+      @media screen and (max-width: 450px) {
+        margin-right: 1rem;
+      }
+    }
+  }
+}
+
+.skills_tooltip {
+  max-width: 300px !important;
+  background-color: var(--white-color) !important;
+  box-shadow: 0 0 25px rgba(0, 0, 0, 0.1) !important;
+  border-radius: 5px !important;
+  padding: 1rem !important;
+  color: var(--gray-color) !important;
+  text-align: center !important;
+  line-height: 1.5 !important;
+  opacity: 1 !important;
+
+  @media screen and (min-width: 2000px) {
+    font-size: 1.75rem !important;
+    max-width: 500px !important;
+    line-height: 2 !important;
+  }
+}
+
+.list {
+  display: flex;
+  justify-self: end;
+  gap: 10px;
+}
