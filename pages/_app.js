@@ -9,7 +9,7 @@ export default function App({ Component, pageProps }) {
     <>
       <Component {...pageProps} />
       <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
-      <GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
+      <GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GA_ID}`} />
     </>
   );
 }
