@@ -54,9 +54,16 @@
   }
 }
 
-.ql-toolbar {
+.quill > .ql-toolbar:first-child {
+  display: none !important;
+}
+
+.quill > .ql-toolbar {
   display: flex !important;
   flex-wrap: wrap !important;
+}
+.swiper-pagination {
+  margin-top: 1rem;
 }
 
 .head-text {

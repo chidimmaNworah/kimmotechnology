@@ -24,13 +24,19 @@ const generateSitemap = (urls) => {
 export async function getServerSideProps({ res }) {
   try {
     const response = await axios.get(
-      `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/jobs/jobs/`
+      `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/`
     );
     const jobsData = response.data;
 
     // Map dynamic job listings
     const jobs = jobsData.map((item) => ({
-      url: `${process.env.NEXT_PUBLIC_NEXTJS_FRONTEND_URL}/careers/jobs/job/${item.id}`,
+      url: `${
+        process.env.NEXT_PUBLIC_NEXTJS_FRONTEND_URL
+      }/careers/${item.field[0].toLowerCase().replace(/\s+/g, "-")}/${
+        item.field[0].toLowerCase().endsWith("s")
+          ? item.field[0].toLowerCase().slice(0, -1)
+          : "general"
+      }/${item.id}`,
       lastModified: new Date().toISOString(),
       changeFrequency: "weekly",
       priority: 1,
@@ -40,6 +46,9 @@ export async function getServerSideProps({ res }) {
     const staticPages = [
       { path: "/", changeFrequency: "monthly", priority: 1 },
       { path: "/career/jobs", changeFrequency: "monthly", priority: 1 },
+      { path: "/career/grants", changeFrequency: "monthly", priority: 1 },
+      { path: "/career/workshops", changeFrequency: "monthly", priority: 1 },
+      { path: "/career/scholarships", changeFrequency: "monthly", priority: 1 },
       { path: "/unsubscribe", changeFrequency: "yearly", priority: 0.5 },
       {
         path: "/unsubscribed-success",

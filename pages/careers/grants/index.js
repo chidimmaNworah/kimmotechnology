@@ -9,40 +9,46 @@ import YouMayLike from "@/components/youMayLike";
 import RecruiterJobs from "@/components/RecruiterJobs";
 import CategoriesList from "@/components/CareerCategories";
 
-const JobsHome = ({ categories, jobs, relatedJobs }) => {
-  const jobCareers = jobs.filter(
+const GrantsHome = ({ categories, grants, relatedGrants }) => {
+  const grantCareers = grants.filter(
     (career) =>
-      career.field && career.field.some((f) => f.toLowerCase() === "jobs")
+      career.field && career.field.some((f) => f.toLowerCase() === "grants")
   );
 
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const filteredCareers = selectedCategory
-    ? jobs.filter((career) => career.category_id === selectedCategory.id)
-    : jobCareers;
+    ? grants.filter((career) => career.category_id === selectedCategory.id)
+    : grantCareers;
   return (
     <>
       <Head>
-        <title>Find Remote Jobs | Work from Home in Naija & Beyond</title>
+        <title>
+          Find the Latest Grants & Funding Opportunities | Kimmotech
+        </title>
         <meta
           name="description"
-          content="Discover remote job opportunities across different occupations in Nigeria and beyond. Browse latest job listings, categories, and apply today."
+          content="Explore the latest grants and funding opportunities for businesses, startups, NGOs, students, and professionals. Apply now and secure financial support."
         />
         <meta
           property="og:title"
-          content="Find Remote Jobs | Work from Home in Naija & Beyond"
+          content="Find the Latest Grants & Funding Opportunities | Kimmotech"
         />
         <meta
           property="og:description"
-          content="Discover remote job opportunities across different occupations in Nigeria and beyond."
+          content="Discover grants and funding opportunities tailored for businesses, entrepreneurs, students, and organizations. Get financial support today."
         />
         <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://kimmotech.net/careers/jobs" />
+        <meta
+          property="og:url"
+          content="https://kimmotech.net/careers/grants"
+        />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/remote_jobs_poster_ht1xw6.png"
+          content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/grants_poster.png"
         />
       </Head>
+
       <JobNavbar />
       <div className={styles.jobshome_heroImage}>
         <motion.div
@@ -50,9 +56,9 @@ const JobsHome = ({ categories, jobs, relatedJobs }) => {
           transition={{ duration: 1 }}
           className={styles.jobshome_heroImage_div}
         >
-          <h2 className="head-text">WORK FROM HOME</h2>
+          <h2 className="head-text">FIND FUNDING OPPORTUNITIES</h2>
           <p className="font-bold text-[1rem] text-center">
-            FIND REMOTE JOBS FOR ALL OCCUPATIONS IN NAIJA & BEYOND
+            FIND LATEST GRANTS AND FUNDINGS YOU DESERVE
           </p>
         </motion.div>
       </div>
@@ -65,32 +71,32 @@ const JobsHome = ({ categories, jobs, relatedJobs }) => {
           />
           <RecruiterJobs />
           {/* <hr className="border-t border-[#8888C860] my-4" /> */}
-          <YouMayLike heading="You May Like" careers={jobs} />
+          <YouMayLike heading="You May Like" careers={grants} />
         </div>
         <div className="container p-4">
           <h1 className="text-2xl font-bold">
             {selectedCategory
               ? `Category: ${selectedCategory.name}`
-              : "Latest Jobs"}
+              : "Latest Grants"}
           </h1>
           {filteredCareers?.length === 0 ? (
-            <p className="text-gray-500">No jobs available.</p>
+            <p className="text-gray-500">Loading...</p>
           ) : (
             <ul className="mt-4 space-y-6">
               {filteredCareers
                 ?.slice(0, 30)
                 .reverse()
-                .map((job) => (
-                  <li key={job.id} className="border-b pb-4">
-                    <h2 className="text-xl font-semibold">{job.title}</h2>
+                .map((grant) => (
+                  <li key={grant.id} className="border-b pb-4">
+                    <h2 className="text-xl font-semibold">{grant.title}</h2>
                     <p className="text-gray-500">
-                      Posted on {new Date(job.created_at).toDateString()} -
-                      kimmotech.net/careers/jobs --- ({job.commentCount}{" "}
+                      Posted on {new Date(grant.created_at).toDateString()} -
+                      kimmotech.net/careers/grants --- ({grant.commentCount}{" "}
                       comments)
                     </p>
-                    <p className="mt-2 text-gray-700">{job.excerpt}</p>
+                    <p className="mt-2 text-gray-700">{grant.excerpt}</p>
                     <Link
-                      href={`/careers/jobs/job/${job.id}`}
+                      href={`/careers/grants/grant/${grant.id}`}
                       className="mt-2 inline-block text-blue-600 hover:underline"
                     >
                       Apply Now
@@ -107,7 +113,7 @@ const JobsHome = ({ categories, jobs, relatedJobs }) => {
             setSelectedCategory={setSelectedCategory}
           />
           <RecruiterJobs />
-          <YouMayLike heading="You May Like" careers={jobs} />
+          <YouMayLike heading="You May Like" careers={grants} />
         </div>
       </div>
       <CareersFooter />
@@ -120,53 +126,54 @@ export async function getServerSideProps() {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/`
     );
-    const jobs = await res.json();
+    const grants = await res.json();
     const categoryRes = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/career/career-categories/`
     );
     const categories = categoryRes.ok ? await categoryRes.json() : [];
 
-    const relatedJobs = await jobs;
+    const relatedGrants = await grants;
 
     const commentCounts = await Promise.all(
-      jobs.map(async (job) => {
+      grants.map(async (grant) => {
         try {
           const commentRes = await fetch(
-            `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/users/comments/${job.id}`
+            `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/users/comments/${grant.id}`
           );
 
           if (!commentRes.ok) {
-            console.error(`Failed to fetch comments for job ID: ${job.id}`);
-            return { jobId: job.id, count: 0 };
+            console.error(`Failed to fetch comments for grant ID: ${grant.id}`);
+            return { grantId: grant.id, count: 0 };
           }
 
           const commentData = await commentRes.json();
           // console.log("Comment counts response data:", commentData);
-          return { jobId: job.id, count: commentData.length || 0 };
+          return { grantId: grant.id, count: commentData.length || 0 };
         } catch (error) {
           console.error("Error fetching comments:", error);
-          return { jobId: job.id, count: 0 };
+          return { grantId: grant.id, count: 0 };
         }
       })
     );
 
-    // Attach comment count to jobs
-    const jobsWithComments = jobs.map((job) => ({
-      ...job,
-      commentCount: commentCounts.find((c) => c.jobId === job.id)?.count || 0,
+    // Attach comment count to grants
+    const grantsWithComments = grants.map((grant) => ({
+      ...grant,
+      commentCount:
+        commentCounts.find((c) => c.grantId === grant.id)?.count || 0,
     }));
 
     return {
       props: {
-        jobs: jobsWithComments || [],
+        grants: grantsWithComments || [],
         categories,
-        relatedJobs: relatedJobs || [],
+        relatedGrants: relatedGrants || [],
       },
     };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return { props: { jobs: [], categories: [], relatedJobs: [] } };
+    return { props: { grants: [], categories: [], relatedGrants: [] } };
   }
 }
 
-export default JobsHome;
+export default GrantsHome;

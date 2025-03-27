@@ -4,23 +4,11 @@ import { motion } from "framer-motion";
 import { AppWrap, MotionWrap } from "../../wrapper";
 import styles from "./Work.module.scss";
 
-const Work = () => {
-  const [works, setWorks] = useState([]);
-  const [filterWork, setFilterWork] = useState([]);
+const Work = ({ works }) => {
+  const [filterWork, setFilterWork] = useState(works);
   const [activeFilter, setActiveFilter] = useState("All");
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
-
-  const API_URL = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL;
-
-  useEffect(() => {
-    fetch(`${API_URL}/project/projects`)
-      .then((response) => response.json())
-      .then((data) => {
-        setWorks(data);
-        setFilterWork(data);
-      })
-      .catch((error) => console.log("Error fetching projects"));
-  }, []);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
@@ -78,14 +66,19 @@ const Work = () => {
             .reverse()
             .map((work, index) => (
               <div
-                className={`${styles.app__work_item} ${styles.app__flex}`}
                 key={index}
+                className={`${styles.app__work_item} ${styles.app__flex}`}
               >
-                <div className={`${styles.app__work_img} ${styles.app__flex}`}>
+                <div
+                  className={`${styles.app__work_img} ${styles.app__flex}`}
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                >
                   <img src={work.img_url} alt={work.title} />
 
                   <motion.div
-                    whileHover={{ opacity: [0, 1] }}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
                     transition={{
                       duration: 0.25,
                       ease: "easeInOut",
@@ -142,8 +135,16 @@ const Work = () => {
   );
 };
 
-export default AppWrap(
+// export default AppWrap(
+//   MotionWrap(Work, "app__works"),
+//   "work",
+//   "app__primarybg"
+// );
+
+const WrappedWorks = AppWrap(
   MotionWrap(Work, "app__works"),
   "work",
   "app__primarybg"
 );
+
+export default (props) => <WrappedWorks {...props} />;

@@ -49,85 +49,50 @@ export default function Job() {
         }`}
       >
         <div className={styles.app__navbar_logo}>
-          <a href="/">
+          <Link href="/">
             <img src="/assets/Kimmotech_Logo.png" alt="Kimmotech-logo" />
-          </a>
+          </Link>
         </div>
         <ul className={styles.app__navbar_links}>
-          <li className="app__flex">
-            <div />
-            <a href="/careers/jobs" target="_blank" rel="noreferrer">
-              JOBS
-            </a>
-          </li>
-          <li className="app__flex">
-            <div />
-            <a href="/careers/workshops" target="_blank" rel="noreferrer">
-              WORKSHOPS
-            </a>
-          </li>
-          <li className="app__flex">
-            <div />
-            <a href="/careers/scholarships" target="_blank" rel="noreferrer">
-              SCHOLARSHIPS
-            </a>
-          </li>
-
-          <li className="app__flex">
-            <div />
-            <a href="/careers/grants" target="_blank" rel="noreferrer">
-              GRANTS
-            </a>
-          </li>
+          {[
+            { path: "/careers", label: "HOME" },
+            { path: "/careers/jobs", label: "JOBS" },
+            { path: "/careers/workshops", label: "WORKSHOPS" },
+            { path: "/careers/scholarships", label: "SCHOLARSHIPS" },
+            { path: "/careers/grants", label: "GRANTS" },
+          ].map(({ path, label }) => (
+            <li key={path} className={`app__flex`}>
+              <div />
+              <Link href={path} className={`${isActive(path)}`}>
+                {label}
+              </Link>
+            </li>
+          ))}
         </ul>
         <div className={styles.app__navbar_menu}>
           {!toggle && <HiMenuAlt4 onClick={() => setToggle(true)} />}
-
           {toggle && (
             <div>
               <HiX onClick={() => setToggle(false)} />
               <ul>
                 <li className="font-bold text-[#313BAC]">MENU</li>
-                <li>
-                  <a
-                    href="/careers/jobs"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => setToggle(false)}
-                  >
-                    JOBS
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/careers/workshops"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => setToggle(false)}
-                  >
-                    WORKSHOPS
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/careers/scholarships"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => setToggle(false)}
-                  >
-                    SCHOLARSHIPS
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/careers/grants"
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => setToggle(false)}
-                  >
-                    GRANTS
-                  </a>
-                </li>
+                {[
+                  { path: "/careers", label: "HOME" },
+                  { path: "/careers/jobs", label: "JOBS" },
+                  { path: "/careers/workshops", label: "WORKSHOPS" },
+                  { path: "/careers/scholarships", label: "SCHOLARSHIPS" },
+                  { path: "/careers/grants", label: "GRANTS" },
+                ].map(({ path, label }) => (
+                  <li key={path}>
+                    <Link
+                      href={path}
+                      className={isActive(path)}
+                      onClick={() => setToggle(false)}
+                    >
+                      {label}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
           )}

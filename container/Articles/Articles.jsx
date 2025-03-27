@@ -6,19 +6,10 @@ import { AppWrap, MotionWrap } from "../../wrapper";
 import { FaLockOpen, FaLongArrowAltDown } from "react-icons/fa";
 import Link from "next/link";
 
-const Articles = () => {
-  const [abouts, setAbouts] = useState([]);
+const Articles = ({ abouts }) => {
+  console.log("abouts", abouts);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [hoveredIndex1, setHoveredIndex1] = useState(true);
-
-  const API_URL = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/about/abouts/`;
-
-  useEffect(() => {
-    axios
-      .get(API_URL)
-      .then((response) => setAbouts(response.data))
-      .catch((error) => console.error("Error fetching abouts:", error));
-  }, []);
 
   return (
     <>
@@ -34,7 +25,7 @@ const Articles = () => {
         </Link>
         <div className={styles.app__profiles}>
           {abouts
-            .reverse()
+            ?.reverse()
             .slice(0, 4)
             .map((about, index) => (
               <motion.div
@@ -92,8 +83,16 @@ const Articles = () => {
   );
 };
 
-export default AppWrap(
+// export default AppWrap(
+//   MotionWrap(Articles, "app__about"),
+//   "articles",
+//   "app__whitebg"
+// );
+
+const WrappedArticles = AppWrap(
   MotionWrap(Articles, "app__about"),
   "articles",
   "app__whitebg"
 );
+
+export default (props) => <WrappedArticles {...props} />;

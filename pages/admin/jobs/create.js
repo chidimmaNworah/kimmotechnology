@@ -5,6 +5,7 @@ import { Navbar } from "@/components";
 import { useRouter } from "next/router";
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
+import { toast } from "react-toast";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
@@ -30,24 +31,25 @@ const quillModules = {
 };
 
 const quillFormats = [
-  "font",
   "header",
+  "font",
+  "size", // Text styling
   "bold",
   "italic",
   "underline",
   "strike",
-  "color",
-  "background",
-  "script",
   "blockquote",
-  "code-block",
   "list",
   "bullet",
-  "indent",
-  "align",
+  "indent", // List formats
   "link",
   "image",
-  "video",
+  "video", // Media
+  "align",
+  "color",
+  "background", // Text alignment & color
+  "code-block",
+  "script",
   "clean",
 ];
 
@@ -58,32 +60,12 @@ const industries = [
   "Works and Constructions",
 ];
 
-const region = [
-  "Benin Republic",
-  "Cameroun",
-  "Kenya",
-  "Nigeria",
-  "South Africa",
-  "USA",
-];
-const state = [
-  "Abuja",
-  "Akwa Ibom",
-  "Bauchi",
-  "Borno",
-  "Cross River",
-  "Delta",
-  "Edo",
-  "Ebonyi",
-  "Ekiti",
-];
-
 const initialState = {
   title: "",
   description: "",
   excerpt: "",
   industry: "",
-  categories: "",
+  category_id: "",
   field: "",
   region: "",
   state: "",
@@ -91,10 +73,26 @@ const initialState = {
 
 export default function Jobs() {
   const [jobs, setJobs] = useState(initialState);
+  const [categories, setCategories] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
 
   const router = useRouter();
   const API_URL = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL;
+
+  useEffect(() => {
+    async function fetchCategories() {
+      try {
+        const response = await axios.get(
+          `${API_URL}/career/career-categories/`
+        );
+        console.log("categories", response.data);
+        setCategories(response.data);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    }
+    fetchCategories();
+  }, [API_URL]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -106,7 +104,7 @@ export default function Jobs() {
     const formData = new FormData();
     formData.append("title", jobs.title);
     formData.append("excerpt", jobs.excerpt);
-    formData.append("categories", jobs.categories);
+    formData.append("category_id", jobs.category_id);
     formData.append("description", jobs.description);
     formData.append("industry", jobs.industry);
     formData.append("field", jobs.field);
@@ -114,13 +112,14 @@ export default function Jobs() {
     formData.append("state", jobs.state);
 
     try {
-      await axios.post(`${API_URL}/jobs/jobs/`, formData, {
+      await axios.post(`${API_URL}/careers/careers/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
       });
-      setResponseMessage("Project data submitted successfully!");
-      router.push("/admin/jobs/list");
+      setResponseMessage("Job data submitted successfully!");
+      toast.success("Job data submitted successfully!");
+      // router.push("/admin/jobs/list");
     } catch (error) {
       setResponseMessage("Error submitting data.");
     }
@@ -167,65 +166,54 @@ export default function Jobs() {
           />
 
           <div className="flex flex-col mb-4">
-            <label>Categories</label>
+            <label>Category</label>
+            <select
+              name="category_id"
+              value={jobs.category_id}
+              onChange={handleChange}
+              className="text-black rounded-lg py-2"
+              required
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className="flex flex-col mb-4">
+            <label>Region</label>
             <input
               type="text"
-              name="categories"
-              value={jobs.categories}
+              name="region"
+              value={jobs.region}
               onChange={handleChange}
               required
             />
           </div>
 
           <div className="flex flex-col mb-4">
-            <label>Region</label>
-            <select
-              name="region"
-              value={jobs.region}
-              onChange={handleChange}
-              className="text-black rounded-lg py-2"
-            >
-              <option value="">Select Region</option>
-              {region.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div className="flex flex-col mb-4">
             <label>State</label>
-            <select
+            <input
+              type="text"
               name="state"
               value={jobs.state}
               onChange={handleChange}
-              className="text-black rounded-lg py-2"
-            >
-              <option value="">Select State</option>
-              {state.map((item) => (
-                <option key={item} value={item}>
-                  {item}
-                </option>
-              ))}
-            </select>
+              required
+            />
           </div>
 
           <div className="flex flex-col mb-4">
             <label>Industry</label>
-            <select
+            <input
+              type="text"
               name="industry"
               value={jobs.industry}
               onChange={handleChange}
-              className="text-black rounded-lg py-2"
-            >
-              <option value="">Select Industry</option>
-              {industries.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
+              required
+            />
           </div>
 
           <div className="flex flex-col mb-4">

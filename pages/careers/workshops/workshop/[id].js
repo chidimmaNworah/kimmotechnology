@@ -9,7 +9,7 @@ import Head from "next/head";
 import YouMayLike from "@/components/youMayLike";
 import RecruiterJobs from "@/components/RecruiterJobs";
 
-const JobDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
+const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -73,81 +73,39 @@ const JobDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
   // }
 
   if (!job) {
-    return <p>Job not found.</p>;
+    return <p>Grant not found.</p>;
   }
 
   return (
     <>
       <Head>
-        <title>{job.title} - Careers at Kimmotech</title>
+        <title>{job?.title} | Workshop Details & Registration</title>
         <meta
           name="description"
-          content={
-            job.excerpt ||
-            "Explore exciting career opportunities at Kimmotech. Apply now!"
-          }
+          content={`Join the ${job?.title} workshop to gain hands-on experience and expert insights. Learn from professionals and advance your career.`}
         />
-        <meta
-          name="keywords"
-          content="remote jobs, tech careers, job openings, Kimmotech jobs, apply now, software jobs"
-        />
-        <meta name="author" content="Kimmotech" />
-        <meta name="robots" content="index, follow" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-        {/* Open Graph Meta Tags */}
-        <meta property="og:type" content="article" />
         <meta
           property="og:title"
-          content={`${job.title} - Careers at Kimmotech`}
+          content={`${job?.title} | Workshop Details & Registration`}
         />
         <meta
           property="og:description"
-          content={
-            job.excerpt ||
-            "Join our team and take your career to the next level!"
-          }
+          content={`Discover details about ${job?.title}. Register now to learn from experts and enhance your skills.`}
+        />
+        <meta property="og:type" content="article" />
+        <meta
+          property="og:url"
+          content={`https://kimmotech.net/careers/workshops/${job?.slug}`}
         />
         <meta
           property="og:image"
-          content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/remote_jobs_poster_ht1xw6.png"
-        />
-        <meta property="og:image:alt" content="Kimmotech Careers Job Poster" />
-        <meta
-          property="og:url"
-          content={`https://kimmotech.net/careers/jobs/job/${job.id}`}
-        />
-        <meta property="og:site_name" content="Kimmotech Careers" />
-
-        {/* Twitter Meta Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta
-          name="twitter:title"
-          content={`${job.title} - Careers at Kimmotech`}
-        />
-        <meta
-          name="twitter:description"
           content={
-            job.excerpt ||
-            "Explore career opportunities at Kimmotech. Apply now!"
+            job?.image ||
+            "https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/workshop_training_banner.png"
           }
         />
-        <meta
-          name="twitter:image"
-          content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/remote_jobs_poster_ht1xw6.png"
-        />
-        <meta name="twitter:image:alt" content="Kimmotech Careers Job Poster" />
-        <meta name="twitter:site" content="@kimmotech" />
-
-        {/* Canonical Link */}
-        <link
-          rel="canonical"
-          href={`https://kimmotech.net/careers/jobs/job/${job.id}`}
-        />
-
-        {/* Favicon */}
-        <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <JobNavbar />
       <div className="flex flex-col md:flex-row gap-6">
         <div className="hidden md:block md:w-1/4 w-full p-4 md:border-r border-[#cccccc40]">
@@ -209,7 +167,7 @@ const JobDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
           ) : (
             <p>No comments yet. Be the first to comment!</p>
           )}
-          <h3 className="bold-text mt-4">Share this job:</h3>
+          <h3 className="bold-text mt-4">Share this post:</h3>
           <Share post={job} />
 
           {!isFormSubmitted ? (
@@ -267,8 +225,8 @@ const JobDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
                 <p>No categories available</p>
               )}
             </ul>
-            {/* <hr className="border-t border-[#8888C860] my-4" /> */}
             <RecruiterJobs />
+            {/* <hr className="border-t border-[#8888C860] my-4" /> */}
             <YouMayLike heading="You May Like" careers={jobs} />
           </div>
         </div>
@@ -319,4 +277,4 @@ export async function getServerSideProps({ params }) {
   }
 }
 
-export default JobDetail;
+export default WorkshopDetail;

@@ -2,9 +2,40 @@ import { Navbar } from "@/components";
 import { Expertises, Footer, Header, Testimonial, Work } from "@/container";
 import Articles from "@/container/Articles/Articles";
 import styles from "@/styles/homescreen.module.scss";
+import { fetchAbouts, fetchExpertise, fetchProjects } from "@/utils/api";
 import Head from "next/head";
 
-export default function Homescreen() {
+export async function getServerSideProps() {
+  try {
+    const abouts = await fetchAbouts();
+    const expertise = await fetchExpertise();
+    const projects = await fetchProjects();
+
+    return {
+      props: {
+        aboutsData: abouts || [],
+        expertiseData: expertise || [],
+        projectsData: projects || [],
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {
+        aboutsData: [],
+        expertiseData: [],
+        projectsData: [],
+      },
+    };
+  }
+}
+
+export default function Homescreen({
+  aboutsData,
+  expertiseData,
+  projectsData,
+}) {
+  console.log("about", aboutsData);
   return (
     <>
       <Head>
@@ -38,9 +69,9 @@ export default function Homescreen() {
       >
         <Navbar />
         <Header />
-        <Expertises />
-        <Work />
-        <Articles />
+        <Expertises expertise={expertiseData} />
+        <Work works={projectsData} />
+        <Articles abouts={aboutsData} />
         <Testimonial />
         {/* <h2 className="head-text mt-16">Take a coffee & chat with us</h2> */}
         <div className={styles.footerbg}>

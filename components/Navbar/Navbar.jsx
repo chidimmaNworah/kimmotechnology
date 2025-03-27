@@ -53,7 +53,7 @@ export default function Navbar() {
         ))}
         <li className="app__flex p-text text-white">
           <div />
-          <a href="/careers/jobs" target="_blank" rel="noreferrer">
+          <a href="/careers" target="_blank" rel="noreferrer">
             Careers
           </a>
         </li>
@@ -87,7 +87,7 @@ export default function Navbar() {
                 >
                   Blog
                 </a>
-                <a href="/resources/remotech" rel="noreferrer" target="_blank">
+                <a href="/careers" rel="noreferrer" target="_blank">
                   Careers
                 </a>
                 <a href="/recognitions" rel="noreferrer" target="_blank">
@@ -139,6 +139,20 @@ export default function Navbar() {
                   </a>
                 </li>
               ))}
+              <li>
+                <a
+                  href="https://blog.kimmotech.net"
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  Blog
+                </a>
+              </li>
+              <li>
+                <a href="/careers" rel="noreferrer" target="_blank">
+                  Careers
+                </a>
+              </li>
               <li
                 className={`${styles.app__flex} ${styles.p_text} ${styles.pages_dropdown}`}
                 onClick={() => setVisible(!visible)}
@@ -152,29 +166,11 @@ export default function Navbar() {
                 <ul className={styles.visible_pages}>
                   <li>
                     <a
-                      href="https://blog.kimmotech.net"
+                      href="/resources/recognitions"
                       rel="noreferrer"
                       target="_blank"
                     >
-                      Blog
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/resources/remotech"
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      Remotech
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/portfolio/certifications"
-                      rel="noreferrer"
-                      target="_blank"
-                    >
-                      Certifications
+                      Recognitions
                     </a>
                   </li>
                   <li>
@@ -186,7 +182,7 @@ export default function Navbar() {
                       All Projects
                     </a>
                   </li>
-                  <li>
+                  {/* <li>
                     <a
                       href="/coverletters/bento"
                       rel="noreferrer"
@@ -194,7 +190,7 @@ export default function Navbar() {
                     >
                       Bento Cover Letter
                     </a>
-                  </li>
+                  </li> */}
                 </ul>
               )}
             </ul>
