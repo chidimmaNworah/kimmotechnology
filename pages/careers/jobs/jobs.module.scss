@@ -90,3 +90,20 @@
     margin: 1rem 0;
   }
 }
+
+.newsletter {
+  // display: none;
+
+  &_fixed {
+    position: fixed;
+    z-index: 100;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: grid;
+    background: #ffffff98;
+    place-items: center;
+    height: 100vh;
+  }
+}

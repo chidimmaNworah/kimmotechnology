@@ -1,4 +1,5 @@
 import { Navbar } from "@/components";
+import Newsletter from "@/components/Newsletter";
 import { Expertises, Footer, Header, Testimonial, Work } from "@/container";
 import Articles from "@/container/Articles/Articles";
 import styles from "@/styles/homescreen.module.scss";
@@ -35,7 +36,6 @@ export default function Homescreen({
   expertiseData,
   projectsData,
 }) {
-  console.log("about", aboutsData);
   return (
     <>
       <Head>
@@ -64,6 +64,7 @@ export default function Homescreen({
         <meta name="twitter:image" content="/twitter-image.jpg" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <div
         className={`${styles.homescreen} flex flex-col items-center justify-center`}
       >

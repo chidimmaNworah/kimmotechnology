@@ -2,13 +2,15 @@ import { CareersFooter, JobNavbar, CareerCategories } from "@/components";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./jobs/jobs.module.scss";
 import YouMayLike from "@/components/youMayLike";
 import RecruiterJobs from "@/components/RecruiterJobs";
 import CategoriesList from "@/components/CareerCategories";
 import { useRouter } from "next/router";
 import FilterByNav from "@/components/filterbynav";
+import Newsletter from "@/components/Newsletter";
+import { IoCloseCircle, IoCloseOutline } from "react-icons/io5";
 
 export default function Careers({ careers, relatedCareers, categories }) {
   const router = useRouter();
@@ -65,6 +67,35 @@ export default function Careers({ careers, relatedCareers, categories }) {
       }
     });
 
+  const [showNewsletter, setShowNewsletter] = useState(false);
+
+  useEffect(() => {
+    const isNewsletterClosed = localStorage.getItem("newsletter_closed");
+    const hasVisited = localStorage.getItem("has_visited");
+    const currentTime = new Date().getTime();
+
+    if (
+      (!isNewsletterClosed && !hasVisited) ||
+      currentTime - isNewsletterClosed > 3600000
+    ) {
+      localStorage.setItem("has_visited", "true");
+
+      const handleScroll = () => {
+        if (window.scrollY > 600) {
+          setShowNewsletter(true);
+          window.removeEventListener("scroll", handleScroll);
+        }
+      };
+
+      window.addEventListener("scroll", handleScroll);
+      return () => window.removeEventListener("scroll", handleScroll);
+    }
+  }, []);
+
+  const handleClose = () => {
+    setShowNewsletter(false);
+    localStorage.setItem("newsletter_closed", "true");
+  };
   return (
     <div>
       <Head>
@@ -90,7 +121,38 @@ export default function Careers({ careers, relatedCareers, categories }) {
           content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/remote_jobs_poster_ht1xw6.png"
         />
       </Head>
-
+      {/* <div
+        className={`${styles.newsletter} ${
+          isSticky ? styles.newsletter_fixed : "hidden"
+        }`}
+      >
+        <div className="flex flex-col items-center justify-center gap-2">
+          <p>
+            <IoCloseCircle
+              title="close"
+              className={`h-12 w-12  text-gray-900 ${
+                isSticky === false ? "hidden" : ""
+              }`}
+              onClick={() => setIsSticky(false)}
+            />
+          </p>
+          <Newsletter />
+        </div>
+      </div> */}
+      {showNewsletter && (
+        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg relative w-md">
+            <button
+              onClick={handleClose}
+              className="absolute top-2 right-2 text-gray-400 hover:text-red-600 "
+              title="close"
+            >
+              <IoCloseCircle size={60} />
+            </button>
+            <Newsletter />
+          </div>
+        </div>
+      )}
       <JobNavbar />
       <FilterByNav />
       <div className={styles.jobshome_heroImage}>

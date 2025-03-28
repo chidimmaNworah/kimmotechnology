@@ -187,7 +187,7 @@ const JobDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
           <div className="mt-6">
             <h2 className="text-xl font-semibold">Description</h2>
             <div
-              className="mt-2 text-gray-700"
+              className={`mt-2 text-gray-700 w-full ${styles.reactquillDetails}`}
               dangerouslySetInnerHTML={{ __html: job.description }}
             />
           </div>
