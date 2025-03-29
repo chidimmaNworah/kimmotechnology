@@ -167,7 +167,7 @@ export default function Jobs() {
 
           <div className="flex flex-col mb-4">
             <label>Category</label>
-            <select
+            {/* <select
               name="category_id"
               value={jobs.category_id}
               onChange={handleChange}
@@ -180,7 +180,14 @@ export default function Jobs() {
                   {cat.name}
                 </option>
               ))}
-            </select>
+            </select> */}
+            <input
+              type="text"
+              name="category_id"
+              value={jobs.category_id}
+              onChange={handleChange}
+              required
+            />
           </div>
 
           <div className="flex flex-col mb-4">
