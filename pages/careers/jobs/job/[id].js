@@ -175,7 +175,7 @@ const JobDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
             kimmotech.net/careers/jobs --- ({comments.length}{" "}
             {comments.length === 1 ? "comment" : "comments"})
           </p>
-          <p className="text-gray-600">{job.excerpt}</p>
+          <p className="text-gray-600">{job.region}</p>
           <div className="mt-4">
             <p>
               <strong>Industry:</strong> {job.industry || "N/A"}
