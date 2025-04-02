@@ -9,11 +9,9 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Script
-        id="monetag-ad-script"
-        strategy="lazyOnLoad"
-        dangerouslySetInnerHTML={{
-          html: `(function(d,z,s){s.src='https://'+d+'/401/'+z;try{(document.body||document.documentElement).appendChild(s)}catch(e){}})('groleegni.net',9161384,document.createElement('script'))`,
-        }}
+        src="https://groleegni.net/401/9161384"
+        strategy="lazyOnload"
+        async
       />
       <Component {...pageProps} />
       <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
