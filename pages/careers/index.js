@@ -96,6 +96,23 @@ export default function Careers({ careers, relatedCareers, categories }) {
     setShowNewsletter(false);
     localStorage.setItem("newsletter_closed", "true");
   };
+
+  const ITEMS_PER_PAGE = 10;
+
+  const [currentPage, setCurrentPage] = useState(1);
+
+  // const totalPages = Math.ceil(filteredCareers.length / ITEMS_PER_PAGE);
+
+  const totalPages = Math.max(
+    1,
+    Math.ceil(filteredCareers.length / ITEMS_PER_PAGE)
+  );
+
+  // Get paginated data
+  const paginatedData = filteredCareers
+    .reverse()
+    .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
+
   return (
     <div>
       <Head>
@@ -184,13 +201,12 @@ export default function Careers({ careers, relatedCareers, categories }) {
               ? `Category: ${selectedCategory.name}`
               : "All Careers"}
           </h1>
-          {filteredCareers?.length === 0 ? (
+          {paginatedData?.length === 0 ? (
             <p className="text-gray-500">Loading...</p>
           ) : (
             <ul className="mt-4 space-y-6">
-              {filteredCareers
-                ?.slice(0, 30)
-                .reverse()
+              {paginatedData
+                // ?.slice(0, 30)
                 .map((job) => (
                   <li key={job.id} className="border-b pb-4">
                     <h2 className="text-xl font-semibold">{job.title}</h2>
@@ -215,7 +231,33 @@ export default function Careers({ careers, relatedCareers, categories }) {
                 ))}
             </ul>
           )}
+          <div className="flex gap-3 mt-10 items-center justify-center">
+            <button
+              className={`${
+                currentPage === 1 ? "bg-gray-400/80" : "bg-[#5A62BD]"
+              } px-3 py-1 rounded w-30 h-10`}
+              disabled={currentPage === 1}
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            >
+              Previous
+            </button>
+            <span>
+              Page {currentPage} of {totalPages}
+            </span>
+            <button
+              className={`${
+                currentPage === totalPages ? "bg-gray-400/80" : "bg-[#5A62BD]"
+              } px-3 py-1 rounded w-30 h-10`}
+              disabled={currentPage === totalPages}
+              onClick={() =>
+                setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+              }
+            >
+              Next
+            </button>
+          </div>
         </div>
+
         <div className="md:hidden sm:block w-full px-4 mt-12 pt-12 sm:border-t border-[#cccccc40]">
           <CategoriesList
             categories={categories}

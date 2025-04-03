@@ -19,12 +19,13 @@ const ClientScript = () => {
         id="popounderMagnificientTag"
         data-cfasync="false"
         type="text/javascript"
-        strategy="lazyOnload" // Load script lazily
+        // strategy="lazyOnLoad"
+        strategy="afterInteractive" // Load script lazily
+        dangerouslySetInnerHTML={{ __html: popounderTagContent }}
         onLoad={() =>
           console.log("Popounder Monetag script loaded successfully")
         }
         onError={(e) => console.error("Error loading Monetag script", e)}
-        dangerouslySetInnerHTML={{ __html: popounderTagContent }}
       />
     </>
   );
