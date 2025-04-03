@@ -5,14 +5,14 @@ import TagManager from "react-gtm-module";
 import { GoogleTagManager, GoogleAnalytics } from "@next/third-parties/google";
 import Script from "next/script";
 
+const ClientScript = dynamic(() => import("@/components/clientscript"), {
+  ssr: false,
+});
+
 export default function App({ Component, pageProps }) {
   return (
     <>
-      <Script
-        src="https://groleegni.net/401/9161384"
-        strategy="lazyOnload"
-        async
-      />
+      <ClientScript />
       <Component {...pageProps} />
       <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
       <GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GA_ID}`} />
