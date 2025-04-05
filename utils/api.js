@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const ABOUT_API_URL = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/about/abouts/`;
+const ABOUT_API_URL = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/about/abouts`;
 const EXPERTISE_API_URL = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/expertise/expertise/`;
 const PROJECTS_API_URL = `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/project/projects`;
 

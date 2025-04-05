@@ -278,6 +278,10 @@ export async function getServerSideProps() {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/`
     );
+    if (!res.ok) {
+      const errorText = await res.text(); // this will help you debug the real response
+      throw new Error(`Server error: ${res.status} - ${errorText}`);
+    }
     const careers = await res.json();
     const categoryRes = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/career/career-categories/`
