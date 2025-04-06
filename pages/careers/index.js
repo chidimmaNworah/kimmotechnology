@@ -158,7 +158,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
         </div>
       </div> */}
       {showNewsletter && (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
+        <div className="fixed z-20 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg relative w-md">
             <button
               onClick={handleClose}
