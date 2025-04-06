@@ -47,7 +47,7 @@ export default function Countdown({ targetDate }) {
   if (!isClient || !timeLeft) return null;
 
   return (
-    <div className="relative w-full h-[50vh] flex items-center justify-center overflow-hidden">
+    <div className="relative w-full h-full flex py-8 items-center justify-center overflow-hidden">
       {/* Animated image background */}
       <div className="absolute inset-0 z-0">
         <div className="flex animate-slide bg-repeat-x h-full w-[300%] opacity-10">

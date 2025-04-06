@@ -174,7 +174,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
       <JobNavbar />
       <Countdown targetDate="2025-04-19T07:30:00" />
       <FilterByNav />
-      <div className={styles.jobshome_heroImage}>
+      {/* <div className={styles.jobshome_heroImage}>
         <motion.div
           whileInView={{ y: [100, 0], opacity: [0, 1] }}
           transition={{ duration: 1 }}
@@ -185,7 +185,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
             WE WILL ASSIST YOU DEVELOP WITHOUT THE NEED TO MOVE
           </p>
         </motion.div>
-      </div>
+      </div> */}
       <div className={`${styles.jobshome} flex flex-col md:flex-row gap-6`}>
         <div className="hidden md:block md:w-1/4 w-full p-4 md:border-r border-[#cccccc40]">
           <CategoriesList
