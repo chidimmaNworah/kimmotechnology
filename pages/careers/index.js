@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import FilterByNav from "@/components/filterbynav";
 import Newsletter from "@/components/Newsletter";
 import { IoCloseCircle, IoCloseOutline } from "react-icons/io5";
+import Countdown from "@/components/CountDown";
 
 export default function Careers({ careers, relatedCareers, categories }) {
   const router = useRouter();
@@ -171,6 +172,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
         </div>
       )}
       <JobNavbar />
+      <Countdown targetDate="2025-04-19T07:30:00" />
       <FilterByNav />
       <div className={styles.jobshome_heroImage}>
         <motion.div
@@ -278,10 +280,9 @@ export async function getServerSideProps() {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/`
     );
-    // console.log("resposne for careers", res);
-    // if (!res.ok) {
-    //   console.log("careers fetch not ok!");
-    // }
+    if (!res.ok) {
+      console.log("careers fetch not ok!");
+    }
     const careers = await res.json();
     const categoryRes = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/career/career-categories/`

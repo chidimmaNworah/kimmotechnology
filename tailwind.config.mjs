@@ -1,5 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const TailwindConfig = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -11,7 +11,18 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      animation: {
+        slide: "slide 60s linear infinite",
+      },
+      keyframes: {
+        slide: {
+          "0%": { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-33.33%)" },
+        },
+      },
     },
   },
   plugins: [],
 };
+
+export default TailwindConfig;

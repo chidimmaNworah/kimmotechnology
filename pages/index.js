@@ -1,4 +1,5 @@
 import { Navbar } from "@/components";
+import Countdown from "@/components/CountDown";
 import Newsletter from "@/components/Newsletter";
 import { Expertises, Footer, Header, Testimonial, Work } from "@/container";
 import Articles from "@/container/Articles/Articles";
@@ -69,6 +70,7 @@ export default function Homescreen({
         className={`${styles.homescreen} flex flex-col items-center justify-center`}
       >
         <Navbar />
+        <Countdown targetDate="2025-04-19T07:30:00" />
         <Header />
         <Expertises expertise={expertiseData} />
         <Work works={projectsData} />
