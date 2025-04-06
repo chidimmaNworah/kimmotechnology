@@ -37,7 +37,7 @@ export default function AboutsList() {
     if (!confirmDelete) return;
 
     try {
-      console.log("Deleting about with ID:", id);
+      // console.log("Deleting about with ID:", id);
 
       await axios.delete(
         `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/about/abouts/${id}`
@@ -56,8 +56,8 @@ export default function AboutsList() {
         <h2 className="text-center text-xl mb-6 underline">ABOUTS</h2>
         <div className="flex flex-wrap justify-around">
           {abouts.map((about, i) => (
-            <div className="w-40 mb-4">
-              <div key={i} className="truncate">
+            <div className="w-40 mb-4" key={i}>
+              <div className="truncate">
                 <div className="w-40 w-full">
                   <img
                     src={about.img_url}

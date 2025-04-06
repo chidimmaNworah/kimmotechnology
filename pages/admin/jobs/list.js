@@ -38,7 +38,7 @@ export default function ProjectsList() {
     if (!confirmDelete) return;
 
     try {
-      console.log("Deleting project with ID:", id);
+      // console.log("Deleting project with ID:", id);
 
       await axios.delete(
         `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/jobs/jobs/${id}`,
@@ -71,8 +71,8 @@ export default function ProjectsList() {
         </div>
         <div className="flex flex-wrap justify-around">
           {jobs.map((job, i) => (
-            <div className="w-40 mb-4">
-              <div key={i} className="truncate">
+            <div className="w-40 mb-4" key={i}>
+              <div className="truncate">
                 <p className="text-sm mb-4">
                   Title
                   <br />

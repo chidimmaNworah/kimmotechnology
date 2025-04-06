@@ -85,7 +85,7 @@ export default function Jobs() {
         const response = await axios.get(
           `${API_URL}/career/career-categories/`
         );
-        console.log("categories", response.data);
+        // console.log("categories", response.data);
         setCategories(response.data);
       } catch (error) {
         console.error("Error fetching categories:", error);

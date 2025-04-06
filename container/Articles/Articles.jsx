@@ -7,7 +7,7 @@ import { FaLockOpen, FaLongArrowAltDown } from "react-icons/fa";
 import Link from "next/link";
 
 const Articles = ({ abouts }) => {
-  console.log("abouts", abouts);
+  // console.log("abouts", abouts);
   const [hoveredIndex, setHoveredIndex] = useState(null);
   const [hoveredIndex1, setHoveredIndex1] = useState(true);
 

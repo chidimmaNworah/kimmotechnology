@@ -22,10 +22,10 @@ const ClientScript = () => {
         // strategy="lazyOnLoad"
         strategy="afterInteractive" // Load script lazily
         dangerouslySetInnerHTML={{ __html: popounderTagContent }}
-        onLoad={() =>
-          console.log("Popounder Monetag script loaded successfully")
-        }
-        onError={(e) => console.error("Error loading Monetag script", e)}
+        // onLoad={() =>
+        //   console.log("Popounder Monetag script loaded successfully")
+        // }
+        // onError={(e) => console.error("Error loading Monetag script", e)}
       />
     </>
   );
