@@ -13,7 +13,7 @@ const ClientScript = dynamic(() => import("@/components/clientscript"), {
 export default function App({ Component, pageProps }) {
   return (
     <>
-      {/* <ClientScript /> */}
+      <ClientScript />
       <Component {...pageProps} />
       <GoogleTagManager gtmId={`${process.env.NEXT_PUBLIC_GTM_ID}`} />
       <GoogleAnalytics gaId={`${process.env.NEXT_PUBLIC_GA_ID}`} />
