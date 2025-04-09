@@ -15,9 +15,9 @@ import Countdown from "@/components/CountDown";
 
 export default function Careers({ careers, relatedCareers, categories }) {
   const router = useRouter();
-  const { query } = router; // Get query parameters from the URL
-  const posted = query.filter || ""; // Get the 'filter' value from the URL
-
+  const { query } = router;
+  const posted = query.filter || "";
+  const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const handleCategoryClick = (category) => {
@@ -114,6 +114,14 @@ export default function Careers({ careers, relatedCareers, categories }) {
     .reverse()
     .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setLoading(false);
+    }, 8000); // simulate loading
+
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
     <div>
       <Head>
@@ -139,24 +147,6 @@ export default function Careers({ careers, relatedCareers, categories }) {
           content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/remote_jobs_poster_ht1xw6.png"
         />
       </Head>
-      {/* <div
-        className={`${styles.newsletter} ${
-          isSticky ? styles.newsletter_fixed : "hidden"
-        }`}
-      >
-        <div className="flex flex-col items-center justify-center gap-2">
-          <p>
-            <IoCloseCircle
-              title="close"
-              className={`h-12 w-12  text-gray-900 ${
-                isSticky === false ? "hidden" : ""
-              }`}
-              onClick={() => setIsSticky(false)}
-            />
-          </p>
-          <Newsletter />
-        </div>
-      </div> */}
       {showNewsletter && (
         <div className="fixed z-20 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
           <div className="bg-white p-6 rounded-lg shadow-lg relative w-md">
@@ -203,7 +193,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
               ? `Category: ${selectedCategory.name}`
               : "All Careers"}
           </h1>
-          {paginatedData?.length === 0 ? (
+          {loading ? (
             <p className="text-gray-500">Loading...</p>
           ) : (
             <ul className="mt-4 space-y-6">
