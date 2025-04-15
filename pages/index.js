@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import { Navbar } from "@/components";
 import Countdown from "@/components/CountDown";
 import Newsletter from "@/components/Newsletter";
