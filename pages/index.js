@@ -98,7 +98,7 @@ export default function Homescreen(
         className={`${styles.homescreen} flex flex-col items-center justify-center`}
       >
         <Navbar />
-        <Countdown targetDate="2025-04-19T07:30:00" />
+        {/* <Countdown targetDate="2025-04-19T07:30:00" /> */}
         <Header />
         {loading ? (
           <p className="text-center mt-10">

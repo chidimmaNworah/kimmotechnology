@@ -162,7 +162,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
         </div>
       )}
       <JobNavbar />
-      <Countdown targetDate="2025-04-19T07:30:00" />
+      {/* <Countdown targetDate="2025-04-19T07:30:00" /> */}
       <FilterByNav />
       {/* <div className={styles.jobshome_heroImage}>
         <motion.div
