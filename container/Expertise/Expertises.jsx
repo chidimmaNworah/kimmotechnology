@@ -14,7 +14,7 @@ const Expertises = ({ expertise }) => {
   return (
     <>
       <div className={styles.app__expertises}>
-        <Swiper
+        {/* <Swiper
           slidesPerView={"auto"}
           centeredSlides={true}
           spaceBetween={30}
@@ -42,13 +42,33 @@ const Expertises = ({ expertise }) => {
               </li>
             </SwiperSlide>
           ))}
-        </Swiper>
+        </Swiper> */}
+        <div className={styles.boxes}>
+          <div>
+            <h3>Careers Site</h3>
+            <div></div>
+          </div>
+          <div>
+            <p>
+              Find remote openings to upscale your career path in Jobs,
+              Scholarships, Grants and Workshops
+            </p>
+            <div>
+              <h1>100+</h1>
+              <p>CAREERS posted</p>
+            </div>
+          </div>
+        </div>
       </div>
     </>
   );
 };
 
 // export default MotionWrap(Expertises, "app__expertises");
-const WrappedExpertises = MotionWrap(Expertises, "app__expertises");
+const WrappedExpertises = AppWrap(
+  MotionWrap(Expertises, "app__expertises"),
+  "expertises",
+  "app__whitebg"
+);
 
 export default (props) => <WrappedExpertises {...props} />;

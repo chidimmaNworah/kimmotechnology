@@ -100,6 +100,7 @@ export default function Homescreen(
         <Navbar />
         {/* <Countdown targetDate="2025-04-19T07:30:00" /> */}
         <Header />
+        {/* <Expertises expertise={expertiseData} /> */}
         {loading ? (
           <p className="text-center mt-10">
             Loading content... <br />
@@ -107,7 +108,6 @@ export default function Homescreen(
           </p>
         ) : (
           <>
-            <Expertises expertise={expertiseData} />
             <Work works={projectsData} />
             <Articles abouts={aboutsData} />
           </>

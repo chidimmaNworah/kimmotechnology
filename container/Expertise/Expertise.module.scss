@@ -206,3 +206,11 @@
   justify-self: end;
   gap: 10px;
 }
+
+.boxes {
+  background: #ffec46;
+  height: 20rem;
+  width: 15rem;
+  display: flex;
+  flex-direction: column;
+}
