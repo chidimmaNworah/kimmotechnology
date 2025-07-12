@@ -18,7 +18,7 @@ export default function ProjectsList() {
   useEffect(() => {
     const fetchJobs = async () => {
       try {
-        const response = await axios.get(`${API_URL}/jobs/jobs/`);
+        const response = await axios.get(`${API_URL}/careers/careers/`);
         setJobs(response.data);
       } catch (error) {
         console.error("Error fetching jobs:", error);
@@ -28,7 +28,7 @@ export default function ProjectsList() {
   }, [loading]);
 
   const handleEdit = (id) => {
-    router.push(`/admin/jobs/${id}`); // Navigate to the edit page dynamically
+    router.push(`/admin/careers/${id}`); // Navigate to the edit page dynamically
   };
 
   const handleDelete = async (id) => {
@@ -41,7 +41,7 @@ export default function ProjectsList() {
       // console.log("Deleting project with ID:", id);
 
       await axios.delete(
-        `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/jobs/jobs/${id}`,
+        `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/${id}`,
         {
           headers: {
             "Content-Type": "application/json",

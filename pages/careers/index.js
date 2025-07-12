@@ -19,12 +19,12 @@ export default function Careers({ careers, relatedCareers, categories }) {
   const posted = query.filter || "";
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [activeField, setActiveField] = useState(null);
 
   const handleCategoryClick = (category) => {
     setSelectedCategory(category);
   };
 
-  // Get the start of today, yesterday, this week, and last week
   const today = new Date();
   today.setHours(0, 0, 0, 0);
 
@@ -39,10 +39,6 @@ export default function Careers({ careers, relatedCareers, categories }) {
 
   const lastWeekEnd = new Date(startOfWeek);
   lastWeekEnd.setDate(lastWeekEnd.getDate() - 1);
-
-  // const filteredCareers = selectedCategory
-  //   ? careers.filter((career) => career.category_id === selectedCategory.id)
-  //   : careers;
 
   const filteredCareers = careers
     .filter(
@@ -66,7 +62,12 @@ export default function Careers({ careers, relatedCareers, categories }) {
         default:
           return true;
       }
-    });
+    })
+    .filter((career) =>
+      !activeField
+        ? true
+        : career.field?.some((f) => f.toLowerCase() === activeField)
+    );
 
   const [showNewsletter, setShowNewsletter] = useState(false);
 
@@ -161,21 +162,9 @@ export default function Careers({ careers, relatedCareers, categories }) {
           </div>
         </div>
       )}
-      <JobNavbar />
+      <JobNavbar activeField={activeField} setActiveField={setActiveField} />
       {/* <Countdown targetDate="2025-04-19T07:30:00" /> */}
       <FilterByNav />
-      {/* <div className={styles.jobshome_heroImage}>
-        <motion.div
-          whileInView={{ y: [100, 0], opacity: [0, 1] }}
-          transition={{ duration: 1 }}
-          className={styles.jobshome_heroImage_div}
-        >
-          <h2 className="head-text">REMOTE OR NOTHING</h2>
-          <p className="font-bold text-[1rem] text-center">
-            WE WILL ASSIST YOU DEVELOP WITHOUT THE NEED TO MOVE
-          </p>
-        </motion.div>
-      </div> */}
       <div className={`${styles.jobshome} flex flex-col md:flex-row gap-6`}>
         <div className="hidden md:block md:w-1/4 w-full p-4 md:border-r border-[#cccccc40]">
           <CategoriesList
@@ -191,10 +180,20 @@ export default function Careers({ careers, relatedCareers, categories }) {
           <h1 className="text-2xl font-bold">
             {selectedCategory
               ? `Category: ${selectedCategory.name}`
+              : activeField
+              ? activeField.charAt(0).toUpperCase() + activeField.slice(1)
+              : posted === "today"
+              ? "Posted Today"
+              : posted === "yesterday"
+              ? "Posted Yesterday"
+              : posted === "this-week"
+              ? "This Week's Posts"
+              : posted === "last-week"
+              ? "Last Week's Posts"
               : "All Careers"}
           </h1>
           {loading ? (
-            <p className="text-gray-500">Loading...</p>
+            <p className="text-gray-500">Loading careers...</p>
           ) : (
             <ul className="mt-4 space-y-6">
               {paginatedData
@@ -268,12 +267,20 @@ export default function Careers({ careers, relatedCareers, categories }) {
 export async function getServerSideProps() {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/`
+      `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/careers/careers/?skip=0&limit=50`
     );
-    if (!res.ok) {
-      console.log("careers fetch not ok!");
+
+    let careers = [];
+
+    if (
+      res.ok &&
+      res.headers.get("content-type")?.includes("application/json")
+    ) {
+      careers = await res.json();
+    } else {
+      console.warn("Careers fetch did not return JSON!");
     }
-    const careers = await res.json();
+
     const categoryRes = await fetch(
       `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/career/career-categories/`
     );
@@ -296,7 +303,6 @@ export async function getServerSideProps() {
           }
 
           const commentData = await commentRes.json();
-          // console.log("Comment counts response data:", commentData);
           return { careerId: career.id, count: commentData.length || 0 };
         } catch (error) {
           console.error("Error fetching comments:", error);
@@ -305,7 +311,6 @@ export async function getServerSideProps() {
       })
     );
 
-    // Attach comment count to careers
     const careersWithComments = careers.map((career) => ({
       ...career,
       commentCount:
@@ -321,6 +326,12 @@ export async function getServerSideProps() {
     };
   } catch (error) {
     console.error("Error fetching data:", error);
-    return { props: { careers: [], categories: [], relatedCareers: [] } };
+    return {
+      props: {
+        careers: [],
+        categories: [],
+        relatedCareers: [],
+      },
+    };
   }
 }

@@ -75,6 +75,7 @@ export default function Jobs() {
   const [jobs, setJobs] = useState(initialState);
   const [categories, setCategories] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
   const API_URL = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL;
@@ -100,6 +101,7 @@ export default function Jobs() {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const formData = new FormData();
     formData.append("title", jobs.title);
@@ -122,6 +124,9 @@ export default function Jobs() {
       // router.push("/admin/jobs/list");
     } catch (error) {
       setResponseMessage("Error submitting data.");
+      toast.error("Error submitting data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -234,7 +239,9 @@ export default function Jobs() {
             />
           </div>
 
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={loading}>
+            {loading ? "Submitting..." : "Submit"}
+          </button>
         </form>
 
         {responseMessage && <p>{responseMessage}</p>}

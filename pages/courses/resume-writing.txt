@@ -1,0 +1,376 @@
+import Image from "next/image";
+import Link from "next/link";
+import { useState } from "react";
+import { supabase } from "@/utils/supabaseClient";
+
+export default function ResumeWritingCourse() {
+  const [showModal, setShowModal] = useState(false);
+
+  const openModal = () => setShowModal(true);
+  const closeModal = () => setShowModal(false);
+
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    course: "Resume Writing & Cover Letter Essentials",
+  });
+  const [loading, setLoading] = useState(false);
+  const [successMsg, setSuccessMsg] = useState("");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    const { data, error } = await supabase
+      .from("registrations")
+      .insert([formData]);
+    setLoading(false);
+    if (error) {
+      console.error("Error submitting form:", error.message);
+      return;
+    }
+    setSuccessMsg("Successfully registered!");
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      course: "Resume Writing & Cover Letter Essentials",
+    });
+    closeModal();
+  };
+  const attendees = [
+    "Job seekers looking to improve their resumes",
+    "Recent graduates entering the job market",
+    "Professionals planning a career switch",
+    "Freelancers wanting to create formal CVs",
+    "Individuals returning to the workforce after a break",
+    "Students applying for internships",
+    "Anyone unsure how to tailor a resume to job applications",
+  ];
+
+  return (
+    <div className="max-w-4xl mx-auto px-4 py-12">
+      <div className="flex items-center space-x-2 mb-8">
+        <Image
+          src="/assets/Kimmotech_Logo.png"
+          alt="Your Logo"
+          width={100}
+          height={100}
+        />
+        <span className="font-bold text-lg mb-1 text-[#3C469E]"> LEARNING</span>
+      </div>
+      <main className=" font-sans">
+        {/* Header */}
+        <div className="flex items-center justify-between">
+          {/* <div className="flex items-center space-x-3">
+            <Image
+              src="/google-developers.png"
+              alt="Kimmotech Learning Program"
+              width={100}
+              height={24}
+            />
+            <Image
+              src="/firebase-logo.png"
+              alt="Firebase"
+              width={24}
+              height={24}
+            />
+          </div> */}
+        </div>
+
+        {/* Intro */}
+        <h1 className="w-full bg-[#3B469E] text-white text-2xl font-semibold senten py-2 px-3 mb-2">
+          FREE Webiner: Resume Writing & Cover Letter Essentials
+        </h1>
+        <p className="mb-6">
+          Join Our FREE Webinar To Learn How To Write a Winning Resume and Cover
+          Letter With Proven Methods To Land High Profile and Remote Jobs In Any
+          Profession
+        </p>
+        <div>
+          <div className="w-full mb-4 flex items-center justify-between gap-2 sm:flex-row flex-col">
+            <div className="flex items-center space-x-4 border border-gray-600 bg-gray-500/50 w-full p-2 justify-center">
+              <Image
+                src="/icons/date.png"
+                alt="Auth Icon"
+                width={32}
+                height={32}
+              />
+              <h1 className="font-semibold text-xl">20-06-2025</h1>
+            </div>
+            <div className="flex items-center space-x-4 border border-gray-600 bg-gray-500/50  w-full p-2 justify-center">
+              <Image
+                src="/icons/clock.png"
+                alt="Auth Icon"
+                width={32}
+                height={32}
+              />
+              <h1 className="font-semibold text-xl">4:00 PM</h1>
+            </div>
+            <div className="flex items-center space-x-4 border border-gray-600 bg-gray-500/50  w-full p-2 justify-center">
+              <Image
+                src="/icons/meet.png"
+                alt="Auth Icon"
+                width={32}
+                height={32}
+              />
+              <h1 className="font-semibold text-xl">Online</h1>
+            </div>
+            <div className="flex items-center space-x-4 border border-gray-600 bg-gray-500/50  w-full p-2 justify-center">
+              <Image
+                src="/icons/nomoney.png"
+                alt="Auth Icon"
+                width={32}
+                height={32}
+              />
+              <h1 className="font-semibold text-xl">Free Course</h1>
+            </div>
+          </div>
+        </div>
+        {/* CTA */}
+        <section className="text-center my-10">
+          <button
+            onClick={openModal}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition"
+          >
+            Register for the Course
+          </button>
+
+          <p className="text-sm mt-2 text-gray-500">
+            After registration, you will receive a confirmation email with
+            further details.
+          </p>
+        </section>
+        <p className="mb-4">
+          In 2020, one of the worst years for job seekers, I was able to land
+          over 10 high-profile remote jobs in less than 6 weeks. Even though I
+          witnessed employment decline in my industry, I learned one of life
+          {`'`}s most valuable lessons: crafting and managing my online
+          professional identity is a skill that can help me secure jobs in any
+          profession—even in the most challenging times.
+        </p>
+
+        <p className="mb-4">
+          This webinar is designed to share these insights with you, helping you
+          to create a resume and cover letter that stand out in today{`'`}s
+          competitive job market.
+        </p>
+
+        <p>For an individual to thrive online, these key elements are vital:</p>
+
+        <ul className="list-disc list-inside mt-2 mb-4 space-y-1">
+          <li>A well-structured and tailored resume</li>
+          <li>A compelling cover letter</li>
+          <li>A strong LinkedIn profile</li>
+          <li>Consistent personal branding</li>
+          <li>Clear articulation of your value proposition</li>
+          <li>Ability to communicate your achievements effectively</li>
+          <li>Understanding of applicant tracking systems (ATS)</li>
+        </ul>
+
+        {/* Section */}
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">
+            What you will learn in this course:
+          </h2>
+          <ul className="space-y-3">
+            <li>
+              ✅ Craft a professional resume, understanding what recruiters look
+              for in a resume and structuring it for clarity and impact.
+            </li>
+            <li>
+              ✅ Discover how to match your resume and cover letter with
+              specific or different job roles for better results or align it to
+              your professional career path, understanding how to use your
+              industry-relevant keywords to beat Applicant Tracking Systems
+              (ATS).{" "}
+            </li>
+            <li>
+              ✅ Spot and fix errors that often get resumes rejected and
+              mastering the formula to write compelling Resume and cover letters
+              that get you noticed
+            </li>
+            <li>
+              ✅ Discover trusted platforms to find real job opportunities
+              across various industries.
+            </li>
+            <li>
+              ✅ Learn how AI can help you prepare for a job, secure one and
+              keep it.
+            </li>
+          </ul>
+        </section>
+
+        {/* Features / Tools */}
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">
+            Resume Writing Toolkit:
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <div className="flex items-start space-x-4">
+              <Image
+                src="/icons/auth.png"
+                alt="Auth Icon"
+                width={32}
+                height={32}
+              />
+              <div>
+                <h3 className="font-semibold">AI Resume Assistant</h3>
+                <p>
+                  Get personalized suggestions and ATS-friendly formats using
+                  AI-powered tools.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <Image
+                src="/icons/database.png"
+                alt="Database Icon"
+                width={32}
+                height={32}
+              />
+              <div>
+                <h3 className="font-semibold">Template Library</h3>
+                <p>Access multiple professionally designed resume templates.</p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <Image src="/icons/ai.png" alt="AI Icon" width={32} height={32} />
+              <div>
+                <h3 className="font-semibold">Keyword Optimization</h3>
+                <p>
+                  Ensure your resume is tailored to the job description using
+                  keyword analysis.
+                </p>
+              </div>
+            </div>
+
+            <div className="flex items-start space-x-4">
+              <Image
+                src="/icons/config.png"
+                alt="Config Icon"
+                width={32}
+                height={32}
+              />
+              <div>
+                <h3 className="font-semibold">Download & Export</h3>
+                <p>Export your resume in PDF or DOCX format, ready to send.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Video Preview */}
+        <section className="mb-10">
+          <h2 className="text-xl font-semibold mb-4">
+            How we built this course:
+          </h2>
+          <div className="bg-gray-100 rounded-lg p-4">
+            <iframe
+              width="100%"
+              height="415"
+              src="https://www.youtube.com/embed/zisbA0GXUjU?si=VLEiqtMg5R7RKASi"
+              title="YouTube video player"
+              frameBorder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              referrerPolicy="strict-origin-when-cross-origin"
+              allowFullScreen
+            ></iframe>
+            <p className="mt-2 text-sm text-gray-600">
+              Watch how we created the resume writing course, featuring tips
+              from industry experts.
+            </p>
+          </div>
+        </section>
+
+        {/* CTA */}
+        <section className="text-center mt-12">
+          <button
+            onClick={openModal}
+            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-full font-semibold transition"
+          >
+            Register for the Course
+          </button>
+          <p className="text-sm mt-2">
+            After registration, you will receive a confirmation email with
+            further details.
+          </p>
+        </section>
+        <div className="mt-10">
+          <h2 className="text-2xl font-bold mb-4">Who Should Attend</h2>
+          <ul className="list-disc list-inside space-y-2">
+            {attendees.map((person, index) => (
+              <li key={index} className="">
+                {person}
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        {/* Footer */}
+        <footer className="mt-16 text-xs text-gray-500 text-center">
+          <p>© {new Date().getFullYear()} Kimmotech | Abuja, Nigeria</p>
+        </footer>
+      </main>
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-start pt-20 z-50">
+          <div className="bg-white p-6 rounded-md shadow-md w-full max-w-xl relative">
+            <button
+              className="absolute top-4 right-5 text-gray-500 hover:text-gray-700 text-xl"
+              onClick={closeModal}
+            >
+              ✖
+            </button>
+            <h2 className="text-xl font-bold mb-4">Register for the Webinar</h2>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <input
+                type="text"
+                name="name"
+                placeholder="Your Name"
+                value={formData.name}
+                onChange={handleChange}
+                required
+                className="w-full border px-3 py-2 rounded"
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="Your Email"
+                value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full border px-3 py-2 rounded"
+              />
+              <input
+                type="tel"
+                name="phone"
+                placeholder="Phone Number"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="w-full border px-3 py-2 rounded"
+              />
+              <div className="flex justify-between items-center">
+                <button
+                  type="submit"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                  disabled={loading}
+                >
+                  {loading ? "Submitting..." : "Submit"}
+                </button>
+              </div>
+            </form>
+            {successMsg && <p className="text-green-500 mt-2">{successMsg}</p>}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
