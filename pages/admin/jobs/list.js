@@ -20,6 +20,7 @@ export default function ProjectsList() {
       try {
         const response = await axios.get(`${API_URL}/careers/careers/`);
         setJobs(response.data);
+        console.log(response.data);
       } catch (error) {
         console.error("Error fetching jobs:", error);
       }
@@ -70,7 +71,7 @@ export default function ProjectsList() {
           </ul>
         </div>
         <div className="flex flex-wrap justify-around">
-          {jobs.map((job, i) => (
+          {jobs.slice(0, 6).map((job, i) => (
             <div className="w-40 mb-4" key={i}>
               <div className="truncate">
                 <p className="text-sm mb-4">
