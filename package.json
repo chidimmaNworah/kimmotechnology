@@ -8,6 +8,9 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "engines": {
+    "node": "22.x"
+  },
   "dependencies": {
     "@next/third-parties": "^15.2.2",
     "@testing-library/jest-dom": "^5.16.5",
