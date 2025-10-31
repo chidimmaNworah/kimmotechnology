@@ -9,7 +9,7 @@ const Work = ({ works }) => {
   const [activeFilter, setActiveFilter] = useState("All");
   const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
   const [hoveredIndex, setHoveredIndex] = useState(null);
-
+  console.log("works", works);
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
     setAnimateCard([{ y: 100, opacity: 0 }]);
@@ -20,7 +20,11 @@ const Work = ({ works }) => {
       if (item === "All") {
         setFilterWork(works);
       } else {
-        setFilterWork(works.filter((work) => work.category.name === item));
+        setFilterWork(
+          works.filter((work) =>
+            work.categories.some((cat) => cat.name === item)
+          )
+        );
       }
     }, 500);
   };
@@ -124,7 +128,9 @@ const Work = ({ works }) => {
                   <div
                     className={`${styles.app__work_tag} ${styles.app__flex}`}
                   >
-                    <p className="p-text">{work.category.name}</p>
+                    <p className="p-text">
+                      {work.categories?.map((cat) => cat.name).join(", ")}
+                    </p>
                   </div>
                 </div>
               </div>

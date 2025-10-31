@@ -8,63 +8,61 @@ import styles from "@/styles/homescreen.module.scss";
 import { fetchAbouts, fetchExpertise, fetchProjects } from "@/utils/api";
 import Head from "next/head";
 
-// export async function getServerSideProps() {
-//   try {
-//     const abouts = await fetchAbouts();
-//     const expertise = await fetchExpertise();
-//     const projects = await fetchProjects();
+export async function getServerSideProps() {
+  try {
+    const abouts = await fetchAbouts();
+    const expertise = await fetchExpertise();
+    const projects = await fetchProjects();
 
-//     return {
-//       props: {
-//         aboutsData: abouts || [],
-//         expertiseData: expertise || [],
-//         projectsData: projects || [],
-//       },
-//     };
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     return {
-//       props: {
-//         aboutsData: [],
-//         expertiseData: [],
-//         projectsData: [],
-//       },
-//     };
-//   }
-// }
-
-export default function Homescreen(
-  {
-    // aboutsData,
-    // expertiseData,
-    // projectsData,
+    return {
+      props: {
+        aboutsData: abouts || [],
+        expertiseData: expertise || [],
+        projectsData: projects || [],
+      },
+    };
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    return {
+      props: {
+        aboutsData: [],
+        expertiseData: [],
+        projectsData: [],
+      },
+    };
   }
-) {
-  const [aboutsData, setAboutsData] = useState([]);
-  const [expertiseData, setExpertiseData] = useState([]);
-  const [projectsData, setProjectsData] = useState([]);
+}
+
+export default function Homescreen({
+  aboutsData,
+  expertiseData,
+  projectsData,
+}) {
+  // const [aboutsData, setAboutsData] = useState([]);
+  // const [expertiseData, setExpertiseData] = useState([]);
+  // const [projectsData, setProjectsData] = useState([]);
   const [loading, setLoading] = useState(true);
+  console.log("projects", projectsData);
+  // useEffect(() => {
+  //   async function loadData() {
+  //     try {
+  //       const [abouts, expertise, projects] = await Promise.all([
+  //         fetchAbouts(),
+  //         fetchExpertise(),
+  //         fetchProjects(),
+  //       ]);
+  //       setAboutsData(abouts || []);
+  //       setExpertiseData(expertise || []);
+  //       setProjectsData(projects || []);
+  //     } catch (error) {
+  //       console.error("Failed to load homepage data:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   }
 
-  useEffect(() => {
-    async function loadData() {
-      try {
-        const [abouts, expertise, projects] = await Promise.all([
-          fetchAbouts(),
-          fetchExpertise(),
-          fetchProjects(),
-        ]);
-        setAboutsData(abouts || []);
-        setExpertiseData(expertise || []);
-        setProjectsData(projects || []);
-      } catch (error) {
-        console.error("Failed to load homepage data:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    loadData();
-  }, []);
+  //   loadData();
+  // }, []);
   return (
     <>
       <Head>
