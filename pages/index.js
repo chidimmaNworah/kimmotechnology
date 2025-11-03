@@ -38,31 +38,8 @@ export default function Homescreen({
   expertiseData,
   projectsData,
 }) {
-  // const [aboutsData, setAboutsData] = useState([]);
-  // const [expertiseData, setExpertiseData] = useState([]);
-  // const [projectsData, setProjectsData] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("projects", projectsData);
-  // useEffect(() => {
-  //   async function loadData() {
-  //     try {
-  //       const [abouts, expertise, projects] = await Promise.all([
-  //         fetchAbouts(),
-  //         fetchExpertise(),
-  //         fetchProjects(),
-  //       ]);
-  //       setAboutsData(abouts || []);
-  //       setExpertiseData(expertise || []);
-  //       setProjectsData(projects || []);
-  //     } catch (error) {
-  //       console.error("Failed to load homepage data:", error);
-  //     } finally {
-  //       setLoading(false);
-  //     }
-  //   }
 
-  //   loadData();
-  // }, []);
   return (
     <>
       <Head>

@@ -45,12 +45,17 @@ export default function Navbar() {
         </a>
       </div>
       <ul className={styles.app__navbar_links}>
-        {["home", "work", "skills", "contact"].map((item) => (
+        {["home", "projects", "skills", "contact"].map((item) => (
           <li className="app__flex p-text text-white" key={`link-${item}`}>
             <div />
-            <a href={`/#${item}`}>{item}</a>
+            {item === "projects" ? (
+              <a href="/portfolio/allprojects">Projects</a>
+            ) : (
+              <a href={`/#${item}`}>{item}</a>
+            )}
           </li>
         ))}
+
         <li className="app__flex p-text text-white">
           <div />
           <a href="/careers" target="_blank" rel="noreferrer">
@@ -132,13 +137,25 @@ export default function Navbar() {
             > */}
             <HiX onClick={() => setToggle(false)} />
             <ul>
-              {["home", "work", "skills", "about", "contact"].map((item) => (
-                <li key={item}>
-                  <a href={`#${item}`} onClick={() => setToggle(false)}>
-                    {item}
-                  </a>
-                </li>
-              ))}
+              {["home", "projects", "skills", "about", "contact"].map(
+                (item) => (
+                  <li key={item}>
+                    {item === "projects" ? (
+                      <a
+                        href="/portfolio/allprojects"
+                        onClick={() => setToggle(false)}
+                      >
+                        Projects
+                      </a>
+                    ) : (
+                      <a href={`#${item}`} onClick={() => setToggle(false)}>
+                        {item}
+                      </a>
+                    )}
+                  </li>
+                )
+              )}
+
               <li>
                 <a
                   href="https://blog.kimmotech.net"

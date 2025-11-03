@@ -1,5 +1,5 @@
 import React from "react";
-import { BsTwitter, BsInstagram, BsLinkedin } from "react-icons/bs";
+import { BsTwitter, BsInstagram, BsLinkedin, BsGithub } from "react-icons/bs";
 import { FaFacebookF } from "react-icons/fa";
 import { TbBrandFiverr } from "react-icons/tb";
 
@@ -17,11 +17,11 @@ const SocialMedia = () => {
       </div>
       <div>
         <a
-          href="https://twitter.com/kimmotech"
+          href="https://github.com/chidimmaNworah/"
           target="_blank"
           rel="noreferrer"
         >
-          <BsTwitter />
+          <BsGithub />
         </a>
       </div>
       <div>
@@ -33,7 +33,7 @@ const SocialMedia = () => {
           <BsLinkedin />
         </a>
       </div>
-      <div>
+      {/* <div>
         <a
           href="https://www.facebook.com/profile.php?id=100084215682240"
           target="_blank"
@@ -50,7 +50,7 @@ const SocialMedia = () => {
         >
           <BsInstagram />
         </a>
-      </div>
+      </div> */}
     </div>
   );
 };
