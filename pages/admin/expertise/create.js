@@ -9,6 +9,7 @@ export default function Expertise() {
   const [description, setDescription] = useState("");
   const [images, setImages] = useState([]);
   const [responseMessage, setResponseMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
   const router = useRouter();
 
   const handleImageChange = (e) => {
@@ -25,6 +26,7 @@ export default function Expertise() {
     }
 
     try {
+      setSubmitting(true);
       const formData = new FormData();
       formData.append("name", title);
       formData.append("description", description);
@@ -45,6 +47,8 @@ export default function Expertise() {
       router.push("/admin");
     } catch (error) {
       setResponseMessage("Error submitting data.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -89,7 +93,9 @@ export default function Expertise() {
             )}
           </div>
 
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Submitting..." : "Submit"}
+          </button>
         </form>
 
         {responseMessage && <p>{responseMessage}</p>}

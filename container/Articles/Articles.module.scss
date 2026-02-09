@@ -14,15 +14,11 @@
   align-content: flex-start;
   flex-wrap: wrap;
 
-  // @media screen and (min-width: 1024px) {
-  //   grid-template-columns: 1fr 1fr 1fr 1fr;
-  // }
-
-  @media screen and (max-width: 1124px) {
+  @media screen and (max-width: 900px) {
     grid-template-columns: 1fr 1fr;
   }
 
-  @media screen and (max-width: 800px) {
+  @media screen and (max-width: 600px) {
     grid-template-columns: 1fr;
   }
 }
@@ -62,14 +58,16 @@
       // width: 190px;
     }
   }
+}
 
-  @media screen and (max-width: 600px) {
-    // width: 100%;
-    // margin: 2rem 4rem;
-
+/* Make article images nearly square on small screens so they fill space better */
+@media screen and (max-width: 900px) {
+  .app__profile_item {
     img {
-      height: 200px;
-      // width: 190px;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      max-width: 320px;
     }
   }
 }

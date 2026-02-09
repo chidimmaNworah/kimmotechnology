@@ -12,10 +12,15 @@ export default function Projects() {
   const [category, setCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [responseMessage, setResponseMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const router = useRouter();
   const API_URL = process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL;
+  const CLOUDINARY_CLOUD_NAME = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+  const CLOUDINARY_UPLOAD_PRESET =
+    process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -33,6 +38,7 @@ export default function Projects() {
     const file = e.target.files[0];
     if (file) {
       setImage(file);
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
@@ -44,28 +50,41 @@ export default function Projects() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("title", title);
-    formData.append("description", description);
-    formData.append("github_link", githubLink);
-    formData.append("preview_link", previewLink);
-    formData.append("category_id", category);
-    formData.append("file", image);
-
     try {
-      const response = await axios.post(
-        `${API_URL}/project/projects/`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
+      setSubmitting(true);
+      // 1) Upload image to Cloudinary from the browser
+      const uploadData = new FormData();
+      uploadData.append("file", image);
+      uploadData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+
+      const uploadRes = await axios.post(
+        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+        uploadData
       );
+
+      const img_url = uploadRes.data.secure_url || uploadRes.data.url;
+
+      // Find the selected category name from its id
+      const selectedCategory = categories.find(
+        (cat) => String(cat.id) === String(category)
+      );
+      const categoryNames = selectedCategory ? [selectedCategory.name] : [];
+
+      // 2) Send JSON payload with Cloudinary URL to the backend
+      await axios.post(`${API_URL}/project/projects/`, {
+        title,
+        description,
+        github_link: githubLink || null,
+        preview_link: previewLink || null,
+        img_url,
+        categories: categoryNames,
+      });
       setResponseMessage("Project data submitted successfully!");
       router.push("/admin");
     } catch (error) {
       setResponseMessage("Error submitting data.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -131,9 +150,21 @@ export default function Projects() {
           <div>
             <label>Upload Image</label>
             <input type="file" onChange={handleImageChange} required />
+            {imagePreview && (
+              <div style={{ marginTop: "1rem" }}>
+                <p className="text-sm mb-2">Image preview:</p>
+                <img
+                  src={imagePreview}
+                  alt="Selected project image preview"
+                  style={{ maxWidth: "200px", borderRadius: "0.5rem" }}
+                />
+              </div>
+            )}
           </div>
 
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Submitting..." : "Submit"}
+          </button>
         </form>
 
         {responseMessage && <p>{responseMessage}</p>}

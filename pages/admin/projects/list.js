@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import { IoIosEye } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
-import { Navbar } from "@/components";
 import useAuth from "@/middleware/auth";
 import Link from "next/link";
 
@@ -28,7 +27,7 @@ export default function ProjectsList() {
   }, [loading]);
 
   const handleEdit = (id) => {
-    router.push(`/admin/project/${id}`); // Navigate to the edit page dynamically
+    router.push(`/admin/projects/${id}`); // Navigate to the edit page dynamically
   };
 
   const handleDelete = async (id) => {
@@ -54,58 +53,72 @@ export default function ProjectsList() {
     }
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="py-6 text-center text-sm text-slate-500">
+        Loading projects...
+      </div>
+    );
 
   return (
-    <>
-      <div className="p-4">
-        <h2 className="text-center text-xl mb-6 underline">PROJECTS</h2>
-        <div>
-          <ul className="mb-4 text-center">
-            <li>
-              <Link href="/admin/projects/create">
-                <button>Create New Project</button>
-              </Link>
-            </li>
-          </ul>
-        </div>
-        <div className="flex flex-wrap justify-around">
-          {projects.map((project, i) => (
-            <div className="w-40 mb-4">
-              <div key={i} className="truncate">
-                <div className="w-40 w-full">
-                  <img
-                    src={project.img_url}
-                    alt=""
-                    className="w-full mb-2 rounded"
-                  />
-                </div>
-                <p className="text-sm mb-4">
-                  Title
-                  <br />
-                  {project.title}
-                </p>
-                <span className="">
-                  Description:
-                  <br />
-                  {project.description}
-                </span>
-                <div className="flex justify-start gap-10 mt-4">
-                  <IoIosEye className="bg-gray-200 text-black text-2xl h-[2rem] w-full rounded-full p-1" />
-                  <MdDelete
-                    className="bg-gray-200 text-red-700 text-2xl h-[2rem] w-full rounded-full p-1"
-                    onClick={() => handleDelete(project.id)}
-                  />
-                  <CiEdit
-                    className="bg-gray-200 text-green-800 text-2xl h-[2rem] w-full rounded-full p-1"
-                    onClick={() => handleEdit(project.id)}
-                  />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between mb-2">
+        <h3 className="text-sm font-semibold text-slate-900">Projects</h3>
+        <Link href="/admin/projects/create" legacyBehavior>
+          <a className="inline-flex items-center rounded-full bg-slate-900 text-slate-50 text-xs font-medium px-3 py-1.5 hover:bg-black transition">
+            + New project
+          </a>
+        </Link>
       </div>
-    </>
+
+      <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        {projects.map((project) => (
+          <div
+            key={project.id}
+            className="bg-white rounded-xl border border-slate-200 shadow-sm p-3 flex flex-col"
+          >
+            <div className="w-full h-32 mb-3 overflow-hidden rounded-lg">
+              <img
+                src={project.img_url}
+                alt={project.title}
+                className="w-full h-full object-cover"
+                loading="lazy"
+              />
+            </div>
+            <p className="text-xs font-semibold text-slate-900 mb-1 line-clamp-2">
+              {project.title}
+            </p>
+            <p className="text-[11px] text-slate-600 line-clamp-3 mb-2 flex-1">
+              {project.description}
+            </p>
+            <div className="flex items-center gap-2 mt-auto text-xl">
+              <button
+                type="button"
+                className="flex-1 flex items-center justify-center bg-slate-100 text-slate-700 rounded-full h-8 hover:bg-slate-200 transition"
+                title="Preview"
+              >
+                <IoIosEye />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleDelete(project.id)}
+                className="flex-1 flex items-center justify-center bg-red-50 text-red-700 rounded-full h-8 hover:bg-red-100 transition"
+                title="Delete"
+              >
+                <MdDelete />
+              </button>
+              <button
+                type="button"
+                onClick={() => handleEdit(project.id)}
+                className="flex-1 flex items-center justify-center bg-emerald-50 text-emerald-700 rounded-full h-8 hover:bg-emerald-100 transition"
+                title="Edit"
+              >
+                <CiEdit />
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }

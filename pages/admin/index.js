@@ -1,30 +1,51 @@
-import axios from "axios";
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
-import { IoIosEye } from "react-icons/io";
-import { MdDelete } from "react-icons/md";
-import { CiEdit } from "react-icons/ci";
-import { JobNavbar, Navbar } from "@/components";
+import React from "react";
+import { Navbar } from "@/components";
 import useAuth from "@/middleware/auth";
 import AboutsList from "./about/list";
 import ProjectsList from "./projects/list";
+import AdminNavbar from "@/components/AdminNavbar/AdminNavbar";
 
 export default function Dashboard() {
   const loading = useAuth();
-  const router = useRouter();
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center text-sm text-slate-600">
+        Loading admin dashboard...
+      </div>
+    );
 
   return (
     <>
       <Navbar />
-      {/* <JobNavbar /> */}
-      <h1 className="text-[#39459C] mb-4 bg-gray-100 opacity-1 text-center py-6 font-bold text-2xl">
-        WELCOME TO THE ADMIN DASHBOARD
-      </h1>
+      <AdminNavbar />
+      <main className="min-h-screen bg-slate-50 py-8 px-4">
+        <section className="max-w-6xl mx-auto mb-8">
+          <h1 className="text-2xl md:text-3xl font-semibold text-slate-900 mb-2">
+            Admin dashboard
+          </h1>
+          <p className="text-sm text-slate-600 max-w-2xl">
+            Manage content, projects, expertise, and jobs from a single, clean
+            workspace.
+          </p>
+        </section>
 
-      <AboutsList />
-      <ProjectsList />
+        <section className="max-w-6xl mx-auto grid gap-8 md:grid-cols-2">
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+            <h2 className="text-sm font-semibold text-slate-900 mb-3">
+              About highlights
+            </h2>
+            <AboutsList />
+          </div>
+
+          <div className="bg-white rounded-2xl shadow-sm border border-slate-200 p-4">
+            <h2 className="text-sm font-semibold text-slate-900 mb-3">
+              Recent projects
+            </h2>
+            <ProjectsList />
+          </div>
+        </section>
+      </main>
     </>
   );
 }

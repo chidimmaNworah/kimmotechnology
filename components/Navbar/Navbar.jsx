@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Navbar.module.scss";
 // import Logo from '../../assets/Kimmotech_Logo.png'
 import { images } from "@/constants";
+import { useRouter } from "next/router";
 import {
   HiMenuAlt4,
   HiX,
@@ -15,6 +16,32 @@ export default function Navbar() {
   const [visible, setVisible] = useState(false);
 
   const [isSticky, setIsSticky] = useState(false);
+
+  const router = useRouter();
+
+  const getSectionId = (item) => {
+    if (item === "skills" || item === "about") {
+      return "expertises";
+    }
+
+    // default: use the item name as the section id
+    return item;
+  };
+
+  const isMainNavActive = (item) => {
+    if (item === "home") {
+      return router.pathname === "/" || router.asPath === "/#home";
+    }
+
+    if (item === "projects") {
+      return router.pathname.startsWith("/portfolio");
+    }
+
+    const sectionId = getSectionId(item);
+    return router.asPath.endsWith(`#${sectionId}`);
+  };
+
+  const isCareersActive = router.pathname.startsWith("/careers");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -46,17 +73,26 @@ export default function Navbar() {
       </div>
       <ul className={styles.app__navbar_links}>
         {["home", "projects", "skills", "contact"].map((item) => (
-          <li className="app__flex p-text text-white" key={`link-${item}`}>
+          <li
+            className={`app__flex p-text text-white ${
+              isMainNavActive(item) ? styles.active : ""
+            }`}
+            key={`link-${item}`}
+          >
             <div />
             {item === "projects" ? (
               <a href="/portfolio/allprojects">Projects</a>
             ) : (
-              <a href={`/#${item}`}>{item}</a>
+              <a href={`/#${getSectionId(item)}`}>{item}</a>
             )}
           </li>
         ))}
 
-        <li className="app__flex p-text text-white">
+        <li
+          className={`app__flex p-text text-white ${
+            isCareersActive ? styles.active : ""
+          }`}
+        >
           <div />
           <a href="/careers" target="_blank" rel="noreferrer">
             Careers
@@ -139,7 +175,14 @@ export default function Navbar() {
             <ul>
               {["home", "projects", "skills", "about", "contact"].map(
                 (item) => (
-                  <li key={item}>
+                  <li
+                    key={item}
+                    className={
+                      isMainNavActive(item) && item !== "about"
+                        ? styles.active
+                        : ""
+                    }
+                  >
                     {item === "projects" ? (
                       <a
                         href="/portfolio/allprojects"
@@ -148,7 +191,10 @@ export default function Navbar() {
                         Projects
                       </a>
                     ) : (
-                      <a href={`#${item}`} onClick={() => setToggle(false)}>
+                      <a
+                        href={`#${getSectionId(item)}`}
+                        onClick={() => setToggle(false)}
+                      >
                         {item}
                       </a>
                     )}
@@ -156,7 +202,7 @@ export default function Navbar() {
                 )
               )}
 
-              <li>
+              <li className={isCareersActive ? styles.active : ""}>
                 <a
                   href="https://blog.kimmotech.net"
                   rel="noreferrer"
@@ -165,7 +211,7 @@ export default function Navbar() {
                   Blog
                 </a>
               </li>
-              <li>
+              <li className={isCareersActive ? styles.active : ""}>
                 <a href="/careers" rel="noreferrer" target="_blank">
                   Careers
                 </a>

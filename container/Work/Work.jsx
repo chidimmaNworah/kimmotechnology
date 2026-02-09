@@ -51,7 +51,7 @@ const Work = ({ works }) => {
         </h2>
 
         <p className={styles.viewall}>
-          <a href="/portfolio/allprojects">View All</a>
+          <a href="/portfolio">View All</a>
         </p>
 
         {/* ✅ Dynamic filter categories */}

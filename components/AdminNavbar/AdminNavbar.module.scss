@@ -1,0 +1,52 @@
+.adminNav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background-color: #ffffff;
+  padding: 0.5rem 1.5rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.adminNav__list {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.adminNav__item {
+  white-space: nowrap;
+  font-size: 0.85rem;
+  border-radius: 9999px;
+  border: 1px solid #e5e7eb;
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease,
+    border-color 0.15s ease;
+
+  a {
+    color: #374151;
+    text-decoration: none;
+  }
+
+  &:hover {
+    background-color: #f3f4f6;
+  }
+}
+
+.adminNav__item_active {
+  background-color: #111827;
+  border-color: #111827;
+
+  a {
+    color: #f9fafb;
+  }
+}
+
+@media (max-width: 768px) {
+  .adminNav {
+    padding: 0.5rem 1rem;
+  }
+}

@@ -222,6 +222,16 @@
   }
 }
 
+.active {
+  a {
+    color: var(--secondary-color) !important;
+  }
+
+  div {
+    background: var(--secondary-color);
+  }
+}
+
 .pages_dropdown {
   color: var(--gray-color);
   font-size: 1rem !important;

@@ -8,6 +8,7 @@ export default function Abouts() {
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(null);
   const [responseMessage, setResponseMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -30,6 +31,7 @@ export default function Abouts() {
     formData.append("file", image);
 
     try {
+      setSubmitting(true);
       const response = await axios.post(
         `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/about/abouts/`,
         formData,
@@ -42,6 +44,8 @@ export default function Abouts() {
       setResponseMessage("About data submitted successfully!");
     } catch (error) {
       setResponseMessage("Error submitting data.");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -75,7 +79,9 @@ export default function Abouts() {
             <input type="file" onChange={handleImageChange} required />
           </div>
 
-          <button type="submit">Submit</button>
+          <button type="submit" disabled={submitting}>
+            {submitting ? "Submitting..." : "Submit"}
+          </button>
         </form>
 
         {responseMessage && <p>{responseMessage}</p>}
