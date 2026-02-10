@@ -19,14 +19,13 @@ export default function Navbar() {
 
   const router = useRouter();
 
-  const getSectionId = (item) => {
-    if (item === "skills" || item === "about") {
-      return "expertises";
-    }
+  // const getSectionId = (item) => {
+  //   if (item === "skills" || item === "about") {
+  //     return "expertises";
+  //   }
 
-    // default: use the item name as the section id
-    return item;
-  };
+  //   return item;
+  // };
 
   const isMainNavActive = (item) => {
     if (item === "home") {
@@ -72,7 +71,7 @@ export default function Navbar() {
         </a>
       </div>
       <ul className={styles.app__navbar_links}>
-        {["home", "projects", "skills", "contact"].map((item) => (
+        {["home", "projects", "contact"].map((item) => (
           <li
             className={`app__flex p-text text-white ${
               isMainNavActive(item) ? styles.active : ""
@@ -173,34 +172,32 @@ export default function Navbar() {
             > */}
             <HiX onClick={() => setToggle(false)} />
             <ul>
-              {["home", "projects", "skills", "about", "contact"].map(
-                (item) => (
-                  <li
-                    key={item}
-                    className={
-                      isMainNavActive(item) && item !== "about"
-                        ? styles.active
-                        : ""
-                    }
-                  >
-                    {item === "projects" ? (
-                      <a
-                        href="/portfolio/allprojects"
-                        onClick={() => setToggle(false)}
-                      >
-                        Projects
-                      </a>
-                    ) : (
-                      <a
-                        href={`#${getSectionId(item)}`}
-                        onClick={() => setToggle(false)}
-                      >
-                        {item}
-                      </a>
-                    )}
-                  </li>
-                )
-              )}
+              {["home", "projects", "about", "contact"].map((item) => (
+                <li
+                  key={item}
+                  className={
+                    isMainNavActive(item) && item !== "about"
+                      ? styles.active
+                      : ""
+                  }
+                >
+                  {item === "projects" ? (
+                    <a
+                      href="/portfolio/allprojects"
+                      onClick={() => setToggle(false)}
+                    >
+                      Projects
+                    </a>
+                  ) : (
+                    <a
+                      href={`#${getSectionId(item)}`}
+                      onClick={() => setToggle(false)}
+                    >
+                      {item}
+                    </a>
+                  )}
+                </li>
+              ))}
 
               <li className={isCareersActive ? styles.active : ""}>
                 <a
