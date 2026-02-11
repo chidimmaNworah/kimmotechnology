@@ -1,40 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/pages/api-reference/create-next-app).
+# Kimmotech Frontend (Next.js)
 
-## Getting Started
+## Overview
 
-First, run the development server:
+This is the public-facing Kimmotech web app built with Next.js (pages router). It renders the marketing site, careers experience, and admin routes, and pulls content from the FastAPI backend.
+
+## Tech Stack
+
+- Next.js (pages router)
+- React 19
+- Sass + Tailwind
+- Axios for API calls
+- Google Tag Manager + Google Analytics
+
+## Project Structure
+
+- pages/: routes and API handlers
+- components/: shared UI components
+- container/: page sections
+- styles/: global and module styles
+- utils/api.js: backend API helpers
+- public/: static assets
+
+## Environment Variables
+
+Create a .env.local in this folder with:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_PYTHON_BACKEND_URL=http://127.0.0.1:8000
+NEXT_PUBLIC_GTM_ID=GTM-XXXXXXX
+NEXT_PUBLIC_GA_ID=G-XXXXXXXXXX
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+These values are referenced in [next.config.mjs](next.config.mjs) and used in [utils/api.js](utils/api.js) and [pages/_app.js](pages/_app.js).
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Local Development
 
-[API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+1. Install dependencies:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/pages/building-your-application/routing/api-routes) instead of React pages.
+	```bash
+	npm install
+	```
 
-This project uses [`next/font`](https://nextjs.org/docs/pages/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+2. Run the dev server:
 
-## Learn More
+	```bash
+	npm run dev
+	```
 
-To learn more about Next.js, take a look at the following resources:
+Open http://localhost:3000.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn-pages-router) - an interactive Next.js tutorial.
+## Data Flow
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+The homepage uses server-side rendering to fetch content from the backend in [pages/index.js](pages/index.js). API helpers are defined in [utils/api.js](utils/api.js) and rely on `NEXT_PUBLIC_PYTHON_BACKEND_URL`.
 
-## Deploy on Vercel
+## Scripts
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `npm run dev`: start the dev server
+- `npm run build`: create production build
+- `npm run start`: run production build
+- `npm run lint`: lint
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/pages/building-your-application/deploying) for more details.
+## Deployment
+
+The app is deployable on Vercel. Set the same environment variables in the Vercel dashboard. Cloudinary image domains are allowed via [next.config.mjs](next.config.mjs).
