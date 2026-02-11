@@ -19,13 +19,13 @@ export default function Navbar() {
 
   const router = useRouter();
 
-  // const getSectionId = (item) => {
-  //   if (item === "skills" || item === "about") {
-  //     return "expertises";
-  //   }
+  const getSectionId = (item) => {
+    if (item === "skills" || item === "about") {
+      return "expertises";
+    }
 
-  //   return item;
-  // };
+    return item;
+  };
 
   const isMainNavActive = (item) => {
     if (item === "home") {
