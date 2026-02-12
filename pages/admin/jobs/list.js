@@ -28,10 +28,6 @@ export default function JobsList({ embedded = false }) {
     if (!loading) fetchJobs();
   }, [loading]);
 
-  const handleEdit = (id) => {
-    router.push(`/admin/careers/${id}`); // Navigate to the edit page dynamically
-  };
-
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this?"
@@ -99,14 +95,13 @@ export default function JobsList({ embedded = false }) {
               >
                 <MdDelete />
               </button>
-              <button
-                type="button"
-                onClick={() => handleEdit(job.id)}
+              <Link
+                href={`/admin/jobs/${job.id}`}
                 className="flex-1 flex items-center justify-center bg-emerald-950/30 text-emerald-400 rounded-full h-8 hover:bg-emerald-950/50 transition"
                 title="Edit"
               >
                 <CiEdit />
-              </button>
+              </Link>
             </div>
           </div>
         ))}

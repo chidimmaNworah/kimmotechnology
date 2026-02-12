@@ -27,10 +27,6 @@ export default function AboutsList({ embedded = false }) {
     if (!loading) fetchAbout();
   }, [loading]);
 
-  const handleEdit = (id) => {
-    router.push(`/admin/about/${id}`);
-  };
-
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this?"
@@ -99,14 +95,13 @@ export default function AboutsList({ embedded = false }) {
               >
                 <MdDelete />
               </button>
-              <button
-                type="button"
-                onClick={() => handleEdit(about.id)}
+              <Link
+                href={`/admin/about/${about.id}`}
                 className="flex-1 flex items-center justify-center bg-emerald-950/30 text-emerald-400 rounded-full h-8 hover:bg-emerald-950/50 transition"
                 title="Edit"
               >
                 <CiEdit />
-              </button>
+              </Link>
             </div>
           </div>
         ))}

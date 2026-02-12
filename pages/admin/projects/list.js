@@ -21,15 +21,11 @@ export default function ProjectsList({ embedded = false }) {
         const response = await axios.get(`${API_URL}/project/projects/`);
         setProjects(response.data);
       } catch (error) {
-        console.error("Error fetching abouts:", error);
+        console.error("Error fetching projects:", error);
       }
     };
     if (!loading) fetchProjects();
   }, [loading]);
-
-  const handleEdit = (id) => {
-    router.push(`/admin/projects/${id}`); // Navigate to the edit page dynamically
-  };
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -48,9 +44,9 @@ export default function ProjectsList({ embedded = false }) {
           },
         }
       );
-      setProjects((prev) => prev.filter((about) => about.id !== id)); // Remove from UI
+      setProjects((prev) => prev.filter((project) => project.id !== id)); // Remove from UI
     } catch (error) {
-      console.error("Error deleting about:", error);
+      console.error("Error deleting project:", error);
     }
   };
 
@@ -106,14 +102,13 @@ export default function ProjectsList({ embedded = false }) {
               >
                 <MdDelete />
               </button>
-              <button
-                type="button"
-                onClick={() => handleEdit(project.id)}
+              <Link
+                href={`/admin/projects/${project.id}`}
                 className="flex-1 flex items-center justify-center bg-emerald-950/30 text-emerald-400 rounded-full h-8 hover:bg-emerald-950/50 transition"
                 title="Edit"
               >
                 <CiEdit />
-              </button>
+              </Link>
             </div>
           </div>
         ))}

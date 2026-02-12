@@ -26,10 +26,6 @@ export default function CategoriesList({ embedded = false }) {
     if (!loading) fetchCategories();
   }, [loading]);
 
-  const handleEdit = (id) => {
-    router.push(`/admin/categories/${id}`);
-  };
-
   // Optional: implement delete later when backend supports it
   const handleDelete = async (id) => {
     window.alert("Deleting categories is not implemented yet.");
@@ -69,14 +65,13 @@ export default function CategoriesList({ embedded = false }) {
               >
                 <MdDelete />
               </button>
-              <button
-                type="button"
-                onClick={() => handleEdit(category.id)}
+              <Link
+                href={`/admin/categories/${category.id}`}
                 className="flex-1 flex items-center justify-center bg-emerald-950/30 text-emerald-400 rounded-full h-8 hover:bg-emerald-950/50 transition"
                 title="Edit"
               >
                 <CiEdit />
-              </button>
+              </Link>
             </div>
           </div>
         ))}
