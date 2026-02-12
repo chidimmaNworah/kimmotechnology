@@ -40,43 +40,62 @@ export default function CareersFooter() {
       setLoading(false);
     }
   };
+
   return (
-    <div className="mt-10">
-      <div className="flex flex-col justify-center items-center mb-10 gap-4">
-        <h2 className="bold-text">SUBSCRIBE TO OUR NEWSLETTER</h2>
-        <div className="flex flex-row items-center justify-center rounded-lg shadow-lg border border-2 overflow-hidden">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Enter Your Email *"
-            className="w-full px-2 py-4 text-black outline-none border-none"
-          />
-          <button
-            onClick={handleSubscribe}
-            disabled={loading}
-            className="px-6 py-4 transition duration-300 bg-[#313bac] hover:bg-[#3541cc] disabled:opacity-50"
-            type="submit"
-          >
-            {loading ? "SUBSCRIBING..." : "SUBSCRIBE"}
-          </button>
+    <footer className="bg-surface border-t border-border-subtle">
+      <div className="max-w-4xl mx-auto py-12 px-6">
+        {/* Newsletter */}
+        <div className="flex flex-col items-center text-center mb-8">
+          <h2 className="font-display text-lg font-bold text-txt-primary mb-1">
+            Subscribe to our newsletter
+          </h2>
+          <p className="text-xs text-txt-muted mb-4">
+            Get the latest career opportunities delivered to your inbox.
+          </p>
+          <div className="flex w-full max-w-md rounded-xl overflow-hidden border border-border-subtle bg-card">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              className="flex-1 px-4 py-2.5 text-sm bg-transparent text-txt-primary placeholder:text-txt-muted outline-none"
+            />
+            <button
+              onClick={handleSubscribe}
+              disabled={loading}
+              className="px-5 py-2.5 bg-cyan-accent text-deep text-xs font-bold uppercase tracking-wide hover:bg-[#67e8f9] disabled:opacity-50 transition-all whitespace-nowrap"
+              type="submit"
+            >
+              {loading ? "..." : "Subscribe"}
+            </button>
+          </div>
+          {error ? (
+            <p className="text-red-400 text-xs mt-2">{error}</p>
+          ) : (
+            message && <p className="text-emerald-400 text-xs mt-2">{message}</p>
+          )}
         </div>
-        {error ? (
-          <p className="text-red-500 mt-2">{error}</p>
-        ) : (
-          <p className="text-green-500 mt-2">{message}</p>
-        )}
+
+        {/* Links */}
+        <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-txt-muted mb-4">
+          <Link href="/privacy-policy" className="hover:text-cyan-accent transition-colors">
+            Privacy Policy
+          </Link>
+          <Link href="/terms-of-use" className="hover:text-cyan-accent transition-colors">
+            Terms of Use
+          </Link>
+          <Link href="/cookies-policy" className="hover:text-cyan-accent transition-colors">
+            Cookies Policy
+          </Link>
+          <Link href="/newsletter/unsubscribe" className="hover:text-cyan-accent transition-colors">
+            Unsubscribe
+          </Link>
+        </div>
+
+        <p className="text-center text-[11px] text-txt-muted">
+          &copy; {new Date().getFullYear()} Kimmotech. All rights reserved.
+        </p>
       </div>
-      <div className="flex justify-center items-center text-xs gap-10">
-        <Link href="/privacy-policy">Privacy Policy</Link>
-        <Link href="/terms-of-use">Terms of Use</Link>
-        <Link href="/cookies-policy">Cookies Policy</Link>
-        <Link href="/newsletter/unsubscribe">Unsubcribe</Link>
-      </div>
-      <div className="copyright">
-        <p className="p-text">@2019 KIMMOTECH</p>
-        <p className="p-text mb-10">All rights reserved</p>
-      </div>
-    </div>
+    </footer>
   );
 }

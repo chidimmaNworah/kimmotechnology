@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
-import { Navbar } from "@/components";
 import styles from "../about/about.module.scss";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function CreateCategory() {
   const [name, setName] = useState("");
@@ -27,9 +29,11 @@ export default function CreateCategory() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className={styles.about}>
+        <Link href="/admin/categories/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+          <HiOutlineArrowLeft className="w-4 h-4" /> Back to Categories
+        </Link>
         <h1>Add Category</h1>
         <form onSubmit={handleSubmit}>
           <div>
@@ -49,6 +53,6 @@ export default function CreateCategory() {
 
         {responseMessage && <p>{responseMessage}</p>}
       </div>
-    </>
+    </AdminLayout>
   );
 }

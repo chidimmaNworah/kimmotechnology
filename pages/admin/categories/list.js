@@ -5,8 +5,9 @@ import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import useAuth from "@/middleware/auth";
 import Link from "next/link";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
 
-export default function CategoriesList() {
+export default function CategoriesList({ embedded = false }) {
   const [categories, setCategories] = useState([]);
   const loading = useAuth();
   const router = useRouter();
@@ -25,10 +26,6 @@ export default function CategoriesList() {
     if (!loading) fetchCategories();
   }, [loading]);
 
-  const handleEdit = (id) => {
-    router.push(`/admin/categories/${id}`);
-  };
-
   // Optional: implement delete later when backend supports it
   const handleDelete = async (id) => {
     window.alert("Deleting categories is not implemented yet.");
@@ -36,19 +33,17 @@ export default function CategoriesList() {
 
   if (loading)
     return (
-      <div className="py-6 text-center text-sm text-slate-500">
+      <div className="py-6 text-center text-sm text-[#64748B]">
         Loading categories...
       </div>
     );
 
-  return (
-    <div className="p-4 space-y-4">
+  const content = (
+    <div className={embedded ? "space-y-4 w-full overflow-hidden" : "space-y-4 p-4 sm:p-6 max-w-6xl mx-auto w-full overflow-hidden"}>
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-semibold text-slate-900">Categories</h2>
-        <Link href="/admin/categories/create" legacyBehavior>
-          <a className="inline-flex items-center rounded-full bg-slate-900 text-slate-50 text-xs font-medium px-3 py-1.5 hover:bg-black transition">
-            + New category
-          </a>
+        <h2 className="text-sm font-semibold text-[#F1F5F9] font-['Syne']">Categories</h2>
+        <Link href="/admin/categories/create" className="inline-flex items-center rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-medium px-3 py-1.5 hover:bg-[#22D3EE]/25 transition">
+          + New Category
         </Link>
       </div>
 
@@ -56,32 +51,34 @@ export default function CategoriesList() {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="bg-white rounded-xl border border-slate-200 shadow-sm p-3 flex flex-col"
+            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors min-w-0 overflow-hidden"
           >
-            <p className="text-xs font-semibold text-slate-900 mb-1 line-clamp-2">
+            <p className="text-xs font-semibold text-[#F1F5F9] mb-1 line-clamp-2">
               {category.name}
             </p>
             <div className="flex items-center gap-2 mt-3 text-xl">
               <button
                 type="button"
                 onClick={() => handleDelete(category.id)}
-                className="flex-1 flex items-center justify-center bg-red-50 text-red-700 rounded-full h-8 hover:bg-red-100 transition"
+                className="flex-1 flex items-center justify-center bg-red-950/30 text-red-400 rounded-full h-8 hover:bg-red-950/50 transition"
                 title="Delete"
               >
                 <MdDelete />
               </button>
-              <button
-                type="button"
-                onClick={() => handleEdit(category.id)}
-                className="flex-1 flex items-center justify-center bg-emerald-50 text-emerald-700 rounded-full h-8 hover:bg-emerald-100 transition"
+              <Link
+                href={`/admin/categories/${category.id}`}
+                className="flex-1 flex items-center justify-center bg-emerald-950/30 text-emerald-400 rounded-full h-8 hover:bg-emerald-950/50 transition"
                 title="Edit"
               >
                 <CiEdit />
-              </button>
+              </Link>
             </div>
           </div>
         ))}
       </div>
     </div>
   );
+
+  if (embedded) return content;
+  return <AdminLayout>{content}</AdminLayout>;
 }

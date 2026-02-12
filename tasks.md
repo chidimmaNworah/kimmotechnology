@@ -1,0 +1,2 @@
+- simplify admin navigation
+-- for one move all "add x" menu items into the body of the corresponding "x" page

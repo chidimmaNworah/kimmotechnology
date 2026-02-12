@@ -9,7 +9,7 @@ import Head from "next/head";
 import YouMayLike from "@/components/youMayLike";
 import RecruiterJobs from "@/components/RecruiterJobs";
 
-const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
+const ScholarshipDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,10 +29,10 @@ const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
         .get(
           `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/users/comments/${id}`
         )
-        .then((response) => setComments(response.data || [])) // ✅ Ensure it's always an array
+        .then((response) => setComments(response.data || []))
         .catch((error) => {
           console.error("Error fetching comments:", error);
-          setComments([]); // ✅ Fallback to empty array on error
+          setComments([]);
         });
     }
   }, [id]);
@@ -56,7 +56,6 @@ const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
       setIsFormSubmitted(true);
       setFormData({ name: "", email: "", content: "" });
 
-      // Refresh comments after submission
       const updatedComments = await axios.get(
         `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/users/comments/${id}`
       );
@@ -68,12 +67,12 @@ const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
     setLoading(false);
   };
 
-  // if (router.isFallback) {
-  //   return <p>Loading...</p>;
-  // }
-
   if (!job) {
-    return <p>Grant not found.</p>;
+    return (
+      <div className="min-h-screen bg-[#060B18] flex items-center justify-center">
+        <p className="text-[#94A3B8] text-lg">Scholarship not found.</p>
+      </div>
+    );
   }
 
   return (
@@ -107,72 +106,73 @@ const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
       </Head>
 
       <JobNavbar />
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="hidden md:block md:w-1/4 w-full p-4 md:border-r border-[#cccccc40]">
-          <h2 className="text-lg font-semibold">Categories</h2>
-          <ul className="mt-2 text-gray-600">
+      <div className="bg-[#060B18] min-h-screen flex flex-col md:flex-row gap-6">
+        {/* Desktop Sidebar */}
+        <div className="hidden md:block md:w-1/4 w-full p-6 md:border-r border-[#1E293B]/60">
+          <h2 className="text-lg font-semibold text-[#F1F5F9] font-['Syne'] mb-3">Categories</h2>
+          <ul className="mt-2">
             {categories?.length > 0 ? (
               categories.map((category, index) => (
-                <li key={index} className="py-1 border-b last:border-none">
+                <li key={index} className="py-2 border-b border-[#1E293B]/40 last:border-none text-[#94A3B8] hover:text-[#22D3EE] transition-colors cursor-pointer">
                   {category.name || "Uncategorized"}
                 </li>
               ))
             ) : (
-              <p>No categories available</p>
+              <p className="text-[#64748B]">No categories available</p>
             )}
           </ul>
-          {/* <hr className="border-t border-[#8888C860] my-4" /> */}
           <RecruiterJobs />
           <YouMayLike heading="You May Like" careers={jobs} />
         </div>
 
-        <div className="container mx-auto p-4 md:w-3/4 w-full container mx-auto p-4">
-          <h1 className="text-2xl font-bold mb-2">{job.title}</h1>
-          <p className="text-gray-500 mb-8">
+        {/* Main Content */}
+        <div className="flex-1 p-6 md:p-8">
+          <h1 className="text-2xl md:text-3xl font-bold mb-3 text-[#F1F5F9] font-['Syne']">{job.title}</h1>
+          <p className="text-[#64748B] mb-8 text-sm">
             Posted on {new Date(job.created_at).toDateString()} -
-            kimmotech.net/careers/jobs --- ({comments.length}{" "}
+            kimmotech.net/careers/scholarships --- ({comments.length}{" "}
             {comments.length === 1 ? "comment" : "comments"})
           </p>
-          <p className="text-gray-600">{job.excerpt}</p>
+          <p className="text-[#94A3B8]">{job.excerpt}</p>
           <div className="mt-4">
-            <p>
-              <strong>Industry:</strong> {job.industry || "N/A"}
+            <p className="text-[#CBD5E1]">
+              <strong className="text-[#F1F5F9]">Industry:</strong> {job.industry || "N/A"}
             </p>
-            {/* <p>
-              <strong>Field:</strong> {job.field || "N/A"}
-            </p> */}
           </div>
-          <div className="mt-6">
-            <h2 className="text-xl font-semibold">Description</h2>
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold text-[#F1F5F9] font-['Syne'] mb-3">Description</h2>
             <div
-              className="mt-2 text-gray-700"
+              className={`mt-2 text-[#CBD5E1] ${styles.reactquillDetails}`}
               dangerouslySetInnerHTML={{ __html: job.description }}
             />
           </div>
-          <h3 className="mt-6 bold-text uppercase tracking-wider border-b border-[#3541CC]">
+
+          {/* Comments */}
+          <h3 className="mt-10 font-bold uppercase tracking-wider border-b border-[#22D3EE]/30 pb-2 text-[#F1F5F9] font-['Syne']">
             Comments:
           </h3>
           {comments.length > 0 ? (
-            <ul>
+            <ul className="mt-4 space-y-4">
               {comments.map((comment) => (
-                <li key={comment.id} className=" py-2">
-                  <p className="font-bold text-[#3541CC]">{comment.name}</p>
-                  <p className="ml-4">{comment.content}</p>
-                  <span className="text-sm text-gray-500 ml-4">
+                <li key={comment.id} className="py-3 border-b border-[#1E293B]/40">
+                  <p className="font-bold text-[#22D3EE]">{comment.name}</p>
+                  <p className="ml-4 text-[#CBD5E1] mt-1">{comment.content}</p>
+                  <span className="text-sm text-[#64748B] ml-4">
                     {new Date(comment.created_at).toLocaleString()}
                   </span>
                 </li>
               ))}
             </ul>
           ) : (
-            <p>No comments yet. Be the first to comment!</p>
+            <p className="text-[#64748B] mt-4">No comments yet. Be the first to comment!</p>
           )}
-          <h3 className="bold-text mt-4">Share this post:</h3>
+
+          <h3 className="font-bold mt-8 text-[#F1F5F9]">Share this post:</h3>
           <Share post={job} />
 
           {!isFormSubmitted ? (
             <div className={`${styles.form}`}>
-              <h3 className="head-text mt-14 pt-8 border-t border-[#cccccc40] ">
+              <h3 className="head-text mt-14 pt-8 border-t border-[#1E293B]/60 text-[#F1F5F9]">
                 Leave a comment
               </h3>
               <div className="app__flex gap-4">
@@ -207,26 +207,26 @@ const WorkshopDetail = ({ job, jobs, categories, relatedJobs = [] }) => {
               </button>
             </div>
           ) : (
-            <div>
-              <h3 className="head-text">Your Comment has been posted!</h3>
+            <div className="mt-8 p-4 rounded-lg border border-[#22D3EE]/30 bg-[#22D3EE]/5">
+              <h3 className="text-[#22D3EE] font-semibold">Your Comment has been posted!</h3>
             </div>
           )}
 
-          <div className="md:hidden sm:block w-full px-4 mt-12 pt-12 sm:border-t border-[#cccccc40]">
-            <h2 className="text-lg font-semibold">Categories</h2>
-            <ul className="mt-2 text-gray-600">
+          {/* Mobile Sidebar */}
+          <div className="md:hidden sm:block w-full mt-12 pt-12 border-t border-[#1E293B]/60">
+            <h2 className="text-lg font-semibold text-[#F1F5F9] font-['Syne'] mb-3">Categories</h2>
+            <ul className="mt-2">
               {categories?.length > 0 ? (
                 categories.map((category, index) => (
-                  <li key={index} className="py-1 border-b last:border-none">
+                  <li key={index} className="py-2 border-b border-[#1E293B]/40 last:border-none text-[#94A3B8]">
                     {category.name || "Uncategorized"}
                   </li>
                 ))
               ) : (
-                <p>No categories available</p>
+                <p className="text-[#64748B]">No categories available</p>
               )}
             </ul>
             <RecruiterJobs />
-            {/* <hr className="border-t border-[#8888C860] my-4" /> */}
             <YouMayLike heading="You May Like" careers={jobs} />
           </div>
         </div>
@@ -277,4 +277,4 @@ export async function getServerSideProps({ params }) {
   }
 }
 
-export default WorkshopDetail;
+export default ScholarshipDetail;

@@ -1,7 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import styles from "./about.module.scss";
-import { Navbar } from "@/components";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function Abouts() {
   const [title, setTitle] = useState("");
@@ -50,9 +52,11 @@ export default function Abouts() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className={styles.about}>
+        <Link href="/admin/about/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+          <HiOutlineArrowLeft className="w-4 h-4" /> Back to About
+        </Link>
         <h1>Add About Data</h1>
         <form onSubmit={handleSubmit}>
           <div>
@@ -86,6 +90,6 @@ export default function Abouts() {
 
         {responseMessage && <p>{responseMessage}</p>}
       </div>
-    </>
+    </AdminLayout>
   );
 }

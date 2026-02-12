@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./jobs.module.scss";
-import { Navbar } from "@/components";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 import "react-quill-new/dist/quill.snow.css";
 import dynamic from "next/dynamic";
 import { toast } from "react-toast";
@@ -131,9 +133,11 @@ export default function Jobs() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className={styles.about}>
+        <Link href="/admin/jobs/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+          <HiOutlineArrowLeft className="w-4 h-4" /> Back to Jobs
+        </Link>
         <h1>Add Job Data</h1>
         <form onSubmit={handleSubmit}>
           <div className="flex flex-col mb-4">
@@ -167,25 +171,11 @@ export default function Jobs() {
             }
             modules={quillModules}
             formats={quillFormats}
-            className="rounded mb-4"
+            className="rounded-lg mb-4"
           />
 
           <div className="flex flex-col mb-4">
             <label>Category</label>
-            {/* <select
-              name="category_id"
-              value={jobs.category_id}
-              onChange={handleChange}
-              className="text-black rounded-lg py-2"
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select> */}
             <input
               type="text"
               name="category_id"
@@ -246,6 +236,6 @@ export default function Jobs() {
 
         {responseMessage && <p>{responseMessage}</p>}
       </div>
-    </>
+    </AdminLayout>
   );
 }

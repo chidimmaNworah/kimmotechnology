@@ -25,14 +25,11 @@ const JobsHome = ({ categories, jobs, relatedJobs }) => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  // const totalPages = Math.ceil(filteredCareers.length / ITEMS_PER_PAGE);
-
   const totalPages = Math.max(
     1,
     Math.ceil(filteredCareers.length / ITEMS_PER_PAGE)
   );
 
-  // Get paginated data
   const paginatedData = filteredCareers
     .reverse()
     .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
@@ -73,66 +70,69 @@ const JobsHome = ({ categories, jobs, relatedJobs }) => {
           </p>
         </motion.div>
       </div>
-      <div className={`${styles.jobshome} flex flex-col md:flex-row gap-6`}>
-        <div className="hidden md:block md:w-1/4 w-full p-4 md:border-r border-[#cccccc40]">
+      <div className={`bg-[#060B18] flex flex-col md:flex-row gap-6 min-h-screen`}>
+        {/* Desktop Sidebar */}
+        <div className="hidden md:block md:w-1/4 w-full p-6 md:border-r border-[#1E293B]/60">
           <CategoriesList
             categories={categories}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
           />
           <RecruiterJobs />
-          {/* <hr className="border-t border-[#8888C860] my-4" /> */}
           <YouMayLike heading="You May Like" careers={jobs} />
         </div>
-        <div className="container p-4">
-          <h1 className="text-2xl font-bold">
+        {/* Main Content */}
+        <div className="flex-1 p-6">
+          <h1 className="text-2xl font-bold text-[#F1F5F9] font-['Syne']">
             {selectedCategory
               ? `Category: ${selectedCategory.name}`
               : "Latest Jobs"}
           </h1>
           {paginatedData?.length === 0 ? (
-            <p className="text-gray-500">No jobs available.</p>
+            <p className="text-[#64748B] mt-4">No jobs available.</p>
           ) : (
-            <ul className="mt-4 space-y-6">
+            <ul className="mt-6 space-y-6">
               {paginatedData
                 ?.slice(0, 30)
                 .reverse()
                 .map((job) => (
-                  <li key={job.id} className="border-b pb-4">
-                    <h2 className="text-xl font-semibold">{job.title}</h2>
-                    <p className="text-gray-500">
+                  <li key={job.id} className="border-b border-[#1E293B]/60 pb-5 group">
+                    <h2 className="text-xl font-semibold text-[#F1F5F9] group-hover:text-[#22D3EE] transition-colors">{job.title}</h2>
+                    <p className="text-[#64748B] text-sm mt-1">
                       Posted on {new Date(job.created_at).toDateString()} -
                       kimmotech.net/careers/jobs --- ({job.commentCount}{" "}
                       comments)
                     </p>
-                    <p className="mt-2 text-gray-700">{job.excerpt}</p>
+                    <p className="mt-2 text-[#94A3B8]">{job.excerpt}</p>
                     <Link
                       href={`/careers/jobs/job/${job.id}`}
-                      className="mt-2 inline-block text-blue-600 hover:underline"
+                      className="mt-3 inline-flex items-center gap-1 text-[#22D3EE] hover:text-[#67E8F9] font-medium transition-colors"
                     >
                       Apply Now
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
                     </Link>
                   </li>
                 ))}
             </ul>
           )}
+          {/* Pagination */}
           <div className="flex gap-3 mt-10 items-center justify-center">
             <button
               className={`${
-                currentPage === 1 ? "bg-gray-400/80" : "bg-[#5A62BD]"
-              } px-3 py-1 rounded w-30 h-10`}
+                currentPage === 1 ? "bg-[#0F172A] text-[#475569] cursor-not-allowed" : "bg-[#22D3EE] text-[#060B18] hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+              } px-4 py-2 rounded-lg font-medium transition-all`}
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             >
               Previous
             </button>
-            <span>
+            <span className="text-[#94A3B8]">
               Page {currentPage} of {totalPages}
             </span>
             <button
               className={`${
-                currentPage === totalPages ? "bg-gray-400/80" : "bg-[#5A62BD]"
-              } px-3 py-1 rounded w-30 h-10`}
+                currentPage === totalPages ? "bg-[#0F172A] text-[#475569] cursor-not-allowed" : "bg-[#22D3EE] text-[#060B18] hover:shadow-[0_0_20px_rgba(34,211,238,0.3)]"
+              } px-4 py-2 rounded-lg font-medium transition-all`}
               disabled={currentPage === totalPages}
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
@@ -142,7 +142,8 @@ const JobsHome = ({ categories, jobs, relatedJobs }) => {
             </button>
           </div>
         </div>
-        <div className="md:hidden sm:block w-full px-4 mt-12 pt-12 sm:border-t border-[#cccccc40]">
+        {/* Mobile Sidebar */}
+        <div className="md:hidden sm:block w-full px-6 mt-12 pt-12 sm:border-t border-[#1E293B]/60">
           <CategoriesList
             categories={categories}
             selectedCategory={selectedCategory}

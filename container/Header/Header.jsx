@@ -1,71 +1,121 @@
 import React from "react";
 import { motion } from "framer-motion";
-import { AppWrap } from "../../wrapper";
 import styles from "./Header.module.scss";
-
-const scaleVariants = {
-  whileInView: {
-    scale: [0, 1],
-    opacity: [0, 1],
-    transition: {
-      duration: 1,
-      ease: "easeInOut",
-    },
-  },
-};
+import Link from "next/link";
 
 const Header = () => (
-  <div className={`${styles.app__header} app__flex`}>
-    <motion.div
-      whileInView={{ x: [-100, 0], opacity: [0, 1] }}
-      transition={{ duration: 0.5 }}
-      className={styles.app__header_info}
-    >
-      <div className={styles.app__header_badge}>
-        <div className={`${styles.badge_cmp} app__flex`}>
-          <span>👋</span>
-          <div style={{ marginLeft: 20 }}>
-            <p className="p-text text-black">Hello, Welcome to</p>
-            <h1 className="head-text text-black" style={{ fontSize: "1.7rem" }}>
-              Kimmotech
-            </h1>
-          </div>
+  <section className={styles.hero}>
+    {/* Ambient background effects */}
+    <div className={styles.ambientOrb1} />
+    <div className={styles.ambientOrb2} />
+    <div className={styles.gridOverlay} />
+
+    <div className={styles.content}>
+      <motion.div
+        initial={{ opacity: 0, y: 40 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        className={styles.textBlock}
+      >
+        <div className={styles.badge}>
+          <span className={styles.badgeDot} />
+          Available for new projects
         </div>
 
-        <div className={`${styles.tag_cmp} app__flex`}>
-          <p className="p-text text-black">Find all tech</p>
-          <p className="p-text text-black">solutions here</p>
+        <h1 className={styles.headline}>
+          We Build
+          <br />
+          <span className={styles.gradientWord}>Digital</span> Products
+          <br />
+          That Matter
+        </h1>
+
+        <p className={styles.subtext}>
+          Kimmotech is your trusted partner for web development, UI/UX design,
+          and digital transformation. We turn bold ideas into polished,
+          high-performance experiences.
+        </p>
+
+        <div className={styles.actions}>
+          <Link href="/#work" className={styles.primaryBtn}>
+            View Our Work
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+              className={styles.arrow}
+            >
+              <path
+                d="M3 8h10m0 0L9 4m4 4L9 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Link>
+          <Link href="/#contact" className={styles.secondaryBtn}>
+            Start a Project
+          </Link>
         </div>
-      </div>
-    </motion.div>
+      </motion.div>
 
-    <motion.div
-      whileInView={{ opacity: [0, 1] }}
-      transition={{ duration: 0.5, delayChildren: 0.5 }}
-      className={styles.app__header_img}
-    >
-      <img src="/assets/profile.png" alt="profile_bg" />
-      <motion.img
-        whileInView={{ scale: [0, 1] }}
-        transition={{ duration: 1, ease: "easeInOut" }}
-        src="/assets/circle.svg"
-        alt="profile_circle"
-        className={styles.overlay_circle}
-      />
-    </motion.div>
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 1, delay: 0.3, ease: [0.16, 1, 0.3, 1] }}
+        className={styles.visual}
+      >
+        <div className={styles.imageFrame}>
+          <img src="/assets/profile.png" alt="Kimmotech" />
+          <div className={styles.imageGlow} />
+        </div>
 
+        {/* Floating tech badges */}
+        <motion.div
+          animate={{ y: [0, -12, 0] }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          className={`${styles.floatingBadge} ${styles.badge1}`}
+        >
+          <img src="/assets/redux.png" alt="React" />
+        </motion.div>
+        <motion.div
+          animate={{ y: [0, 12, 0] }}
+          transition={{
+            duration: 5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 1,
+          }}
+          className={`${styles.floatingBadge} ${styles.badge2}`}
+        >
+          <img src="/assets/sass.png" alt="Sass" />
+        </motion.div>
+        <motion.div
+          animate={{ y: [0, -8, 0] }}
+          transition={{
+            duration: 3.5,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: 0.5,
+          }}
+          className={`${styles.floatingBadge} ${styles.badge3}`}
+        >
+          <img src="/assets/flutter.png" alt="Flutter" />
+        </motion.div>
+      </motion.div>
+    </div>
+
+    {/* Scroll indicator */}
     <motion.div
-      variants={scaleVariants}
-      whileInView={scaleVariants.whileInView}
-      className={styles.app__header_circles}
+      animate={{ y: [0, 8, 0] }}
+      transition={{ duration: 2, repeat: Infinity }}
+      className={styles.scrollIndicator}
     >
-      <div className={`${styles.circle_cmp} app__flex`}>
-        <img src="/assets/flutter.png" alt="flutter" />
-        <img src="/assets/redux.png" alt="redux" />
-        <img src="/assets/sass.png" alt="sass" />
-      </div>
+      <div className={styles.scrollLine} />
     </motion.div>
-  </div>
+  </section>
 );
 
-export default AppWrap(Header, "home");
+export default Header;
