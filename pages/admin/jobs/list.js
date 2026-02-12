@@ -65,10 +65,8 @@ export default function ProjectsList() {
     <div className="p-4 space-y-4">
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-sm font-semibold text-slate-900">Jobs</h2>
-        <Link href="/admin/jobs/create" legacyBehavior>
-          <a className="inline-flex items-center rounded-full bg-slate-900 text-slate-50 text-xs font-medium px-3 py-1.5 hover:bg-black transition">
-            + New job
-          </a>
+        <Link href="/admin/jobs/create" className="inline-flex items-center rounded-full bg-slate-900 text-slate-50 text-xs font-medium px-3 py-1.5 hover:bg-black transition">
+          + New job
         </Link>
       </div>
 

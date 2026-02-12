@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Work.module.scss";
+import Link from "next/link";
 
 const Work = ({ works }) => {
   const [filterWork, setFilterWork] = useState([]);
@@ -82,7 +83,7 @@ const Work = ({ works }) => {
                     loading="lazy"
                   />
                   <div className={styles.cardOverlay}>
-                    <a
+                    <Link
                       href={work.preview_link}
                       target="_blank"
                       rel="noreferrer"
@@ -90,7 +91,7 @@ const Work = ({ works }) => {
                     >
                       <AiFillEye />
                       <span>Preview</span>
-                    </a>
+                    </Link>
                   </div>
                 </div>
 
@@ -117,7 +118,7 @@ const Work = ({ works }) => {
 
         {/* View all link */}
         <div className={styles.viewAll}>
-          <a href="/portfolio/allprojects" className={styles.viewAllLink}>
+          <Link href="/portfolio/allprojects" className={styles.viewAllLink}>
             View All Projects
             <svg
               width="16"
@@ -133,7 +134,7 @@ const Work = ({ works }) => {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </Link>
         </div>
       </div>
 
@@ -158,14 +159,14 @@ const Work = ({ works }) => {
               <p>{selectedWork.description}</p>
               <div className={styles.modalActions}>
                 {selectedWork.preview_link && (
-                  <a
+                  <Link
                     href={selectedWork.preview_link}
                     target="_blank"
                     rel="noreferrer"
                     className={styles.modalPrimary}
                   >
                     Visit Project
-                  </a>
+                  </Link>
                 )}
                 <button
                   onClick={() => setSelectedWork(null)}

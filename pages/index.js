@@ -5,6 +5,7 @@ import Articles from "@/container/Articles/Articles";
 import { fetchAbouts, fetchExpertise, fetchProjects } from "@/utils/api";
 import Head from "next/head";
 import { motion } from "framer-motion";
+import Link from "next/link";
 
 export async function getServerSideProps() {
   try {
@@ -129,12 +130,12 @@ export default function Homescreen({
                     Basic analytics & contact forms
                   </li>
                 </ul>
-                <a
+                <Link
                   href="/#contact"
                   className="mt-auto w-full text-center rounded-xl bg-transparent border border-border-subtle text-txt-primary text-sm font-semibold py-2.5 hover:border-cyan-accent/30 hover:bg-card-hover transition-all"
                 >
                   Book a Discovery Call
-                </a>
+                </Link>
               </motion.div>
 
               {/* Product UI */}
@@ -174,12 +175,12 @@ export default function Homescreen({
                     Handover docs & performance best practices
                   </li>
                 </ul>
-                <a
+                <Link
                   href="/#contact"
                   className="mt-auto w-full text-center rounded-xl bg-cyan-accent text-deep text-sm font-bold py-2.5 hover:bg-[#67e8f9] hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all"
                 >
                   Talk About Your Product
-                </a>
+                </Link>
               </motion.div>
 
               {/* Retainer */}
@@ -216,12 +217,12 @@ export default function Homescreen({
                     Analytics reviews & UX tweaks
                   </li>
                 </ul>
-                <a
+                <Link
                   href="/#contact"
                   className="mt-auto w-full text-center rounded-xl bg-transparent border border-border-subtle text-txt-primary text-sm font-semibold py-2.5 hover:border-cyan-accent/30 hover:bg-card-hover transition-all"
                 >
                   Explore Retainers
-                </a>
+                </Link>
               </motion.div>
             </div>
           </div>

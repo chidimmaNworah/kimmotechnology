@@ -40,8 +40,8 @@ export default function AdminNavbar() {
               isLinkActive(link.href) ? styles.adminNav__item_active : ""
             }`}
           >
-            <Link href={link.href} legacyBehavior>
-              <a>{link.label}</a>
+            <Link href={link.href}>
+              {link.label}
             </Link>
           </li>
         ))}

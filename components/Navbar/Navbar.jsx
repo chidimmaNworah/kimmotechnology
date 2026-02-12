@@ -3,6 +3,7 @@ import styles from "./Navbar.module.scss";
 import { useRouter } from "next/router";
 import { HiMenuAlt4, HiX, HiOutlineChevronDown } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
+import Link from "next/link";
 
 export default function Navbar() {
   const [toggle, setToggle] = useState(false);
@@ -46,15 +47,15 @@ export default function Navbar() {
     <nav className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={styles.inner}>
         {/* Logo */}
-        <a href="/" className={styles.logo}>
+        <Link href="/" className={styles.logo}>
           <img src="/assets/Kimmotech_Logo.png" alt="Kimmotech" />
-        </a>
+        </Link>
 
         {/* Desktop Links */}
         <ul className={styles.links}>
           {navLinks.map((link) => (
             <li key={link.label}>
-              <a
+              <Link
                 href={link.href}
                 className={`${styles.link} ${
                   isActive(link.label.toLowerCase()) ? styles.activeLink : ""
@@ -64,7 +65,7 @@ export default function Navbar() {
                   : {})}
               >
                 {link.label}
-              </a>
+              </Link>
             </li>
           ))}
 
@@ -90,16 +91,16 @@ export default function Navbar() {
                   transition={{ duration: 0.2 }}
                   className={styles.dropdownMenu}
                 >
-                  <a href="/portfolio/allprojects">All Projects</a>
-                  <a
+                  <Link href="/portfolio/allprojects">All Projects</Link>
+                  <Link
                     href="https://blog.kimmotech.net"
                     target="_blank"
                     rel="noreferrer"
                   >
                     Blog
-                  </a>
-                  <a href="/privacy-policy">Privacy Policy</a>
-                  <a href="/terms-of-use">Terms of Use</a>
+                  </Link>
+                  <Link href="/privacy-policy">Privacy Policy</Link>
+                  <Link href="/terms-of-use">Terms of Use</Link>
                 </motion.div>
               )}
             </AnimatePresence>
@@ -107,9 +108,9 @@ export default function Navbar() {
         </ul>
 
         {/* CTA Button (desktop) */}
-        <a href="/#contact" className={styles.cta}>
+        <Link href="/#contact" className={styles.cta}>
           Get in Touch
-        </a>
+        </Link>
 
         {/* Mobile Toggle */}
         <button
@@ -132,7 +133,7 @@ export default function Navbar() {
             className={styles.mobileMenu}
           >
             {navLinks.map((link) => (
-              <a
+              <Link
                 key={link.label}
                 href={link.href}
                 className={`${styles.mobileLink} ${
@@ -146,15 +147,15 @@ export default function Navbar() {
                   : {})}
               >
                 {link.label}
-              </a>
+              </Link>
             ))}
-            <a
+            <Link
               href="/#contact"
               className={styles.mobileCta}
               onClick={() => setToggle(false)}
             >
               Get in Touch
-            </a>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>

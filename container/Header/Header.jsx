@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./Header.module.scss";
+import Link from "next/link";
 
 const Header = () => (
   <section className={styles.hero}>
@@ -36,7 +37,7 @@ const Header = () => (
         </p>
 
         <div className={styles.actions}>
-          <a href="/#work" className={styles.primaryBtn}>
+          <Link href="/#work" className={styles.primaryBtn}>
             View Our Work
             <svg
               width="16"
@@ -53,10 +54,10 @@ const Header = () => (
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
-          <a href="/#contact" className={styles.secondaryBtn}>
+          </Link>
+          <Link href="/#contact" className={styles.secondaryBtn}>
             Start a Project
-          </a>
+          </Link>
         </div>
       </motion.div>
 
