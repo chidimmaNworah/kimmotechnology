@@ -111,7 +111,7 @@ export default function Homescreen({
                   sites.
                 </p>
                 <p className="text-3xl font-bold text-txt-primary mb-5 font-display">
-                  $1.5k<span className="text-xs font-normal text-txt-muted ml-1">+</span>
+                  ₦300k<span className="text-xs font-normal text-txt-muted ml-1">+</span>
                   <span className="text-xs font-normal text-txt-muted ml-1">
                     / project
                   </span>
@@ -156,7 +156,7 @@ export default function Homescreen({
                   Ideal for SaaS, dashboards, and web applications.
                 </p>
                 <p className="text-3xl font-bold text-txt-primary mb-5 font-display">
-                  $4k<span className="text-xs font-normal text-txt-muted ml-1">+</span>
+                  ₦600k<span className="text-xs font-normal text-txt-muted ml-1">+</span>
                   <span className="text-xs font-normal text-txt-muted ml-1">
                     / project
                   </span>
@@ -198,7 +198,7 @@ export default function Homescreen({
                   Continuous improvements, new features, and experiments.
                 </p>
                 <p className="text-3xl font-bold text-txt-primary mb-5 font-display">
-                  $1.5k
+                  ₦200k
                   <span className="text-xs font-normal text-txt-muted ml-1">
                     / month
                   </span>
