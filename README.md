@@ -23,7 +23,7 @@ This is the public-facing Kimmotech web app built with Next.js (pages router). I
 
 ## Environment Variables
 
-Create a .env.local in this folder with:
+Create a `.env.local` in this folder with:
 
 ```bash
 NEXT_PUBLIC_PYTHON_BACKEND_URL=http://127.0.0.1:8000
