@@ -37,15 +37,15 @@ These values are referenced in [next.config.mjs](next.config.mjs) and used in [u
 
 1. Install dependencies:
 
-	```bash
-	npm install
-	```
+    ```bash
+    npm install
+    ```
 
 2. Run the dev server:
 
-	```bash
-	npm run dev
-	```
+    ```bash
+    npm run dev
+    ```
 
 Open http://localhost:3000.
 
