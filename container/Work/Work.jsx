@@ -1,18 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { AiFillEye } from "react-icons/ai";
-import { motion } from "framer-motion";
-import { AppWrap, MotionWrap } from "../../wrapper";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./Work.module.scss";
 
 const Work = ({ works }) => {
   const [filterWork, setFilterWork] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [animateCard, setAnimateCard] = useState({ y: 0, opacity: 1 });
-  const [hoveredIndex, setHoveredIndex] = useState(null);
   const [categories, setCategories] = useState([]);
-  const [selectedWork, setSelectedWork] = useState(null); // For modal popup
+  const [selectedWork, setSelectedWork] = useState(null);
 
-  // Extract unique categories dynamically from DB data
   useEffect(() => {
     if (works?.length) {
       const allCategories = works.flatMap((w) =>
@@ -20,164 +16,170 @@ const Work = ({ works }) => {
       );
       const uniqueCategories = [...new Set(allCategories)];
       setCategories(["All", ...uniqueCategories]);
-      setFilterWork(works.slice(0, 20)); // limit 20 projects
+      setFilterWork(works.slice(0, 12));
     }
   }, [works]);
 
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
-    setAnimateCard([{ y: 100, opacity: 0 }]);
-
-    setTimeout(() => {
-      setAnimateCard([{ y: 0, opacity: 1 }]);
-
-      if (item === "All") {
-        setFilterWork(works.slice(0, 20));
-      } else {
-        setFilterWork(
-          works
-            .filter((work) => work.categories?.some((cat) => cat.name === item))
-            .slice(0, 20)
-        );
-      }
-    }, 400);
+    if (item === "All") {
+      setFilterWork(works.slice(0, 12));
+    } else {
+      setFilterWork(
+        works
+          .filter((work) => work.categories?.some((cat) => cat.name === item))
+          .slice(0, 12)
+      );
+    }
   };
 
   return (
-    <div className="w-full">
-      <div className={styles.app__works}>
-        <h2 className="head-text text-black">
-          Works & <span>Projects</span>
-        </h2>
+    <section id="work" className={styles.section}>
+      <div className={styles.container}>
+        {/* Section header */}
+        <div className={styles.sectionHeader}>
+          <span className={styles.label}>Portfolio</span>
+          <h2 className={styles.title}>
+            Works & <span className={styles.accent}>Projects</span>
+          </h2>
+          <p className={styles.subtitle}>
+            A curated selection of our latest digital creations
+          </p>
+        </div>
 
-        <p className={styles.viewall}>
-          <a href="/portfolio">View All</a>
-        </p>
-
-        {/* ✅ Dynamic filter categories */}
-        <div className={styles.app__work_filter}>
+        {/* Filter tabs */}
+        <div className={styles.filters}>
           {categories.map((item, index) => (
-            <div
+            <button
               key={index}
               onClick={() => handleWorkFilter(item)}
-              className={`${styles.app__work_filter_item} ${
-                styles.app__flex
-              } p-text ${activeFilter === item ? styles.itemactive : ""}`}
+              className={`${styles.filterBtn} ${
+                activeFilter === item ? styles.filterActive : ""
+              }`}
             >
               {item}
-            </div>
+            </button>
           ))}
         </div>
 
-        {/* ✅ Horizontally scrollable projects */}
-        <motion.div
-          animate={animateCard}
-          transition={{ duration: 0.5, delayChildren: 0.5 }}
-          className={`${styles.app__work_portfolio} overflow-x-auto flex gap-6 no-scrollbar`}
-        >
-          {filterWork.map((work, index) => (
-            <div
-              key={index}
-              className={`${styles.app__work_item} ${styles.app__flex} min-w-[320px]`}
-            >
-              <div
-                className={`${styles.app__work_img} ${styles.app__flex}`}
-                onMouseEnter={() => setHoveredIndex(index)}
-                onMouseLeave={() => setHoveredIndex(null)}
+        {/* Project grid */}
+        <motion.div layout className={styles.grid}>
+          <AnimatePresence mode="popLayout">
+            {filterWork.map((work, index) => (
+              <motion.div
+                key={work.id || index}
+                layout
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                className={styles.card}
               >
-                {/* ✅ Cloudinary image (no optimization issues) */}
-                <img
-                  src={work.img_url}
-                  alt={work.title}
-                  className="object-cover w-full h-64 rounded-lg"
-                  loading="lazy"
-                />
-
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: hoveredIndex === index ? 1 : 0 }}
-                  transition={{
-                    duration: 0.25,
-                    ease: "easeInOut",
-                    staggerChildren: 0.5,
-                  }}
-                  className={`${styles.app__work_hover} ${styles.app__flex}`}
-                >
-                  <a href={work.preview_link} target="_blank" rel="noreferrer">
-                    <motion.div
-                      whileInView={{ scale: [0, 1] }}
-                      whileHover={{ scale: [1, 0.9] }}
-                      transition={{ duration: 0.25 }}
-                      className={`${styles.app__flex}`}
+                <div className={styles.cardImage}>
+                  <img
+                    src={work.img_url}
+                    alt={work.title}
+                    loading="lazy"
+                  />
+                  <div className={styles.cardOverlay}>
+                    <a
+                      href={work.preview_link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.viewBtn}
                     >
                       <AiFillEye />
-                    </motion.div>
-                  </a>
-                </motion.div>
-              </div>
+                      <span>Preview</span>
+                    </a>
+                  </div>
+                </div>
 
-              {/* ✅ Description clamp + modal */}
-              <div
-                className={`${styles.app__work_content} ${styles.app__flex}`}
-              >
-                <h4 className="bold-text">{work.title}</h4>
-                <p
-                  className="p-text line-clamp-3 text-gray-700 cursor-pointer"
-                  style={{
-                    marginTop: 10,
-                    display: "-webkit-box",
-                    WebkitLineClamp: 3,
-                    WebkitBoxOrient: "vertical",
-                    overflow: "hidden",
-                  }}
-                  onClick={() => setSelectedWork(work)}
-                >
-                  {work.description}
-                  {work.description?.length > 100 && (
-                    <span className="text-blue-500 ml-1">See more</span>
-                  )}
-                </p>
-
-                <div className={`${styles.app__work_tag} ${styles.app__flex}`}>
-                  <p className="p-text">
-                    {work.categories?.map((cat) => cat.name).join(", ")}
+                <div className={styles.cardBody}>
+                  <div className={styles.cardTags}>
+                    {work.categories?.map((cat, i) => (
+                      <span key={i} className={styles.tag}>
+                        {cat.name}
+                      </span>
+                    ))}
+                  </div>
+                  <h3 className={styles.cardTitle}>{work.title}</h3>
+                  <p
+                    className={styles.cardDesc}
+                    onClick={() => setSelectedWork(work)}
+                  >
+                    {work.description}
                   </p>
                 </div>
-              </div>
-            </div>
-          ))}
+              </motion.div>
+            ))}
+          </AnimatePresence>
         </motion.div>
+
+        {/* View all link */}
+        <div className={styles.viewAll}>
+          <a href="/portfolio/allprojects" className={styles.viewAllLink}>
+            View All Projects
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 16 16"
+              fill="none"
+            >
+              <path
+                d="M3 8h10m0 0L9 4m4 4L9 12"
+                stroke="currentColor"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
 
-      {/* ✅ Modal popup for full description */}
-      {selectedWork && (
-        <div
-          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
-          onClick={() => setSelectedWork(null)}
-        >
-          <div
-            className="bg-white p-6 rounded-xl max-w-lg w-11/12 text-center"
-            onClick={(e) => e.stopPropagation()}
+      {/* Modal */}
+      <AnimatePresence>
+        {selectedWork && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className={styles.modalBackdrop}
+            onClick={() => setSelectedWork(null)}
           >
-            <h3 className="text-lg font-bold mb-2">{selectedWork.title}</h3>
-            <p className="text-gray-700 mb-4">{selectedWork.description}</p>
-            <button
-              onClick={() => setSelectedWork(null)}
-              className="bg-black text-white px-4 py-2 rounded-lg"
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 20 }}
+              className={styles.modalContent}
+              onClick={(e) => e.stopPropagation()}
             >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </div>
+              <h3>{selectedWork.title}</h3>
+              <p>{selectedWork.description}</p>
+              <div className={styles.modalActions}>
+                {selectedWork.preview_link && (
+                  <a
+                    href={selectedWork.preview_link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className={styles.modalPrimary}
+                  >
+                    Visit Project
+                  </a>
+                )}
+                <button
+                  onClick={() => setSelectedWork(null)}
+                  className={styles.modalClose}
+                >
+                  Close
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
   );
 };
 
-const WrappedWorks = AppWrap(
-  MotionWrap(Work, "app__works"),
-  "work",
-  "app__primarybg"
-);
-
-export default (props) => <WrappedWorks {...props} />;
+export default Work;

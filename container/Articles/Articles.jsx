@@ -1,98 +1,70 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
 import styles from "./Articles.module.scss";
-import { AppWrap, MotionWrap } from "../../wrapper";
-import { FaLockOpen, FaLongArrowAltDown } from "react-icons/fa";
+import { FaArrowRight } from "react-icons/fa";
 import Link from "next/link";
 
 const Articles = ({ abouts }) => {
-  // console.log("abouts", abouts);
   const [hoveredIndex, setHoveredIndex] = useState(null);
-  const [hoveredIndex1, setHoveredIndex1] = useState(true);
 
   return (
-    <>
-      <div className={styles.app__about}>
-        <h2 className="head-text">
-          Most Viewed
-          <br />
-          Articles
-        </h2>
-        <Link href="" className={styles.secondtext}>
-          <p>See more </p>
-          <FaLongArrowAltDown />
-        </Link>
-        <div className={styles.app__profiles}>
+    <section id="articles" className={styles.section}>
+      <div className={styles.container}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.label}>Insights</span>
+          <h2 className={styles.title}>
+            Most Viewed <span className={styles.accent}>Articles</span>
+          </h2>
+          <p className={styles.subtitle}>
+            Dive into our latest thinking on technology, design and digital strategy
+          </p>
+        </div>
+
+        <div className={styles.grid}>
           {abouts
-            ?.reverse()
+            ?.slice()
+            .reverse()
             .slice(0, 4)
             .map((about, index) => (
               <motion.div
-                whileInView={{ opacity: 1 }}
-                whileHover={{ scale: 1.1 }}
-                transition={{ duration: 0.5, type: "tween" }}
-                className={styles.app__profile_item}
+                key={about.title + index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                className={styles.card}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                key={about.title + index}
               >
-                <img src={about.img_url} alt={about.title.split("_")[0]} />
-
-                {/* Default text (visible by default, hidden on hover) */}
-                <div
-                  className={`${styles.overlay1} ${
-                    hoveredIndex === index ? styles.hidden : styles.visible
-                  }`}
-                >
-                  <h2 className="bold-text" style={{ marginTop: 20 }}>
-                    {about.title.split("_")[0]}
-                  </h2>
-                  <p className="p-text" style={{ marginTop: 10 }}>
-                    {about.description}
-                  </p>
+                <div className={styles.cardImage}>
+                  <img src={about.img_url} alt={about.title.split("_")[0]} />
+                  <div
+                    className={`${styles.cardOverlay} ${
+                      hoveredIndex === index ? styles.overlayVisible : ""
+                    }`}
+                  >
+                    <Link
+                      href={about.title.split("_")[1] || "#"}
+                      className={styles.readLink}
+                    >
+                      Read Article
+                      <FaArrowRight />
+                    </Link>
+                  </div>
                 </div>
 
-                {/* Hover content (hidden by default, visible on hover) */}
-                <div
-                  className={`${styles.overlay} ${
-                    hoveredIndex === index
-                      ? styles.overlay_visible
-                      : styles.overlay_hidden
-                  }`}
-                >
-                  <Link
-                    href={about.title.split("_")[1]}
-                    className="bold-text"
-                    style={{
-                      marginTop: 20,
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "6px",
-                    }}
-                  >
-                    <FaLockOpen className="mr-2" />
-                    Read more
-                  </Link>
+                <div className={styles.cardBody}>
+                  <h3 className={styles.cardTitle}>
+                    {about.title.split("_")[0]}
+                  </h3>
+                  <p className={styles.cardDesc}>{about.description}</p>
                 </div>
               </motion.div>
             ))}
         </div>
       </div>
-    </>
+    </section>
   );
 };
 
-// export default AppWrap(
-//   MotionWrap(Articles, "app__about"),
-//   "articles",
-//   "app__whitebg"
-// );
-
-const WrappedArticles = AppWrap(
-  MotionWrap(Articles, "app__about"),
-  "articles",
-  "app__whitebg"
-);
-
-export default (props) => <WrappedArticles {...props} />;
+export default Articles;

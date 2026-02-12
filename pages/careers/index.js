@@ -1,17 +1,15 @@
-import { CareersFooter, JobNavbar, CareerCategories } from "@/components";
+import { CareersFooter, JobNavbar } from "@/components";
 import { motion } from "framer-motion";
 import Head from "next/head";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
-import styles from "./jobs/jobs.module.scss";
 import YouMayLike from "@/components/youMayLike";
 import RecruiterJobs from "@/components/RecruiterJobs";
 import CategoriesList from "@/components/CareerCategories";
 import { useRouter } from "next/router";
 import FilterByNav from "@/components/filterbynav";
 import Newsletter from "@/components/Newsletter";
-import { IoCloseCircle, IoCloseOutline } from "react-icons/io5";
-import Countdown from "@/components/CountDown";
+import { IoCloseCircle } from "react-icons/io5";
 
 export default function Careers({ careers, relatedCareers, categories }) {
   const router = useRouter();
@@ -20,10 +18,6 @@ export default function Careers({ careers, relatedCareers, categories }) {
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [activeField, setActiveField] = useState(null);
-
-  const handleCategoryClick = (category) => {
-    setSelectedCategory(category);
-  };
 
   const today = new Date();
   today.setHours(0, 0, 0, 0);
@@ -46,10 +40,8 @@ export default function Careers({ careers, relatedCareers, categories }) {
         !selectedCategory || career.category_id === selectedCategory.id
     )
     .filter((career) => {
-      if (!posted) return true; // No filter, return all
-
+      if (!posted) return true;
       const careerDate = new Date(career.created_at);
-
       switch (posted) {
         case "today":
           return careerDate >= today;
@@ -100,34 +92,39 @@ export default function Careers({ careers, relatedCareers, categories }) {
   };
 
   const ITEMS_PER_PAGE = 10;
-
   const [currentPage, setCurrentPage] = useState(1);
-
-  // const totalPages = Math.ceil(filteredCareers.length / ITEMS_PER_PAGE);
-
   const totalPages = Math.max(
     1,
     Math.ceil(filteredCareers.length / ITEMS_PER_PAGE)
   );
-
-  // Get paginated data
   const paginatedData = filteredCareers
     .reverse()
     .slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setLoading(false);
-    }, 8000); // simulate loading
-
+    const timeout = setTimeout(() => setLoading(false), 8000);
     return () => clearTimeout(timeout);
   }, []);
 
+  const pageTitle = selectedCategory
+    ? `Category: ${selectedCategory.name}`
+    : activeField
+    ? activeField.charAt(0).toUpperCase() + activeField.slice(1)
+    : posted === "today"
+    ? "Posted Today"
+    : posted === "yesterday"
+    ? "Posted Yesterday"
+    : posted === "this-week"
+    ? "This Week\u2019s Posts"
+    : posted === "last-week"
+    ? "Last Week\u2019s Posts"
+    : "All Careers";
+
   return (
-    <div>
+    <div className="min-h-screen bg-deep text-txt-primary">
       <Head>
         <title>
-          Explore Grants, Jobs, Scholarships & Workshops | Kimmotech Careers
+          Explore Grants, Jobs, Scholarships &amp; Workshops | Kimmotech Careers
         </title>
         <meta
           name="description"
@@ -139,7 +136,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
         />
         <meta
           property="og:description"
-          content="Find the latest grants, remote and on-site jobs, scholarships, and workshops. Stay ahead with career opportunities in Nigeria and beyond."
+          content="Find the latest grants, remote and on-site jobs, scholarships, and workshops."
         />
         <meta property="og:type" content="website" />
         <meta property="og:url" content="https://kimmotech.net/careers" />
@@ -148,97 +145,107 @@ export default function Careers({ careers, relatedCareers, categories }) {
           content="https://res.cloudinary.com/kimmoramicky/image/upload/v1742039039/kimmotech/remote_jobs_poster_ht1xw6.png"
         />
       </Head>
+
+      {/* Newsletter popup */}
       {showNewsletter && (
-        <div className="fixed z-20 top-0 left-0 w-full h-full flex justify-center items-center bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg relative w-md">
+        <div className="fixed z-50 inset-0 flex justify-center items-center bg-deep/70 backdrop-blur-sm">
+          <div className="bg-card border border-border-subtle p-6 rounded-2xl shadow-[0_30px_80px_rgba(0,0,0,0.5)] relative max-w-md w-[90%]">
             <button
               onClick={handleClose}
-              className="absolute top-2 right-2 text-gray-400 hover:text-red-600 "
+              className="absolute top-3 right-3 text-txt-muted hover:text-red-400 transition-colors"
               title="close"
             >
-              <IoCloseCircle size={60} />
+              <IoCloseCircle size={32} />
             </button>
             <Newsletter />
           </div>
         </div>
       )}
+
       <JobNavbar activeField={activeField} setActiveField={setActiveField} />
-      {/* <Countdown targetDate="2025-04-19T07:30:00" /> */}
       <FilterByNav />
-      <div className={`${styles.jobshome} flex flex-col md:flex-row gap-6`}>
-        <div className="hidden md:block md:w-1/4 w-full p-4 md:border-r border-[#cccccc40]">
+
+      <div className="flex flex-col md:flex-row max-w-7xl mx-auto">
+        {/* Desktop sidebar */}
+        <aside className="hidden md:block md:w-64 flex-shrink-0 p-5 border-r border-border-subtle">
           <CategoriesList
             categories={categories}
             selectedCategory={selectedCategory}
             setSelectedCategory={setSelectedCategory}
           />
           <RecruiterJobs />
-          {/* <hr className="border-t border-[#8888C860] my-4" /> */}
           <YouMayLike heading="You May Like" careers={careers} />
-        </div>
-        <div className="container p-4">
-          <h1 className="text-2xl font-bold">
-            {selectedCategory
-              ? `Category: ${selectedCategory.name}`
-              : activeField
-              ? activeField.charAt(0).toUpperCase() + activeField.slice(1)
-              : posted === "today"
-              ? "Posted Today"
-              : posted === "yesterday"
-              ? "Posted Yesterday"
-              : posted === "this-week"
-              ? "This Week's Posts"
-              : posted === "last-week"
-              ? "Last Week's Posts"
-              : "All Careers"}
+        </aside>
+
+        {/* Main content */}
+        <main className="flex-1 p-5 md:p-6">
+          <h1 className="font-display text-2xl font-bold text-txt-primary mb-6">
+            {pageTitle}
           </h1>
+
           {loading ? (
-            <p className="text-gray-500">Loading careers...</p>
+            <div className="flex items-center gap-3 py-12">
+              <div className="w-5 h-5 border-2 border-cyan-accent/30 border-t-cyan-accent rounded-full animate-spin" />
+              <span className="text-sm text-txt-muted">Loading careers...</span>
+            </div>
+          ) : paginatedData.length === 0 ? (
+            <p className="text-txt-muted text-sm py-12">No careers found.</p>
           ) : (
-            <ul className="mt-4 space-y-6">
-              {paginatedData
-                // ?.slice(0, 30)
-                .map((job) => (
-                  <li key={job.id} className="border-b pb-4">
-                    <h2 className="text-xl font-semibold">{job.title}</h2>
-                    <p className="text-gray-500">
-                      Posted on {new Date(job.created_at).toDateString()} -
-                      kimmotech.net/careers --- ({job.commentCount} comments)
-                    </p>
-                    <p className="mt-2 text-gray-700">{job.excerpt}</p>
-                    <Link
-                      href={`/careers/${job.field[0]
-                        .toLowerCase()
-                        .replace(/\s+/g, "-")}/${
-                        job.field[0].toLowerCase().endsWith("s")
-                          ? job.field[0].toLowerCase().slice(0, -1)
-                          : "general"
-                      }/${job.id}`}
-                      className="text-blue-600 hover:underline"
-                    >
-                      Apply Now
-                    </Link>
-                  </li>
-                ))}
+            <ul className="space-y-0">
+              {paginatedData.map((job) => (
+                <li
+                  key={job.id}
+                  className="border-b border-border-subtle py-5 first:pt-0"
+                >
+                  <h2 className="font-display text-lg font-semibold text-txt-primary mb-1">
+                    {job.title}
+                  </h2>
+                  <p className="text-xs text-txt-muted mb-2">
+                    Posted on {new Date(job.created_at).toDateString()} &middot;
+                    kimmotech.net/careers &middot; {job.commentCount} comments
+                  </p>
+                  <p className="text-sm text-txt-secondary mb-3 line-clamp-2">
+                    {job.excerpt}
+                  </p>
+                  <Link
+                    href={`/careers/${job.field[0]
+                      .toLowerCase()
+                      .replace(/\s+/g, "-")}/${
+                      job.field[0].toLowerCase().endsWith("s")
+                        ? job.field[0].toLowerCase().slice(0, -1)
+                        : "general"
+                    }/${job.id}`}
+                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-cyan-accent hover:underline"
+                  >
+                    Apply Now &rarr;
+                  </Link>
+                </li>
+              ))}
             </ul>
           )}
+
+          {/* Pagination */}
           <div className="flex gap-3 mt-10 items-center justify-center">
             <button
-              className={`${
-                currentPage === 1 ? "bg-gray-400/80" : "bg-[#5A62BD]"
-              } px-3 py-1 rounded w-30 h-10`}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+                currentPage === 1
+                  ? "bg-surface text-txt-muted cursor-not-allowed"
+                  : "bg-card border border-border-subtle text-txt-primary hover:border-cyan-accent/30"
+              }`}
               disabled={currentPage === 1}
               onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
             >
               Previous
             </button>
-            <span>
+            <span className="text-xs text-txt-muted">
               Page {currentPage} of {totalPages}
             </span>
             <button
-              className={`${
-                currentPage === totalPages ? "bg-gray-400/80" : "bg-[#5A62BD]"
-              } px-3 py-1 rounded w-30 h-10`}
+              className={`px-4 py-2 rounded-lg text-xs font-semibold transition-all ${
+                currentPage === totalPages
+                  ? "bg-surface text-txt-muted cursor-not-allowed"
+                  : "bg-card border border-border-subtle text-txt-primary hover:border-cyan-accent/30"
+              }`}
               disabled={currentPage === totalPages}
               onClick={() =>
                 setCurrentPage((prev) => Math.min(prev + 1, totalPages))
@@ -247,9 +254,10 @@ export default function Careers({ careers, relatedCareers, categories }) {
               Next
             </button>
           </div>
-        </div>
+        </main>
 
-        <div className="md:hidden sm:block w-full px-4 mt-12 pt-12 sm:border-t border-[#cccccc40]">
+        {/* Mobile sidebar */}
+        <div className="md:hidden w-full px-5 pb-8 mt-8 pt-8 border-t border-border-subtle">
           <CategoriesList
             categories={categories}
             selectedCategory={selectedCategory}
@@ -259,6 +267,7 @@ export default function Careers({ careers, relatedCareers, categories }) {
           <YouMayLike heading="You May Like" careers={careers} />
         </div>
       </div>
+
       <CareersFooter />
     </div>
   );
@@ -296,16 +305,12 @@ export async function getServerSideProps() {
           );
 
           if (!commentRes.ok) {
-            console.error(
-              `Failed to fetch comments for career ID: ${career.id}`
-            );
             return { careerId: career.id, count: 0 };
           }
 
           const commentData = await commentRes.json();
           return { careerId: career.id, count: commentData.length || 0 };
         } catch (error) {
-          console.error("Error fetching comments:", error);
           return { careerId: career.id, count: 0 };
         }
       })

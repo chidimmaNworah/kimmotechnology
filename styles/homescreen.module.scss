@@ -1,42 +1,4 @@
-// @import 'base';
-
+/* homescreen — kept minimal; layout is now Tailwind in index.js */
 .homescreen {
   overflow: hidden;
-}
-
-.footerbg {
-  margin-top: 4rem;
-  background-image: url("https://res.cloudinary.com/kimmoramicky/image/upload/v1741599836/kimmotech/coffeeandtalk_gmjjoy.jpg");
-  background-repeat: no-repeat;
-  background-position: 25% 60%;
-  background-size: cover;
-  width: 100%;
-  &_div {
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-  }
-}
-
-.brand {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1rem;
-  &_imgdiv {
-    // width: 80px;
-    // height: 80px;
-    border-radius: 50%;
-    background-color: #fef4f5;
-
-    img {
-      width: 100%;
-      height: 100%;
-      padding: 1rem;
-    }
-
-    &:hover {
-      box-shadow: 0 0 25px #fef4f5;
-    }
-  }
 }

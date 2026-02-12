@@ -3,12 +3,12 @@ import React from "react";
 
 export default function YouMayLike({ heading, related, careers }) {
   return (
-    <div>
-      <h2 className="text-lg font-semibold mb-2 mt-10">{heading}</h2>
-      <ul>
+    <div className="mt-8">
+      <h2 className="font-display text-sm font-bold text-txt-primary uppercase tracking-wide mb-3">{heading}</h2>
+      <ul className="space-y-1">
         {careers?.length > 0 ? (
           careers.slice(10, 25).map((career) => (
-            <li key={career.id} className="mb-2">
+            <li key={career.id}>
               <Link
                 href={`/careers/${career.field[0]
                   .toLowerCase()
@@ -17,14 +17,14 @@ export default function YouMayLike({ heading, related, careers }) {
                     ? career.field[0].toLowerCase().slice(0, -1) || "general"
                     : "general"
                 }/${career.id}`}
-                className="text-blue-600 hover:underline"
+                className="block px-3 py-2 rounded-lg text-sm text-txt-secondary hover:text-cyan-accent hover:bg-surface transition-colors line-clamp-1"
               >
                 {career.title}
               </Link>
             </li>
           ))
         ) : (
-          <p className="text-gray-500">No related jobs found</p>
+          <p className="text-xs text-txt-muted px-3 py-2">No related jobs found</p>
         )}
       </ul>
     </div>

@@ -7,27 +7,24 @@ export default function CategoriesList({
 }) {
   return (
     <div>
-      <h2 className="text-lg font-semibold">Categories</h2>
-      <ul className="mt-2 text-gray-600">
-        {/* Show "Clear Category" only if a category is selected */}
+      <h2 className="font-display text-sm font-bold text-txt-primary uppercase tracking-wide mb-3">Categories</h2>
+      <ul className="space-y-0.5">
         {selectedCategory && (
           <li
-            className="py-1 border-b cursor-pointer text-red-600 font-semibold"
-            onClick={() => setSelectedCategory(null)} // Clear category
+            className="px-3 py-2 rounded-lg cursor-pointer text-red-400 text-xs font-semibold hover:bg-red-500/10 transition-colors"
+            onClick={() => setSelectedCategory(null)}
           >
-            ❌ Clear Category
+            ✕ Clear filter
           </li>
         )}
-
-        {/* Render categories */}
         {categories?.length > 0 ? (
           categories.map((category, index) => (
             <li
               key={index}
-              className={`py-1 border-b cursor-pointer ${
+              className={`px-3 py-2 rounded-lg cursor-pointer text-sm transition-all duration-200 ${
                 selectedCategory?.id === category.id
-                  ? "font-bold text-blue-600"
-                  : ""
+                  ? "text-cyan-accent bg-cyan-accent/10 font-semibold"
+                  : "text-txt-secondary hover:text-txt-primary hover:bg-surface"
               }`}
               onClick={() => setSelectedCategory(category)}
             >
@@ -35,7 +32,7 @@ export default function CategoriesList({
             </li>
           ))
         ) : (
-          <p>No categories available</p>
+          <p className="text-xs text-txt-muted px-3 py-2">No categories available</p>
         )}
       </ul>
     </div>

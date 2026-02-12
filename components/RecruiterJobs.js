@@ -3,23 +3,24 @@ import React from "react";
 
 export default function RecruiterJobs() {
   return (
-    <div>
-      <ul className="mt-10 text-[#313BAC] text-sm">
-        <li className="py-1 border-b border-[#cccccc40] last:border-none">
+    <div className="mt-8">
+      <h3 className="font-display text-xs font-bold text-txt-muted uppercase tracking-wide mb-2">For Recruiters</h3>
+      <ul className="space-y-0.5">
+        <li className="px-3 py-2 rounded-lg text-sm text-cyan-accent hover:bg-cyan-accent/10 transition-colors">
           <Link href="https://t.me/kimmotechnology?start=What does it take to run a career ad on Kimmotech">
-            RECRUITER - DASHBOARD
+            Recruiter Dashboard
           </Link>
         </li>
-        <li className="py-1 border-b border-[#cccccc40] last:border-none">
+        <li className="px-3 py-2 rounded-lg text-sm text-cyan-accent hover:bg-cyan-accent/10 transition-colors">
           <Link href="https://t.me/kimmotechnology?start=What does it take to run a career ad on Kimmotech">
-            PAID PLANS
+            Paid Plans
           </Link>
         </li>
-        <li className="py-1 border-b border-[#cccccc40] last:border-none">
-          PAID POSTS
+        <li className="px-3 py-2 rounded-lg text-sm text-txt-muted">
+          Paid Posts
         </li>
-        <li className="py-1 border-b border-[#cccccc40] last:border-none">
-          FREE POSTS
+        <li className="px-3 py-2 rounded-lg text-sm text-txt-muted">
+          Free Posts
         </li>
       </ul>
     </div>
