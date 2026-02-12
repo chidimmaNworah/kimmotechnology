@@ -78,7 +78,7 @@ const Header = () => (
           transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
           className={`${styles.floatingBadge} ${styles.badge1}`}
         >
-          <img src="/assets/react.png" alt="React" />
+          <img src="/assets/redux.png" alt="React" />
         </motion.div>
         <motion.div
           animate={{ y: [0, 12, 0] }}
