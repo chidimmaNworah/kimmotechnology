@@ -5,8 +5,9 @@ import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import useAuth from "@/middleware/auth";
 import Link from "next/link";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
 
-export default function CategoriesList() {
+export default function CategoriesList({ embedded = false }) {
   const [categories, setCategories] = useState([]);
   const loading = useAuth();
   const router = useRouter();
@@ -41,12 +42,12 @@ export default function CategoriesList() {
       </div>
     );
 
-  return (
-    <div className="p-4 space-y-4 bg-[#060B18] min-h-screen">
+  const content = (
+    <div className={embedded ? "space-y-4 w-full overflow-hidden" : "space-y-4 p-4 sm:p-6 max-w-6xl mx-auto w-full overflow-hidden"}>
       <div className="flex items-center justify-between mb-2">
         <h2 className="text-sm font-semibold text-[#F1F5F9] font-['Syne']">Categories</h2>
         <Link href="/admin/categories/create" className="inline-flex items-center rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-medium px-3 py-1.5 hover:bg-[#22D3EE]/25 transition">
-          + New category
+          + New Category
         </Link>
       </div>
 
@@ -54,7 +55,7 @@ export default function CategoriesList() {
         {categories.map((category) => (
           <div
             key={category.id}
-            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors"
+            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors min-w-0 overflow-hidden"
           >
             <p className="text-xs font-semibold text-[#F1F5F9] mb-1 line-clamp-2">
               {category.name}
@@ -82,4 +83,7 @@ export default function CategoriesList() {
       </div>
     </div>
   );
+
+  if (embedded) return content;
+  return <AdminLayout>{content}</AdminLayout>;
 }

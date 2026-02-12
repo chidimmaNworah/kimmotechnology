@@ -5,8 +5,10 @@ import { IoIosEye } from "react-icons/io";
 import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import useAuth from "@/middleware/auth";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
+import Link from "next/link";
 
-export default function AboutsList() {
+export default function AboutsList({ embedded = false }) {
   const [abouts, setAbouts] = useState([]);
   const loading = useAuth();
   const router = useRouter();
@@ -26,7 +28,7 @@ export default function AboutsList() {
   }, [loading]);
 
   const handleEdit = (id) => {
-    router.push(`/admin/about/${id}`); // Navigate to the edit page dynamically
+    router.push(`/admin/about/${id}`);
   };
 
   const handleDelete = async (id) => {
@@ -36,12 +38,10 @@ export default function AboutsList() {
     if (!confirmDelete) return;
 
     try {
-      // console.log("Deleting about with ID:", id);
-
       await axios.delete(
         `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/about/abouts/${id}`
       );
-      setAbouts((prev) => prev.filter((about) => about.id !== id)); // Remove from UI
+      setAbouts((prev) => prev.filter((about) => about.id !== id));
     } catch (error) {
       console.error("Error deleting about:", error);
     }
@@ -54,17 +54,20 @@ export default function AboutsList() {
       </div>
     );
 
-  return (
-    <div className="space-y-4">
+  const content = (
+    <div className={embedded ? "space-y-4 w-full overflow-hidden" : "space-y-4 p-4 sm:p-6 max-w-6xl mx-auto w-full overflow-hidden"}>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-semibold text-[#F1F5F9] font-['Syne']">About entries</h3>
+        <Link href="/admin/about/create" className="inline-flex items-center rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-medium px-3 py-1.5 hover:bg-[#22D3EE]/25 transition">
+          + New About Entry
+        </Link>
       </div>
 
       <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
         {abouts.map((about) => (
           <div
             key={about.id}
-            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors"
+            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors min-w-0 overflow-hidden"
           >
             <div className="w-full h-32 mb-3 overflow-hidden rounded-lg">
               <img
@@ -110,4 +113,7 @@ export default function AboutsList() {
       </div>
     </div>
   );
+
+  if (embedded) return content;
+  return <AdminLayout>{content}</AdminLayout>;
 }

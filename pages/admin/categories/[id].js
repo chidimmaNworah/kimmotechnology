@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
-import { Navbar } from "@/components";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function EditCategory() {
   const router = useRouter();
@@ -41,12 +43,18 @@ export default function EditCategory() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className="bg-[#060B18] min-h-screen">
-        <h1 className="text-[#22D3EE] mb-0 bg-[#0A1628] py-6 font-semibold text-2xl text-center font-['Syne'] tracking-wide">
-          Edit Category
-        </h1>
+        <div className="bg-[#0A1628] py-6 px-4">
+          <div className="max-w-md mx-auto">
+            <Link href="/admin/categories/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-3 font-['Outfit']">
+              <HiOutlineArrowLeft className="w-4 h-4" /> Back to Categories
+            </Link>
+            <h1 className="text-[#22D3EE] font-semibold text-2xl font-['Syne'] tracking-wide">
+              Edit Category
+            </h1>
+          </div>
+        </div>
         <div className="flex flex-col justify-center items-center w-full py-8 px-4">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full max-w-md">
             <div className="flex flex-col">
@@ -71,6 +79,6 @@ export default function EditCategory() {
           {responseMessage && <p className="text-[#22D3EE] mt-4 text-sm font-['Outfit']">{responseMessage}</p>}
         </div>
       </div>
-    </>
+    </AdminLayout>
   );
 }

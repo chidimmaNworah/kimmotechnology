@@ -2,7 +2,9 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
 import styles from "./jobs.module.scss";
-import { Navbar } from "@/components";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function Projects() {
   const [project, setProject] = useState({
@@ -73,10 +75,12 @@ export default function Projects() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className={styles.about}>
-        <h1>Edit Project Data</h1>
+        <Link href="/admin/jobs/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+          <HiOutlineArrowLeft className="w-4 h-4" /> Back to Jobs
+        </Link>
+        <h1>Edit Job Data</h1>
         <form onSubmit={handleSubmit}>
           <div>
             <label>Title</label>
@@ -141,6 +145,6 @@ export default function Projects() {
 
         {responseMessage && <p>{responseMessage}</p>}
       </div>
-    </>
+    </AdminLayout>
   );
 }

@@ -6,8 +6,9 @@ import { MdDelete } from "react-icons/md";
 import { CiEdit } from "react-icons/ci";
 import useAuth from "@/middleware/auth";
 import Link from "next/link";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
 
-export default function ProjectsList() {
+export default function ProjectsList({ embedded = false }) {
   const [projects, setProjects] = useState([]);
   const loading = useAuth();
   const router = useRouter();
@@ -60,12 +61,12 @@ export default function ProjectsList() {
       </div>
     );
 
-  return (
-    <div className="space-y-4">
+  const content = (
+    <div className={embedded ? "space-y-4 w-full overflow-hidden" : "space-y-4 p-4 sm:p-6 max-w-6xl mx-auto w-full overflow-hidden"}>
       <div className="flex items-center justify-between mb-2">
         <h3 className="text-sm font-semibold text-[#F1F5F9] font-['Syne']">Projects</h3>
         <Link href="/admin/projects/create" className="inline-flex items-center rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-medium px-3 py-1.5 hover:bg-[#22D3EE]/25 transition">
-          + New project
+          + New Project
         </Link>
       </div>
 
@@ -73,7 +74,7 @@ export default function ProjectsList() {
         {projects.map((project) => (
           <div
             key={project.id}
-            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors"
+            className="bg-[#0F172A]/60 rounded-xl border border-[#1E293B]/60 p-3 flex flex-col hover:border-[#22D3EE]/30 transition-colors min-w-0 overflow-hidden"
           >
             <div className="w-full h-32 mb-3 overflow-hidden rounded-lg">
               <img
@@ -119,4 +120,7 @@ export default function ProjectsList() {
       </div>
     </div>
   );
+
+  if (embedded) return content;
+  return <AdminLayout>{content}</AdminLayout>;
 }

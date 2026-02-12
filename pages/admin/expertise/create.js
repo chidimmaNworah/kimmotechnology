@@ -1,8 +1,10 @@
 import { useState } from "react";
 import axios from "axios";
 import styles from "./about.module.scss";
-import { Navbar } from "@/components";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function Expertise() {
   const [title, setTitle] = useState("");
@@ -53,9 +55,11 @@ export default function Expertise() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className={styles.about}>
+        <Link href="/admin/expertise/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+          <HiOutlineArrowLeft className="w-4 h-4" /> Back to Expertise
+        </Link>
         <h1>Add Expertise</h1>
         <form onSubmit={handleSubmit}>
           <div>
@@ -100,6 +104,6 @@ export default function Expertise() {
 
         {responseMessage && <p>{responseMessage}</p>}
       </div>
-    </>
+    </AdminLayout>
   );
 }

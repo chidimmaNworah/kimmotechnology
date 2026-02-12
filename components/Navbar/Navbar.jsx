@@ -9,6 +9,7 @@ export default function Navbar() {
   const [toggle, setToggle] = useState(false);
   const [resourcesOpen, setResourcesOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const resourcesRef = useRef(null);
   const router = useRouter();
 
@@ -23,6 +24,12 @@ export default function Navbar() {
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Check if admin is logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsAdmin(!!token);
   }, []);
 
   // Close resources dropdown on outside click
@@ -107,10 +114,17 @@ export default function Navbar() {
           </li>
         </ul>
 
-        {/* CTA Button (desktop) */}
-        <Link href="/#contact" className={styles.cta}>
-          Get in Touch
-        </Link>
+        {/* Right-side buttons (desktop) */}
+        <div className={styles.ctaGroup}>
+          {isAdmin && (
+            <Link href="/admin" className={styles.adminLink}>
+              Admin
+            </Link>
+          )}
+          <Link href="/#contact" className={styles.cta}>
+            Get in Touch
+          </Link>
+        </div>
 
         {/* Mobile Toggle */}
         <button
@@ -149,6 +163,15 @@ export default function Navbar() {
                 {link.label}
               </Link>
             ))}
+            {isAdmin && (
+              <Link
+                href="/admin"
+                className={styles.mobileAdminLink}
+                onClick={() => setToggle(false)}
+              >
+                Admin Dashboard
+              </Link>
+            )}
             <Link
               href="/#contact"
               className={styles.mobileCta}

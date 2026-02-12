@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "./project.module.scss";
-import { Navbar } from "@/components";
+import AdminLayout from "@/components/AdminLayout/AdminLayout";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import { HiOutlineArrowLeft } from "react-icons/hi";
 
 export default function Projects() {
   const [title, setTitle] = useState("");
@@ -89,9 +91,11 @@ export default function Projects() {
   };
 
   return (
-    <>
-      <Navbar />
+    <AdminLayout>
       <div className={styles.about}>
+        <Link href="/admin/projects/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+          <HiOutlineArrowLeft className="w-4 h-4" /> Back to Projects
+        </Link>
         <h1>Add Project Data</h1>
         <form onSubmit={handleSubmit}>
           <div>
@@ -170,6 +174,6 @@ export default function Projects() {
 
         {responseMessage && <p>{responseMessage}</p>}
       </div>
-    </>
+    </AdminLayout>
   );
 }
