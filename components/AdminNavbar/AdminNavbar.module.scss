@@ -2,10 +2,11 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  background-color: #ffffff;
+  background-color: rgba(10, 22, 40, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   padding: 0.5rem 1.5rem;
-  margin-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: 1px solid rgba(30, 41, 59, 0.5);
 }
 
 .adminNav__list {
@@ -14,34 +15,49 @@
   gap: 0.5rem;
   overflow-x: auto;
   padding-bottom: 0.25rem;
+
+  &::-webkit-scrollbar {
+    height: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(34, 211, 238, 0.3);
+    border-radius: 2px;
+  }
 }
 
 .adminNav__item {
   white-space: nowrap;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
+  font-family: "Outfit", sans-serif;
   border-radius: 9999px;
-  border: 1px solid #e5e7eb;
+  border: 1px solid rgba(30, 41, 59, 0.6);
   padding: 0.3rem 0.75rem;
   cursor: pointer;
-  transition: background-color 0.15s ease, color 0.15s ease,
-    border-color 0.15s ease;
+  transition: all 0.2s ease;
 
   a {
-    color: #374151;
+    color: #94a3b8;
     text-decoration: none;
   }
 
   &:hover {
-    background-color: #f3f4f6;
+    background-color: rgba(34, 211, 238, 0.08);
+    border-color: rgba(34, 211, 238, 0.3);
+    a {
+      color: #22d3ee;
+    }
   }
 }
 
 .adminNav__item_active {
-  background-color: #111827;
-  border-color: #111827;
+  background-color: rgba(34, 211, 238, 0.15);
+  border-color: #22d3ee;
 
   a {
-    color: #f9fafb;
+    color: #22d3ee;
   }
 }
 

@@ -152,11 +152,12 @@ export default function Projects() {
             <input type="file" onChange={handleImageChange} required />
             {imagePreview && (
               <div style={{ marginTop: "1rem" }}>
-                <p className="text-sm mb-2">Image preview:</p>
+                <p className="text-sm mb-2 text-[#94A3B8]">Image preview:</p>
                 <img
                   src={imagePreview}
                   alt="Selected project image preview"
                   style={{ maxWidth: "200px", borderRadius: "0.5rem" }}
+                  className="border border-[#1E293B]"
                 />
               </div>
             )}

@@ -50,14 +50,14 @@ export default function AboutsList() {
 
   if (loading)
     return (
-      <div className="py-6 text-center text-sm text-slate-500">
+      <div className="py-6 text-center text-sm text-[#64748B]">
         Loading expertise...
       </div>
     );
 
   return (
-    <div className="p-4">
-      <h2 className="text-center text-xl mb-6 underline">ABOUTS</h2>
+    <div className="p-4 bg-[#060B18] min-h-screen">
+      <h2 className="text-center text-xl mb-6 text-[#22D3EE] font-['Syne'] font-semibold tracking-wide uppercase">Expertise</h2>
 
       <div className="flex flex-wrap justify-around gap-4">
         {abouts.map((about) => (
@@ -71,14 +71,14 @@ export default function AboutsList() {
               unoptimized
             />
 
-            <p className="text-xs font-semibold text-slate-900 mb-1">
+            <p className="text-xs font-semibold text-[#F1F5F9] mb-1">
               {about.title}
             </p>
 
             <div className="flex items-center gap-2 mt-2 text-xl">
               <button
                 type="button"
-                className="flex-1 flex items-center justify-center bg-slate-100 rounded-full h-8"
+                className="flex-1 flex items-center justify-center bg-[#1E293B]/60 text-[#94A3B8] rounded-full h-8 hover:bg-[#22D3EE]/10 hover:text-[#22D3EE] transition"
               >
                 <IoIosEye />
               </button>
@@ -86,7 +86,7 @@ export default function AboutsList() {
               <button
                 type="button"
                 onClick={() => handleDelete(about.id)}
-                className="flex-1 flex items-center justify-center bg-red-50 text-red-700 rounded-full h-8"
+                className="flex-1 flex items-center justify-center bg-red-950/30 text-red-400 rounded-full h-8 hover:bg-red-950/50 transition"
               >
                 <MdDelete />
               </button>
@@ -94,7 +94,7 @@ export default function AboutsList() {
               <button
                 type="button"
                 onClick={() => handleEdit(about.id)}
-                className="flex-1 flex items-center justify-center bg-emerald-50 text-emerald-700 rounded-full h-8"
+                className="flex-1 flex items-center justify-center bg-emerald-950/30 text-emerald-400 rounded-full h-8 hover:bg-emerald-950/50 transition"
               >
                 <CiEdit />
               </button>

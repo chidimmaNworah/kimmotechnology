@@ -167,25 +167,11 @@ export default function Jobs() {
             }
             modules={quillModules}
             formats={quillFormats}
-            className="rounded mb-4"
+            className="rounded-lg mb-4"
           />
 
           <div className="flex flex-col mb-4">
             <label>Category</label>
-            {/* <select
-              name="category_id"
-              value={jobs.category_id}
-              onChange={handleChange}
-              className="text-black rounded-lg py-2"
-              required
-            >
-              <option value="">Select Category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select> */}
             <input
               type="text"
               name="category_id"
