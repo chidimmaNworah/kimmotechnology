@@ -1,35 +1,51 @@
 import React, { useState, useEffect } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { motion, AnimatePresence } from "framer-motion";
+import axios from "axios";
 import styles from "./Work.module.scss";
 import Link from "next/link";
+
+const LIMIT = 6;
 
 const Work = ({ works }) => {
   const [filterWork, setFilterWork] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState(["All"]);
   const [selectedWork, setSelectedWork] = useState(null);
+
+  // Fetch categories from the database
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/category/categories/`,
+        );
+        const catNames = (res.data || []).map((c) => c.name);
+        setCategories(["All", ...catNames]);
+      } catch (err) {
+        console.error("Error fetching categories:", err);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   useEffect(() => {
     if (works?.length) {
-      const allCategories = works.flatMap((w) =>
-        w.categories?.map((c) => c.name)
-      );
-      const uniqueCategories = [...new Set(allCategories)];
-      setCategories(["All", ...uniqueCategories]);
-      setFilterWork(works.slice(0, 12));
+      const sorted = [...works].sort((a, b) => b.id - a.id);
+      setFilterWork(sorted.slice(0, LIMIT));
     }
   }, [works]);
 
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
+    const sorted = [...works].sort((a, b) => b.id - a.id);
     if (item === "All") {
-      setFilterWork(works.slice(0, 12));
+      setFilterWork(sorted.slice(0, LIMIT));
     } else {
       setFilterWork(
-        works
+        sorted
           .filter((work) => work.categories?.some((cat) => cat.name === item))
-          .slice(0, 12)
+          .slice(0, LIMIT),
       );
     }
   };
@@ -77,11 +93,7 @@ const Work = ({ works }) => {
                 className={styles.card}
               >
                 <div className={styles.cardImage}>
-                  <img
-                    src={work.img_url}
-                    alt={work.title}
-                    loading="lazy"
-                  />
+                  <img src={work.img_url} alt={work.title} loading="lazy" />
                   <div className={styles.cardOverlay}>
                     <Link
                       href={work.preview_link}
@@ -120,12 +132,7 @@ const Work = ({ works }) => {
         <div className={styles.viewAll}>
           <Link href="/portfolio/allprojects" className={styles.viewAllLink}>
             View All Projects
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-            >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
                 d="M3 8h10m0 0L9 4m4 4L9 12"
                 stroke="currentColor"

@@ -37,8 +37,10 @@ const PortfolioPage = ({ works }) => {
   useEffect(() => {
     if (!works || !Array.isArray(works)) return;
 
+    const sorted = [...works].sort((a, b) => b.id - a.id);
+
     const grouped = {};
-    works.forEach((work) => {
+    sorted.forEach((work) => {
       (work.categories || []).forEach((cat) => {
         if (!grouped[cat.name]) grouped[cat.name] = [];
         grouped[cat.name].push(work);
@@ -60,7 +62,7 @@ const PortfolioPage = ({ works }) => {
     if (!rawHash) return;
     const normalizedHash = rawHash.toLowerCase();
     const match = Object.keys(groupedWorks).find(
-      (cat) => slugifyCategory(cat) === normalizedHash
+      (cat) => slugifyCategory(cat) === normalizedHash,
     );
     if (match) setActiveCategory(match);
   }, [groupedWorks]);
@@ -140,7 +142,9 @@ const PortfolioPage = ({ works }) => {
         {/* Category rows */}
         <main className="max-w-6xl mx-auto px-4 pb-20">
           {Object.keys(groupedWorks).length === 0 && (
-            <p className="text-center text-txt-muted py-20">No projects found.</p>
+            <p className="text-center text-txt-muted py-20">
+              No projects found.
+            </p>
           )}
 
           {Object.keys(groupedWorks).map((category) => {

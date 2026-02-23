@@ -15,6 +15,8 @@ export default function Projects() {
   const [categories, setCategories] = useState([]);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
+  const [imageUrl, setImageUrl] = useState("");
+  const [useUrlInput, setUseUrlInput] = useState(false);
   const [responseMessage, setResponseMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
@@ -47,32 +49,43 @@ export default function Projects() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!image) {
+    if (!useUrlInput && !image) {
       setResponseMessage("Please select an image.");
+      return;
+    }
+    if (useUrlInput && !imageUrl.trim()) {
+      setResponseMessage("Please enter an image URL.");
       return;
     }
 
     try {
       setSubmitting(true);
-      // 1) Upload image to Cloudinary from the browser
-      const uploadData = new FormData();
-      uploadData.append("file", image);
-      uploadData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+      let img_url;
 
-      const uploadRes = await axios.post(
-        `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-        uploadData
-      );
+      if (useUrlInput) {
+        // Use the directly provided URL
+        img_url = imageUrl.trim();
+      } else {
+        // Upload image to Cloudinary from the browser
+        const uploadData = new FormData();
+        uploadData.append("file", image);
+        uploadData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
 
-      const img_url = uploadRes.data.secure_url || uploadRes.data.url;
+        const uploadRes = await axios.post(
+          `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
+          uploadData,
+        );
+
+        img_url = uploadRes.data.secure_url || uploadRes.data.url;
+      }
 
       // Find the selected category name from its id
       const selectedCategory = categories.find(
-        (cat) => String(cat.id) === String(category)
+        (cat) => String(cat.id) === String(category),
       );
       const categoryNames = selectedCategory ? [selectedCategory.name] : [];
 
-      // 2) Send JSON payload with Cloudinary URL to the backend
+      // Send JSON payload to the backend
       await axios.post(`${API_URL}/project/projects/`, {
         title,
         description,
@@ -84,7 +97,12 @@ export default function Projects() {
       setResponseMessage("Project data submitted successfully!");
       router.push("/admin");
     } catch (error) {
-      setResponseMessage("Error submitting data.");
+      const errMsg =
+        error?.response?.data?.error?.message ||
+        error?.response?.data?.detail ||
+        error?.message ||
+        "Error submitting data.";
+      setResponseMessage(`Error: ${errMsg}`);
     } finally {
       setSubmitting(false);
     }
@@ -93,7 +111,10 @@ export default function Projects() {
   return (
     <AdminLayout>
       <div className={styles.about}>
-        <Link href="/admin/projects/list" className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']">
+        <Link
+          href="/admin/projects/list"
+          className="inline-flex items-center gap-1.5 text-sm text-[#64748B] hover:text-[#22D3EE] transition mb-4 font-['Outfit']"
+        >
           <HiOutlineArrowLeft className="w-4 h-4" /> Back to Projects
         </Link>
         <h1>Add Project Data</h1>
@@ -152,18 +173,104 @@ export default function Projects() {
           </div>
 
           <div>
-            <label>Upload Image</label>
-            <input type="file" onChange={handleImageChange} required />
-            {imagePreview && (
-              <div style={{ marginTop: "1rem" }}>
-                <p className="text-sm mb-2 text-[#94A3B8]">Image preview:</p>
-                <img
-                  src={imagePreview}
-                  alt="Selected project image preview"
-                  style={{ maxWidth: "200px", borderRadius: "0.5rem" }}
-                  className="border border-[#1E293B]"
+            <label>Image</label>
+            <div
+              style={{
+                display: "flex",
+                gap: "0.75rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => {
+                  setUseUrlInput(false);
+                  setImageUrl("");
+                }}
+                style={{
+                  padding: "0.35rem 0.75rem",
+                  borderRadius: "0.375rem",
+                  fontSize: "0.85rem",
+                  border: "1px solid",
+                  borderColor: !useUrlInput ? "#22D3EE" : "#334155",
+                  background: !useUrlInput ? "#0F172A" : "transparent",
+                  color: !useUrlInput ? "#22D3EE" : "#94A3B8",
+                  cursor: "pointer",
+                }}
+              >
+                Upload File
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  setUseUrlInput(true);
+                  setImage(null);
+                  setImagePreview(null);
+                }}
+                style={{
+                  padding: "0.35rem 0.75rem",
+                  borderRadius: "0.375rem",
+                  fontSize: "0.85rem",
+                  border: "1px solid",
+                  borderColor: useUrlInput ? "#22D3EE" : "#334155",
+                  background: useUrlInput ? "#0F172A" : "transparent",
+                  color: useUrlInput ? "#22D3EE" : "#94A3B8",
+                  cursor: "pointer",
+                }}
+              >
+                Paste URL
+              </button>
+            </div>
+            {useUrlInput ? (
+              <>
+                <input
+                  type="url"
+                  placeholder="https://example.com/image.jpg"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  required
                 />
-              </div>
+                {imageUrl && (
+                  <div style={{ marginTop: "1rem" }}>
+                    <p className="text-sm mb-2 text-[#94A3B8]">
+                      Image preview:
+                    </p>
+                    <img
+                      src={imageUrl}
+                      alt="URL image preview"
+                      style={{ maxWidth: "200px", borderRadius: "0.5rem" }}
+                      className="border border-[#1E293B]"
+                      onError={(e) => {
+                        e.target.style.display = "none";
+                      }}
+                      onLoad={(e) => {
+                        e.target.style.display = "block";
+                      }}
+                    />
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <input
+                  type="file"
+                  onChange={handleImageChange}
+                  required={!useUrlInput}
+                />
+                {imagePreview && (
+                  <div style={{ marginTop: "1rem" }}>
+                    <p className="text-sm mb-2 text-[#94A3B8]">
+                      Image preview:
+                    </p>
+                    <img
+                      src={imagePreview}
+                      alt="Selected project image preview"
+                      style={{ maxWidth: "200px", borderRadius: "0.5rem" }}
+                      className="border border-[#1E293B]"
+                    />
+                  </div>
+                )}
+              </>
             )}
           </div>
 
