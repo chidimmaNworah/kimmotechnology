@@ -10,6 +10,15 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import Footer from "@/container/Footer/Footer";
 
+// Helper function to strip HTML tags for plain text display
+const stripHtml = (html) => {
+  if (!html) return "";
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+};
+
 // Fetch projects server-side
 export async function getServerSideProps() {
   try {
@@ -210,7 +219,7 @@ const PortfolioPage = ({ works }) => {
                             {work.title}
                           </h3>
                           <p className="text-xs text-txt-muted mt-1 line-clamp-3">
-                            {work.description}
+                            {stripHtml(work.description)}
                           </p>
                         </div>
                       </motion.article>
@@ -258,9 +267,12 @@ const PortfolioPage = ({ works }) => {
               <h3 className="font-display text-xl font-bold text-txt-primary mb-2">
                 {selectedProject.title}
               </h3>
-              <p className="text-txt-secondary text-sm mb-4">
-                {selectedProject.description}
-              </p>
+              <div
+                className="text-txt-secondary text-sm mb-4 prose prose-invert prose-sm max-w-none project-description"
+                dangerouslySetInnerHTML={{
+                  __html: selectedProject.description,
+                }}
+              />
 
               <div className="flex flex-wrap gap-2 text-xs mb-4">
                 {selectedProject.categories?.map((cat, i) => (
@@ -359,7 +371,7 @@ const PortfolioPage = ({ works }) => {
                       {work.title}
                     </h4>
                     <p className="text-xs text-txt-muted line-clamp-3 mb-2 flex-1">
-                      {work.description}
+                      {stripHtml(work.description)}
                     </p>
                     <div className="flex flex-wrap gap-1 mt-auto">
                       {work.categories?.slice(0, 2).map((cat) => (

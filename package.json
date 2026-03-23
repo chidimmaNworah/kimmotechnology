@@ -21,6 +21,7 @@
     "jsonwebtoken": "^9.0.2",
     "next": "^16.1.6",
     "next-google-analytics": "^0.7.0",
+    "quill-image-resize-module-react": "^3.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-ga": "^3.3.1",

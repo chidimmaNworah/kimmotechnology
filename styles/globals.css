@@ -4,41 +4,41 @@
 
 :root {
   /* === Color System: Dark Luxury Tech === */
-  --bg-deep: #060B18;
-  --bg-surface: #0F1629;
-  --bg-card: #161D33;
-  --bg-card-hover: #1C2540;
-  --border-subtle: #1E2844;
-  --border-accent: #22D3EE33;
+  --bg-deep: #060b18;
+  --bg-surface: #0f1629;
+  --bg-card: #161d33;
+  --bg-card-hover: #1c2540;
+  --border-subtle: #1e2844;
+  --border-accent: #22d3ee33;
 
-  --accent-cyan: #22D3EE;
-  --accent-cyan-dim: #22D3EE99;
-  --accent-amber: #F59E0B;
-  --accent-amber-dim: #F59E0B66;
-  --accent-violet: #8B5CF6;
+  --accent-cyan: #22d3ee;
+  --accent-cyan-dim: #22d3ee99;
+  --accent-amber: #f59e0b;
+  --accent-amber-dim: #f59e0b66;
+  --accent-violet: #8b5cf6;
 
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-muted: #64748B;
-  --text-inverse: #060B18;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverse: #060b18;
 
   /* Legacy vars for compatibility */
-  --background: #060B18;
-  --foreground: #F1F5F9;
+  --background: #060b18;
+  --foreground: #f1f5f9;
   --font-display: "Syne", sans-serif;
   --font-body: "Outfit", sans-serif;
-  --primary-color: #0F1629;
-  --secondary-color: #22D3EE;
-  --black-color: #060B18;
-  --lightGray-color: #1E2844;
-  --gray-color: #94A3B8;
+  --primary-color: #0f1629;
+  --secondary-color: #22d3ee;
+  --black-color: #060b18;
+  --lightGray-color: #1e2844;
+  --gray-color: #94a3b8;
   --brown-color: #46364a;
-  --white-color: #F1F5F9;
+  --white-color: #f1f5f9;
   --font-base: "Outfit", sans-serif;
 
   /* Glow effects */
-  --glow-cyan: 0 0 40px #22D3EE22, 0 0 80px #22D3EE11;
-  --glow-amber: 0 0 40px #F59E0B22, 0 0 80px #F59E0B11;
+  --glow-cyan: 0 0 40px #22d3ee22, 0 0 80px #22d3ee11;
+  --glow-amber: 0 0 40px #f59e0b22, 0 0 80px #f59e0b11;
 }
 
 /* === Base Reset === */
@@ -69,7 +69,12 @@ body::before {
 }
 
 /* === Typography === */
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-display);
   letter-spacing: -0.02em;
   line-height: 1.1;
@@ -131,7 +136,12 @@ a {
   position: absolute;
   inset: -1px;
   border-radius: inherit;
-  background: linear-gradient(135deg, var(--accent-cyan), transparent, var(--accent-amber));
+  background: linear-gradient(
+    135deg,
+    var(--accent-cyan),
+    transparent,
+    var(--accent-amber)
+  );
   z-index: -1;
   opacity: 0;
   transition: opacity 0.4s ease;
@@ -153,8 +163,13 @@ a {
 
 /* === Animated gradient background === */
 @keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 .animate-gradient {
@@ -180,9 +195,96 @@ a {
 }
 
 /* Stagger delays */
-.delay-1 { animation-delay: 0.1s; }
-.delay-2 { animation-delay: 0.2s; }
-.delay-3 { animation-delay: 0.3s; }
-.delay-4 { animation-delay: 0.4s; }
-.delay-5 { animation-delay: 0.5s; }
-.delay-6 { animation-delay: 0.6s; }
+.delay-1 {
+  animation-delay: 0.1s;
+}
+.delay-2 {
+  animation-delay: 0.2s;
+}
+.delay-3 {
+  animation-delay: 0.3s;
+}
+.delay-4 {
+  animation-delay: 0.4s;
+}
+.delay-5 {
+  animation-delay: 0.5s;
+}
+.delay-6 {
+  animation-delay: 0.6s;
+}
+
+/* === Project Description Rich Text Styles === */
+.project-description {
+  line-height: 1.7;
+}
+
+.project-description img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 1rem 0;
+}
+
+.project-description p {
+  margin-bottom: 1rem;
+}
+
+.project-description h1,
+.project-description h2,
+.project-description h3,
+.project-description h4,
+.project-description h5,
+.project-description h6 {
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.project-description ul,
+.project-description ol {
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.project-description li {
+  margin-bottom: 0.25rem;
+}
+
+.project-description a {
+  color: var(--accent-cyan);
+  text-decoration: underline;
+}
+
+.project-description a:hover {
+  color: var(--accent-cyan-dim);
+}
+
+.project-description blockquote {
+  border-left: 3px solid var(--accent-cyan);
+  padding-left: 1rem;
+  margin: 1rem 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.project-description pre,
+.project-description code {
+  background: var(--bg-surface);
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  font-family: monospace;
+  font-size: 0.875em;
+}
+
+.project-description pre {
+  padding: 1rem;
+  overflow-x: auto;
+  margin: 1rem 0;
+}
+
+.project-description pre code {
+  padding: 0;
+  background: none;
+}

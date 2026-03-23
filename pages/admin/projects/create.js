@@ -1,18 +1,29 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import dynamic from "next/dynamic";
 import styles from "./project.module.scss";
 import AdminLayout from "@/components/AdminLayout/AdminLayout";
 import { useRouter } from "next/router";
 import Link from "next/link";
-import { HiOutlineArrowLeft } from "react-icons/hi";
+import { HiOutlineArrowLeft, HiX } from "react-icons/hi";
+import "react-quill-new/dist/quill.snow.css";
+
+// Dynamic import for QuillEditor to avoid SSR issues
+const QuillEditor = dynamic(() => import("@/components/QuillEditor"), {
+  ssr: false,
+  loading: () => (
+    <div className="h-48 bg-[#0f172a] rounded-lg border border-[#1e293b] animate-pulse" />
+  ),
+});
 
 export default function Projects() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [githubLink, setGithubLink] = useState("");
   const [previewLink, setPreviewLink] = useState("");
-  const [category, setCategory] = useState("");
+  const [selectedCategories, setSelectedCategories] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -79,11 +90,13 @@ export default function Projects() {
         img_url = uploadRes.data.secure_url || uploadRes.data.url;
       }
 
-      // Find the selected category name from its id
-      const selectedCategory = categories.find(
-        (cat) => String(cat.id) === String(category),
-      );
-      const categoryNames = selectedCategory ? [selectedCategory.name] : [];
+      // Get selected category names
+      const categoryNames = selectedCategories
+        .map((catId) => {
+          const cat = categories.find((c) => String(c.id) === String(catId));
+          return cat?.name;
+        })
+        .filter(Boolean);
 
       // Send JSON payload to the backend
       await axios.post(`${API_URL}/project/projects/`, {
@@ -131,10 +144,10 @@ export default function Projects() {
 
           <div>
             <label>Description</label>
-            <textarea
+            <QuillEditor
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
+              onChange={setDescription}
+              placeholder="Enter project description with rich formatting..."
             />
           </div>
 
@@ -157,19 +170,135 @@ export default function Projects() {
           </div>
 
           <div>
-            <label>Category</label>
-            <select
-              value={category}
-              onChange={(e) => setCategory(e.target.value)}
-              required
+            <label>Categories</label>
+            <div
+              onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+              style={{
+                background: "rgba(15, 23, 42, 0.8)",
+                border: "1px solid #1e293b",
+                borderRadius: "8px",
+                minHeight: "48px",
+                padding: "0.5rem 0.75rem",
+                cursor: "pointer",
+                display: "flex",
+                flexWrap: "wrap",
+                gap: "0.5rem",
+                alignItems: "center",
+              }}
             >
-              <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+              {selectedCategories.length > 0 ? (
+                selectedCategories.map((catId) => {
+                  const cat = categories.find(
+                    (c) => String(c.id) === String(catId),
+                  );
+                  return (
+                    <span
+                      key={catId}
+                      style={{
+                        background: "rgba(34, 211, 238, 0.1)",
+                        border: "1px solid rgba(34, 211, 238, 0.3)",
+                        color: "#22d3ee",
+                        padding: "0.25rem 0.5rem",
+                        borderRadius: "9999px",
+                        fontSize: "0.75rem",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "0.25rem",
+                      }}
+                    >
+                      {cat?.name}
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedCategories((prev) =>
+                            prev.filter((id) => id !== catId),
+                          );
+                        }}
+                        style={{
+                          background: "transparent",
+                          border: "none",
+                          color: "#22d3ee",
+                          cursor: "pointer",
+                          padding: 0,
+                          display: "flex",
+                        }}
+                      >
+                        <HiX size={14} />
+                      </button>
+                    </span>
+                  );
+                })
+              ) : (
+                <span style={{ color: "#64748b", fontSize: "0.875rem" }}>
+                  Click to select categories...
+                </span>
+              )}
+            </div>
+            {isCategoryDropdownOpen && (
+              <div
+                style={{
+                  background: "#0f172a",
+                  border: "1px solid #1e293b",
+                  borderRadius: "8px",
+                  marginTop: "0.5rem",
+                  maxHeight: "200px",
+                  overflowY: "auto",
+                }}
+              >
+                {categories.map((cat) => (
+                  <div
+                    key={cat.id}
+                    onClick={() => {
+                      setSelectedCategories((prev) =>
+                        prev.includes(cat.id)
+                          ? prev.filter((id) => id !== cat.id)
+                          : [...prev, cat.id],
+                      );
+                    }}
+                    style={{
+                      padding: "0.75rem 1rem",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "0.75rem",
+                      cursor: "pointer",
+                      borderBottom: "1px solid #1e293b",
+                      background: selectedCategories.includes(cat.id)
+                        ? "rgba(34, 211, 238, 0.1)"
+                        : "transparent",
+                    }}
+                  >
+                    <input
+                      type="checkbox"
+                      checked={selectedCategories.includes(cat.id)}
+                      onChange={() => {}}
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                        accentColor: "#22d3ee",
+                      }}
+                    />
+                    <span style={{ color: "#f1f5f9", fontSize: "0.875rem" }}>
+                      {cat.name}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            )}
+            {selectedCategories.length === 0 && (
+              <input
+                type="hidden"
+                name="category_validation"
+                value=""
+                required
+                onInvalid={(e) =>
+                  e.target.setCustomValidity(
+                    "Please select at least one category",
+                  )
+                }
+                onInput={(e) => e.target.setCustomValidity("")}
+              />
+            )}
           </div>
 
           <div>
