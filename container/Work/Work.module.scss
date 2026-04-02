@@ -45,7 +45,7 @@
 }
 
 .accent {
-  background: linear-gradient(135deg, var(--accent-cyan), #8B5CF6);
+  background: linear-gradient(135deg, var(--accent-cyan), #8b5cf6);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -119,7 +119,9 @@
   &:hover {
     border-color: rgba(34, 211, 238, 0.2);
     transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3), 0 0 40px rgba(34, 211, 238, 0.05);
+    box-shadow:
+      0 20px 60px rgba(0, 0, 0, 0.3),
+      0 0 40px rgba(34, 211, 238, 0.05);
 
     .cardOverlay {
       opacity: 1;

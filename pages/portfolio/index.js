@@ -68,10 +68,10 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
   // Filter state from URL params
   const [searchQuery, setSearchQuery] = useState(initialQuery.q || "");
   const [selectedCategory, setSelectedCategory] = useState(
-    initialQuery.category || ""
+    initialQuery.category || "",
   );
   const [selectedTags, setSelectedTags] = useState(
-    initialQuery.tags ? initialQuery.tags.split(",") : []
+    initialQuery.tags ? initialQuery.tags.split(",") : [],
   );
 
   // Update URL with filters
@@ -86,7 +86,7 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
       const newPath = queryString ? `/portfolio?${queryString}` : "/portfolio";
       router.push(newPath, undefined, { shallow: true });
     },
-    [router]
+    [router],
   );
 
   // Apply filters
@@ -101,23 +101,21 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
       result = result.filter(
         (work) =>
           work.title?.toLowerCase().includes(q) ||
-          stripHtml(work.description)?.toLowerCase().includes(q)
+          stripHtml(work.description)?.toLowerCase().includes(q),
       );
     }
 
     // Category filter
     if (selectedCategory) {
       result = result.filter(
-        (work) => work.category?.name === selectedCategory
+        (work) => work.category?.name === selectedCategory,
       );
     }
 
     // Tags filter
     if (selectedTags.length > 0) {
       result = result.filter((work) =>
-        selectedTags.every((tag) =>
-          work.tags?.some((t) => t.name === tag)
-        )
+        selectedTags.every((tag) => work.tags?.some((t) => t.name === tag)),
       );
     }
 
@@ -133,7 +131,10 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
   // Close filter panel on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (filterPanelRef.current && !filterPanelRef.current.contains(e.target)) {
+      if (
+        filterPanelRef.current &&
+        !filterPanelRef.current.contains(e.target)
+      ) {
         setIsFilterOpen(false);
       }
     };
@@ -386,7 +387,9 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
         <main className="max-w-6xl mx-auto px-4 pb-20">
           {filteredWorks.length === 0 ? (
             <div className="text-center py-20">
-              <p className="text-txt-muted mb-4">No projects match your filters.</p>
+              <p className="text-txt-muted mb-4">
+                No projects match your filters.
+              </p>
               {hasActiveFilters && (
                 <button
                   onClick={clearAllFilters}
