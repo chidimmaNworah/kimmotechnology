@@ -21,9 +21,16 @@ export default function Projects() {
   const [description, setDescription] = useState("");
   const [githubLink, setGithubLink] = useState("");
   const [previewLink, setPreviewLink] = useState("");
-  const [selectedCategories, setSelectedCategories] = useState([]);
+
+  // Single category (dropdown)
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
-  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
+
+  // Multiple tags (multi-select)
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
+
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageUrl, setImageUrl] = useState("");
@@ -38,16 +45,20 @@ export default function Projects() {
     process.env.NEXT_PUBLIC_CLOUDINARY_UPLOAD_PRESET;
 
   useEffect(() => {
-    const fetchCategories = async () => {
+    const fetchData = async () => {
       try {
-        const response = await axios.get(`${API_URL}/category/categories/`);
-        setCategories(response.data);
+        const [catRes, tagRes] = await Promise.all([
+          axios.get(`${API_URL}/category/categories/`),
+          axios.get(`${API_URL}/tag/tags/`),
+        ]);
+        setCategories(catRes.data || []);
+        setTags(tagRes.data || []);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching data:", error);
       }
     };
-    fetchCategories();
-  }, []);
+    fetchData();
+  }, [API_URL]);
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -74,10 +85,8 @@ export default function Projects() {
       let img_url;
 
       if (useUrlInput) {
-        // Use the directly provided URL
         img_url = imageUrl.trim();
       } else {
-        // Upload image to Cloudinary from the browser
         const uploadData = new FormData();
         uploadData.append("file", image);
         uploadData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
@@ -90,11 +99,17 @@ export default function Projects() {
         img_url = uploadRes.data.secure_url || uploadRes.data.url;
       }
 
-      // Get selected category names
-      const categoryNames = selectedCategories
-        .map((catId) => {
-          const cat = categories.find((c) => String(c.id) === String(catId));
-          return cat?.name;
+      // Get category name (single)
+      const categoryObj = categories.find(
+        (c) => String(c.id) === String(selectedCategory),
+      );
+      const categoryName = categoryObj?.name || null;
+
+      // Get tag names (multiple)
+      const tagNames = selectedTags
+        .map((tagId) => {
+          const tag = tags.find((t) => String(t.id) === String(tagId));
+          return tag?.name;
         })
         .filter(Boolean);
 
@@ -105,7 +120,8 @@ export default function Projects() {
         github_link: githubLink || null,
         preview_link: previewLink || null,
         img_url,
-        categories: categoryNames,
+        category: categoryName,
+        tags: tagNames,
       });
       setResponseMessage("Project data submitted successfully!");
       router.push("/admin");
@@ -170,9 +186,33 @@ export default function Projects() {
           </div>
 
           <div>
-            <label>Categories</label>
+            <label>Category (Single)</label>
+            <select
+              value={selectedCategory}
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              style={{
+                width: "100%",
+                background: "rgba(15, 23, 42, 0.8)",
+                border: "1px solid #1e293b",
+                borderRadius: "8px",
+                padding: "0.75rem",
+                color: "#f1f5f9",
+                fontSize: "0.875rem",
+              }}
+            >
+              <option value="">Select a category...</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label>Tags (Multiple)</label>
             <div
-              onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+              onClick={() => setIsTagDropdownOpen(!isTagDropdownOpen)}
               style={{
                 background: "rgba(15, 23, 42, 0.8)",
                 border: "1px solid #1e293b",
@@ -186,18 +226,16 @@ export default function Projects() {
                 alignItems: "center",
               }}
             >
-              {selectedCategories.length > 0 ? (
-                selectedCategories.map((catId) => {
-                  const cat = categories.find(
-                    (c) => String(c.id) === String(catId),
-                  );
+              {selectedTags.length > 0 ? (
+                selectedTags.map((tagId) => {
+                  const tag = tags.find((t) => String(t.id) === String(tagId));
                   return (
                     <span
-                      key={catId}
+                      key={tagId}
                       style={{
-                        background: "rgba(34, 211, 238, 0.1)",
-                        border: "1px solid rgba(34, 211, 238, 0.3)",
-                        color: "#22d3ee",
+                        background: "rgba(139, 92, 246, 0.1)",
+                        border: "1px solid rgba(139, 92, 246, 0.3)",
+                        color: "#8b5cf6",
                         padding: "0.25rem 0.5rem",
                         borderRadius: "9999px",
                         fontSize: "0.75rem",
@@ -206,19 +244,19 @@ export default function Projects() {
                         gap: "0.25rem",
                       }}
                     >
-                      {cat?.name}
+                      {tag?.name}
                       <button
                         type="button"
                         onClick={(e) => {
                           e.stopPropagation();
-                          setSelectedCategories((prev) =>
-                            prev.filter((id) => id !== catId),
+                          setSelectedTags((prev) =>
+                            prev.filter((id) => id !== tagId),
                           );
                         }}
                         style={{
                           background: "transparent",
                           border: "none",
-                          color: "#22d3ee",
+                          color: "#8b5cf6",
                           cursor: "pointer",
                           padding: 0,
                           display: "flex",
@@ -231,11 +269,11 @@ export default function Projects() {
                 })
               ) : (
                 <span style={{ color: "#64748b", fontSize: "0.875rem" }}>
-                  Click to select categories...
+                  Click to select tags...
                 </span>
               )}
             </div>
-            {isCategoryDropdownOpen && (
+            {isTagDropdownOpen && (
               <div
                 style={{
                   background: "#0f172a",
@@ -246,14 +284,14 @@ export default function Projects() {
                   overflowY: "auto",
                 }}
               >
-                {categories.map((cat) => (
+                {tags.map((tag) => (
                   <div
-                    key={cat.id}
+                    key={tag.id}
                     onClick={() => {
-                      setSelectedCategories((prev) =>
-                        prev.includes(cat.id)
-                          ? prev.filter((id) => id !== cat.id)
-                          : [...prev, cat.id],
+                      setSelectedTags((prev) =>
+                        prev.includes(tag.id)
+                          ? prev.filter((id) => id !== tag.id)
+                          : [...prev, tag.id],
                       );
                     }}
                     style={{
@@ -263,41 +301,32 @@ export default function Projects() {
                       gap: "0.75rem",
                       cursor: "pointer",
                       borderBottom: "1px solid #1e293b",
-                      background: selectedCategories.includes(cat.id)
-                        ? "rgba(34, 211, 238, 0.1)"
+                      background: selectedTags.includes(tag.id)
+                        ? "rgba(139, 92, 246, 0.1)"
                         : "transparent",
                     }}
                   >
                     <input
                       type="checkbox"
-                      checked={selectedCategories.includes(cat.id)}
+                      checked={selectedTags.includes(tag.id)}
                       onChange={() => {}}
                       style={{
                         width: "16px",
                         height: "16px",
-                        accentColor: "#22d3ee",
+                        accentColor: "#8b5cf6",
                       }}
                     />
                     <span style={{ color: "#f1f5f9", fontSize: "0.875rem" }}>
-                      {cat.name}
+                      {tag.name}
                     </span>
                   </div>
                 ))}
+                {tags.length === 0 && (
+                  <div style={{ padding: "0.75rem 1rem", color: "#64748b" }}>
+                    No tags available. Add tags in the admin panel.
+                  </div>
+                )}
               </div>
-            )}
-            {selectedCategories.length === 0 && (
-              <input
-                type="hidden"
-                name="category_validation"
-                value=""
-                required
-                onInvalid={(e) =>
-                  e.target.setCustomValidity(
-                    "Please select at least one category",
-                  )
-                }
-                onInput={(e) => e.target.setCustomValidity("")}
-              />
             )}
           </div>
 

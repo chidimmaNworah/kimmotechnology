@@ -21,16 +21,16 @@ export default function EditProject() {
   const [description, setDescription] = useState("");
   const [githubLink, setGithubLink] = useState("");
   const [previewLink, setPreviewLink] = useState("");
-
+  
   // Single category (dropdown)
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
-
+  
   // Multiple tags (multi-select)
   const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
   const [isTagDropdownOpen, setIsTagDropdownOpen] = useState(false);
-
+  
   const [image, setImage] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [existingImageUrl, setExistingImageUrl] = useState("");
@@ -119,7 +119,6 @@ export default function EditProject() {
       if (useUrlInput && imageUrl.trim()) {
         img_url = imageUrl.trim();
       } else if (!useUrlInput && image) {
-        // Upload image to Cloudinary from the browser
         const uploadData = new FormData();
         uploadData.append("file", image);
         uploadData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
@@ -133,9 +132,7 @@ export default function EditProject() {
       }
 
       // Get category name (single)
-      const categoryObj = categories.find(
-        (c) => String(c.id) === String(selectedCategory),
-      );
+      const categoryObj = categories.find((c) => String(c.id) === String(selectedCategory));
       const categoryName = categoryObj?.name || null;
 
       // Get tag names (multiple)

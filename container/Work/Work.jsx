@@ -1,17 +1,32 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { AiFillEye } from "react-icons/ai";
+import { HiChevronDown } from "react-icons/hi";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import styles from "./Work.module.scss";
 import Link from "next/link";
 
 const LIMIT = 6;
+const MAX_VISIBLE_FILTERS = 4; // First 4 + "View more" dropdown
 
 const Work = ({ works }) => {
   const [filterWork, setFilterWork] = useState([]);
   const [activeFilter, setActiveFilter] = useState("All");
   const [categories, setCategories] = useState(["All"]);
   const [selectedWork, setSelectedWork] = useState(null);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
   // Fetch categories from the database
   useEffect(() => {
@@ -38,17 +53,24 @@ const Work = ({ works }) => {
 
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
+    setIsDropdownOpen(false);
     const sorted = [...works].sort((a, b) => b.id - a.id);
     if (item === "All") {
       setFilterWork(sorted.slice(0, LIMIT));
     } else {
       setFilterWork(
-        sorted
-          .filter((work) => work.categories?.some((cat) => cat.name === item))
-          .slice(0, LIMIT),
+        sorted.filter((work) => work.category?.name === item).slice(0, LIMIT),
       );
     }
   };
+
+  // Split categories into visible and dropdown
+  const visibleCategories = categories.slice(0, MAX_VISIBLE_FILTERS);
+  const dropdownCategories = categories.slice(MAX_VISIBLE_FILTERS);
+  const hasDropdown = dropdownCategories.length > 0;
+
+  // Check if active filter is in dropdown
+  const isActiveInDropdown = dropdownCategories.includes(activeFilter);
 
   return (
     <section id="work" className={styles.section}>
@@ -66,7 +88,7 @@ const Work = ({ works }) => {
 
         {/* Filter tabs */}
         <div className={styles.filters}>
-          {categories.map((item, index) => (
+          {visibleCategories.map((item, index) => (
             <button
               key={index}
               onClick={() => handleWorkFilter(item)}
@@ -77,6 +99,47 @@ const Work = ({ works }) => {
               {item}
             </button>
           ))}
+
+          {/* View more dropdown */}
+          {hasDropdown && (
+            <div className={styles.dropdownWrapper} ref={dropdownRef}>
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className={`${styles.filterBtn} ${styles.dropdownBtn} ${
+                  isActiveInDropdown ? styles.filterActive : ""
+                }`}
+              >
+                {isActiveInDropdown ? activeFilter : "View more"}
+                <HiChevronDown
+                  className={`${styles.dropdownIcon} ${isDropdownOpen ? styles.dropdownIconOpen : ""}`}
+                />
+              </button>
+
+              <AnimatePresence>
+                {isDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.2 }}
+                    className={styles.dropdown}
+                  >
+                    {dropdownCategories.map((item, index) => (
+                      <button
+                        key={index}
+                        onClick={() => handleWorkFilter(item)}
+                        className={`${styles.dropdownItem} ${
+                          activeFilter === item ? styles.dropdownItemActive : ""
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+          )}
         </div>
 
         {/* Project grid */}
@@ -109,9 +172,15 @@ const Work = ({ works }) => {
 
                 <div className={styles.cardBody}>
                   <div className={styles.cardTags}>
-                    {work.categories?.map((cat, i) => (
-                      <span key={i} className={styles.tag}>
-                        {cat.name}
+                    {work.category && (
+                      <span className={styles.tag}>{work.category.name}</span>
+                    )}
+                    {work.tags?.slice(0, 2).map((tag, i) => (
+                      <span
+                        key={i}
+                        className={`${styles.tag} ${styles.tagSecondary}`}
+                      >
+                        {tag.name}
                       </span>
                     ))}
                   </div>
