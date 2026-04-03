@@ -28,7 +28,17 @@ export default function CategoriesList({ embedded = false }) {
 
   // Optional: implement delete later when backend supports it
   const handleDelete = async (id) => {
-    window.alert("Deleting categories is not implemented yet.");
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this category?",
+    );
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${API_URL}/category/categories/${id}`);
+      setCategories((prev) => prev.filter((cat) => cat.id !== id));
+    } catch (error) {
+      console.error("Error deleting category:", error);
+    }
   };
 
   if (loading)
@@ -39,10 +49,21 @@ export default function CategoriesList({ embedded = false }) {
     );
 
   const content = (
-    <div className={embedded ? "space-y-4 w-full overflow-hidden" : "space-y-4 p-4 sm:p-6 max-w-6xl mx-auto w-full overflow-hidden"}>
+    <div
+      className={
+        embedded
+          ? "space-y-4 w-full overflow-hidden"
+          : "space-y-4 p-4 sm:p-6 max-w-6xl mx-auto w-full overflow-hidden"
+      }
+    >
       <div className="flex items-center justify-between mb-2">
-        <h2 className="text-sm font-semibold text-[#F1F5F9] font-['Syne']">Categories</h2>
-        <Link href="/admin/categories/create" className="inline-flex items-center rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-medium px-3 py-1.5 hover:bg-[#22D3EE]/25 transition">
+        <h2 className="text-sm font-semibold text-[#F1F5F9] font-['Syne']">
+          Categories
+        </h2>
+        <Link
+          href="/admin/categories/create"
+          className="inline-flex items-center rounded-full bg-[#22D3EE]/15 border border-[#22D3EE]/30 text-[#22D3EE] text-xs font-medium px-3 py-1.5 hover:bg-[#22D3EE]/25 transition"
+        >
           + New Category
         </Link>
       </div>

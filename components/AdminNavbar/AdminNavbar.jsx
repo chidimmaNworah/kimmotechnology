@@ -6,6 +6,7 @@ import {
   HiOutlineHome,
   HiOutlineUser,
   HiOutlineTag,
+  HiOutlineHashtag,
   HiOutlineLightBulb,
   HiOutlineBriefcase,
   HiOutlineCollection,
@@ -16,11 +17,42 @@ import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 const adminLinks = [
   { href: "/admin", label: "Dashboard", icon: HiOutlineHome, exact: true },
-  { href: "/admin/about/list", label: "About", icon: HiOutlineUser, base: "/admin/about" },
-  { href: "/admin/categories/list", label: "Categories", icon: HiOutlineTag, base: "/admin/categories" },
-  { href: "/admin/expertise/list", label: "Expertise", icon: HiOutlineLightBulb, base: "/admin/expertise" },
-  { href: "/admin/jobs/list", label: "Jobs", icon: HiOutlineBriefcase, base: "/admin/jobs" },
-  { href: "/admin/projects/list", label: "Projects", icon: HiOutlineCollection, base: "/admin/projects" },
+  {
+    href: "/admin/about/list",
+    label: "About",
+    icon: HiOutlineUser,
+    base: "/admin/about",
+  },
+  {
+    href: "/admin/categories/list",
+    label: "Categories",
+    icon: HiOutlineTag,
+    base: "/admin/categories",
+  },
+  {
+    href: "/admin/tags/list",
+    label: "Tags",
+    icon: HiOutlineHashtag,
+    base: "/admin/tags",
+  },
+  {
+    href: "/admin/expertise/list",
+    label: "Expertise",
+    icon: HiOutlineLightBulb,
+    base: "/admin/expertise",
+  },
+  {
+    href: "/admin/jobs/list",
+    label: "Jobs",
+    icon: HiOutlineBriefcase,
+    base: "/admin/jobs",
+  },
+  {
+    href: "/admin/projects/list",
+    label: "Projects",
+    icon: HiOutlineCollection,
+    base: "/admin/projects",
+  },
 ];
 
 export default function AdminNavbar() {
@@ -63,7 +95,11 @@ export default function AdminNavbar() {
 
         {/* Right: site home + logout (desktop) */}
         <div className={styles.adminNav__actions}>
-          <Link href="/" className={styles.adminNav__siteLink} title="View site">
+          <Link
+            href="/"
+            className={styles.adminNav__siteLink}
+            title="View site"
+          >
             <HiOutlineExternalLink />
             <span>Site</span>
           </Link>

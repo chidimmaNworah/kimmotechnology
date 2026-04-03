@@ -6,6 +6,15 @@ import axios from "axios";
 import styles from "./Work.module.scss";
 import Link from "next/link";
 
+// Helper to strip HTML tags for plain text display
+const stripHtml = (html) => {
+  if (!html) return "";
+  return html
+    .replace(/<[^>]*>/g, "")
+    .replace(/&nbsp;/g, " ")
+    .trim();
+};
+
 const LIMIT = 6;
 const MAX_VISIBLE_FILTERS = 4; // First 4 + "View more" dropdown
 
@@ -189,7 +198,7 @@ const Work = ({ works }) => {
                     className={styles.cardDesc}
                     onClick={() => setSelectedWork(work)}
                   >
-                    {work.description}
+                    {stripHtml(work.description)}
                   </p>
                 </div>
               </motion.div>
@@ -199,7 +208,7 @@ const Work = ({ works }) => {
 
         {/* View all link */}
         <div className={styles.viewAll}>
-          <Link href="/portfolio/allprojects" className={styles.viewAllLink}>
+          <Link href="/portfolio" className={styles.viewAllLink}>
             View All Projects
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path
@@ -232,7 +241,10 @@ const Work = ({ works }) => {
               onClick={(e) => e.stopPropagation()}
             >
               <h3>{selectedWork.title}</h3>
-              <p>{selectedWork.description}</p>
+              <div
+                className="project-description"
+                dangerouslySetInnerHTML={{ __html: selectedWork.description }}
+              />
               <div className={styles.modalActions}>
                 {selectedWork.preview_link && (
                   <Link

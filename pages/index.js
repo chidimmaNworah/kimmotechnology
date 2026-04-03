@@ -73,7 +73,10 @@ export default function Homescreen({
         <Articles abouts={aboutsData} />
 
         {/* === Pricing Section === */}
-        <section id="pricing" className="relative py-24 px-4 bg-surface overflow-hidden">
+        <section
+          id="pricing"
+          className="relative py-24 px-4 bg-surface overflow-hidden"
+        >
           {/* Ambient glow */}
           <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] bg-gradient-radial from-cyan-accent/10 to-transparent rounded-full blur-[100px] pointer-events-none" />
 
@@ -111,7 +114,10 @@ export default function Homescreen({
                   sites.
                 </p>
                 <p className="text-3xl font-bold text-txt-primary mb-5 font-display">
-                  ₦300k<span className="text-xs font-normal text-txt-muted ml-1">+</span>
+                  ₦300k
+                  <span className="text-xs font-normal text-txt-muted ml-1">
+                    +
+                  </span>
                   <span className="text-xs font-normal text-txt-muted ml-1">
                     / project
                   </span>
@@ -119,7 +125,7 @@ export default function Homescreen({
                 <ul className="space-y-2.5 text-sm text-txt-secondary mb-6 flex-1">
                   <li className="flex items-start gap-2">
                     <span className="text-cyan-accent mt-0.5">▸</span>
-                    Up to 5 pages, responsive & SEO-friendly
+                    Up to 3 pages, responsive & SEO-friendly
                   </li>
                   <li className="flex items-start gap-2">
                     <span className="text-cyan-accent mt-0.5">▸</span>
@@ -156,7 +162,10 @@ export default function Homescreen({
                   Ideal for SaaS, dashboards, and web applications.
                 </p>
                 <p className="text-3xl font-bold text-txt-primary mb-5 font-display">
-                  ₦600k<span className="text-xs font-normal text-txt-muted ml-1">+</span>
+                  ₦600k
+                  <span className="text-xs font-normal text-txt-muted ml-1">
+                    +
+                  </span>
                   <span className="text-xs font-normal text-txt-muted ml-1">
                     / project
                   </span>
