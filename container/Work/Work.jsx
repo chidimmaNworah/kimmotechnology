@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AiFillEye } from "react-icons/ai";
 import { HiChevronDown } from "react-icons/hi";
+import { FiExternalLink } from "react-icons/fi";
+import { FaGithub } from "react-icons/fa";
 import { motion, AnimatePresence } from "framer-motion";
 import axios from "axios";
 import styles from "./Work.module.scss";
@@ -55,7 +57,13 @@ const Work = ({ works }) => {
 
   useEffect(() => {
     if (works?.length) {
-      const sorted = [...works].sort((a, b) => b.id - a.id);
+      const sorted = [...works].sort((a, b) => {
+        // Sort by updated_at if available, fallback to id
+        if (a.updated_at && b.updated_at) {
+          return new Date(b.updated_at) - new Date(a.updated_at);
+        }
+        return b.id - a.id;
+      });
       setFilterWork(sorted.slice(0, LIMIT));
     }
   }, [works]);
@@ -63,7 +71,12 @@ const Work = ({ works }) => {
   const handleWorkFilter = (item) => {
     setActiveFilter(item);
     setIsDropdownOpen(false);
-    const sorted = [...works].sort((a, b) => b.id - a.id);
+    const sorted = [...works].sort((a, b) => {
+      if (a.updated_at && b.updated_at) {
+        return new Date(b.updated_at) - new Date(a.updated_at);
+      }
+      return b.id - a.id;
+    });
     if (item === "All") {
       setFilterWork(sorted.slice(0, LIMIT));
     } else {
@@ -86,7 +99,9 @@ const Work = ({ works }) => {
       <div className={styles.container}>
         {/* Section header */}
         <div className={styles.sectionHeader}>
-          <span className={styles.label}>Portfolio</span>
+          <a href="#work" className={styles.label}>
+            Portfolio
+          </a>
           <h2 className={styles.title}>
             Works & <span className={styles.accent}>Projects</span>
           </h2>
@@ -167,30 +182,34 @@ const Work = ({ works }) => {
                 <div className={styles.cardImage}>
                   <img src={work.img_url} alt={work.title} loading="lazy" />
                   <div className={styles.cardOverlay}>
-                    <Link
-                      href={work.preview_link}
-                      target="_blank"
-                      rel="noreferrer"
+                    <button
+                      onClick={() => setSelectedWork(work)}
                       className={styles.viewBtn}
                     >
                       <AiFillEye />
                       <span>Preview</span>
-                    </Link>
+                    </button>
                   </div>
                 </div>
 
                 <div className={styles.cardBody}>
                   <div className={styles.cardTags}>
                     {work.category && (
-                      <span className={styles.tag}>{work.category.name}</span>
+                      <Link
+                        href={`/portfolio?category=${encodeURIComponent(work.category.name)}`}
+                        className={styles.tag}
+                      >
+                        {work.category.name}
+                      </Link>
                     )}
                     {work.tags?.slice(0, 2).map((tag, i) => (
-                      <span
+                      <Link
                         key={i}
-                        className={`${styles.tag} ${styles.tagSecondary}`}
+                        href={`/portfolio?tags=${encodeURIComponent(tag.name)}`}
+                        className={`${styles.tag} ${styles.tagViolet}`}
                       >
-                        {tag.name}
-                      </span>
+                        #{tag.name}
+                      </Link>
                     ))}
                   </div>
                   <h3 className={styles.cardTitle}>{work.title}</h3>
@@ -240,28 +259,71 @@ const Work = ({ works }) => {
               className={styles.modalContent}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3>{selectedWork.title}</h3>
-              <div
-                className="project-description"
-                dangerouslySetInnerHTML={{ __html: selectedWork.description }}
-              />
-              <div className={styles.modalActions}>
-                {selectedWork.preview_link && (
-                  <Link
-                    href={selectedWork.preview_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={styles.modalPrimary}
-                  >
-                    Visit Project
-                  </Link>
-                )}
-                <button
-                  onClick={() => setSelectedWork(null)}
-                  className={styles.modalClose}
-                >
-                  Close
-                </button>
+              <button
+                onClick={() => setSelectedWork(null)}
+                className={styles.modalCloseX}
+              >
+                &times;
+              </button>
+
+              {selectedWork.img_url && (
+                <div className={styles.modalImage}>
+                  <img src={selectedWork.img_url} alt={selectedWork.title} />
+                </div>
+              )}
+
+              <div className={styles.modalBody}>
+                <h3>{selectedWork.title}</h3>
+
+                <div className={styles.modalTags}>
+                  {selectedWork.category && (
+                    <Link
+                      href={`/portfolio?category=${encodeURIComponent(selectedWork.category.name)}`}
+                      className={styles.modalTagCyan}
+                    >
+                      {selectedWork.category.name}
+                    </Link>
+                  )}
+                  {selectedWork.tags?.map((tag, i) => (
+                    <Link
+                      key={i}
+                      href={`/portfolio?tags=${encodeURIComponent(tag.name)}`}
+                      className={styles.modalTagViolet}
+                    >
+                      #{tag.name}
+                    </Link>
+                  ))}
+                </div>
+
+                <div className={styles.modalActions}>
+                  {selectedWork.preview_link && (
+                    <Link
+                      href={selectedWork.preview_link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.modalPrimary}
+                    >
+                      <FiExternalLink />
+                      Visit Project
+                    </Link>
+                  )}
+                  {selectedWork.github_link && (
+                    <Link
+                      href={selectedWork.github_link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={styles.modalSecondary}
+                    >
+                      <FaGithub />
+                      Source Code
+                    </Link>
+                  )}
+                </div>
+
+                <div
+                  className="project-description"
+                  dangerouslySetInnerHTML={{ __html: selectedWork.description }}
+                />
               </div>
             </motion.div>
           </motion.div>

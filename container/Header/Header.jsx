@@ -4,7 +4,7 @@ import styles from "./Header.module.scss";
 import Link from "next/link";
 
 const Header = () => (
-  <section className={styles.hero}>
+  <section id="hero" className={styles.hero}>
     {/* Ambient background effects */}
     <div className={styles.ambientOrb1} />
     <div className={styles.ambientOrb2} />

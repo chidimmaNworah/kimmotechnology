@@ -25,7 +25,7 @@ const Footer = () => {
     try {
       await axios.post(
         `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/users/messages`,
-        { name, email, message }
+        { name, email, message },
       );
       setIsFormSubmitted(true);
     } catch (error) {
@@ -41,7 +41,9 @@ const Footer = () => {
         <div className={styles.grid}>
           {/* Left: Info */}
           <div className={styles.info}>
-            <span className={styles.label}>Contact</span>
+            <a href="#contact" className={styles.label}>
+              Contact
+            </a>
             <h2 className={styles.title}>
               Let's Build Something
               <br />

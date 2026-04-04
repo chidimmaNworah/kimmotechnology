@@ -168,8 +168,10 @@
   font-weight: 600;
   color: var(--bg-deep);
   background: var(--accent-cyan);
+  border: none;
   border-radius: 10px;
   text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s ease;
 
   svg {
@@ -194,6 +196,11 @@
   margin-bottom: 0.6rem;
 }
 
+.tagViolet {
+  color: var(--accent-violet);
+  background: rgba(139, 92, 246, 0.08);
+}
+
 .tag {
   font-size: 0.65rem;
   font-weight: 500;
@@ -202,6 +209,12 @@
   padding: 2px 8px;
   border-radius: 6px;
   letter-spacing: 0.03em;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(34, 211, 238, 0.15);
+  }
 }
 
 .cardTitle {
@@ -279,33 +292,135 @@
   background: var(--bg-card);
   border: 1px solid var(--border-subtle);
   border-radius: 20px;
-  padding: 2rem;
-  max-width: 520px;
+  max-width: 860px;
   width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
   box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+  position: relative;
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: var(--border-subtle);
+    border-radius: 2px;
+  }
+}
+
+.modalCloseX {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  transition: all 0.2s ease;
+
+  &:hover {
+    color: var(--text-primary);
+    border-color: var(--accent-cyan);
+  }
+}
+
+.modalImage {
+  width: 100%;
+  height: 280px;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @media (max-width: 600px) {
+    height: 180px;
+  }
+}
+
+.modalBody {
+  padding: 1.5rem 2rem 2rem;
 
   h3 {
     font-family: var(--font-display);
-    font-size: 1.3rem;
+    font-size: 1.4rem;
     font-weight: 700;
     color: var(--text-primary);
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
   }
 
-  p {
-    font-size: 0.9rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin-bottom: 1.5rem;
+  @media (max-width: 600px) {
+    padding: 1.25rem;
+
+    h3 {
+      font-size: 1.15rem;
+    }
+  }
+}
+
+.modalTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+}
+
+.modalTagCyan {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent-cyan);
+  background: rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.15);
+  padding: 3px 10px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(34, 211, 238, 0.15);
+  }
+}
+
+.modalTagViolet {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--accent-violet);
+  background: rgba(139, 92, 246, 0.08);
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  padding: 3px 10px;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: rgba(139, 92, 246, 0.15);
   }
 }
 
 .modalActions {
   display: flex;
   gap: 0.75rem;
+  margin-bottom: 1.5rem;
 }
 
 .modalPrimary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 0.6rem 1.4rem;
   font-size: 0.85rem;
   font-weight: 600;
@@ -315,12 +430,20 @@
   text-decoration: none;
   transition: all 0.2s ease;
 
+  svg {
+    width: 14px;
+    height: 14px;
+  }
+
   &:hover {
     background: #67e8f9;
   }
 }
 
-.modalClose {
+.modalSecondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   padding: 0.6rem 1.4rem;
   font-size: 0.85rem;
   font-weight: 500;
@@ -328,8 +451,14 @@
   background: transparent;
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
+  text-decoration: none;
   cursor: pointer;
   transition: all 0.2s ease;
+
+  svg {
+    width: 14px;
+    height: 14px;
+  }
 
   &:hover {
     color: var(--text-primary);
@@ -408,9 +537,4 @@
 .dropdownItemActive {
   color: var(--accent-cyan);
   background: rgba(34, 211, 238, 0.1);
-}
-
-.tagSecondary {
-  color: var(--text-muted);
-  background: rgba(100, 116, 139, 0.1);
 }

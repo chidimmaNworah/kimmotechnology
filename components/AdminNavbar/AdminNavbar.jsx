@@ -12,6 +12,7 @@ import {
   HiOutlineCollection,
   HiOutlineLogout,
   HiOutlineExternalLink,
+  HiOutlineChatAlt2,
 } from "react-icons/hi";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 
@@ -52,6 +53,12 @@ const adminLinks = [
     label: "Projects",
     icon: HiOutlineCollection,
     base: "/admin/projects",
+  },
+  {
+    href: "/admin/testimonials/list",
+    label: "Testimonials",
+    icon: HiOutlineChatAlt2,
+    base: "/admin/testimonials",
   },
 ];
 

@@ -45,7 +45,7 @@ export default function Navbar() {
 
   const navLinks = [
     { label: "Home", href: "/" },
-    { label: "Projects", href: "/portfolio/allprojects" },
+    { label: "Projects", href: "/portfolio" },
     { label: "Careers", href: "/careers" },
     { label: "Blog", href: "https://blog.kimmotech.net", external: true },
   ];
@@ -98,9 +98,9 @@ export default function Navbar() {
                   transition={{ duration: 0.2 }}
                   className={styles.dropdownMenu}
                 >
-                  <Link href="/portfolio/allprojects">All Projects</Link>
+                  <Link href="/portfolio">All Projects</Link>
                   <Link
-                    href="https://blog.kimmotech.net"
+                    href="https://kimmotech-stablo-blog.vercel.app/"
                     target="_blank"
                     rel="noreferrer"
                   >

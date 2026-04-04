@@ -1,48 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FiPlus, FiX, FiUser } from "react-icons/fi";
+import axios from "axios";
 import styles from "./Testimonial.module.scss";
 
-const testimonials = [
-  {
-    name: "Femrivied",
-    text: "A huge thank you to our mentor for sharing their expertise and time with us. Your involvement helped make our training event a huge success and we couldn't have done without you",
-    image:
-      "https://res.cloudinary.com/kimmoramicky/image/upload/v1741569649/kimmotech/reviews/femrivied_vgpegv.jpg",
-  },
-  {
-    name: "Green Thumb",
-    text: "The rising international awareness on African delicacies - Eat-With-Africa Agenda would not have been possible without the Kimmotech team's consistent dedication to its digital vision",
-    image:
-      "https://res.cloudinary.com/kimmoramicky/image/upload/v1741379248/kimmotech/brands%20and%20partners/logo_urdtja.png",
-  },
-  {
-    name: "Engr. Dimma Nworah — C.T.O",
-    text: "Kimmotech finds a way to integrate both client and workers. We have proven to have a space for everyone when it comes to digital solutions. I am so proud of what it's building and kudos to the team",
-    image:
-      "https://res.cloudinary.com/kimmoramicky/image/upload/v1741571218/kimmotech/reviews/BeautyPlus_20240722212152200_save_eo5qn4.jpg",
-  },
-  {
-    name: "Nails Republik",
-    text: "I have observed the Kimmotech team, working vigorously to bring my product live and I must say I am proud to have been able to identify the kimmotech team to be good enough for the job",
-    image:
-      "https://res.cloudinary.com/kimmoramicky/image/upload/v1741571530/kimmotech/reviews/nails_republic_icon_jclblu.png",
-  },
-  {
-    name: "Prince Tosin — ICT Administrator",
-    text: "Kimmotech offers an amazing service! I have experienced it and I can only say, I love it! They collaborate on projects with potential, charge fairly and are prompt with deliverables",
-    image:
-      "https://res.cloudinary.com/kimmoramicky/image/upload/v1741572172/kimmotech/reviews/prine_fmor8x.jpg",
-  },
-];
+const DEFAULT_AVATAR = null; // We'll use an SVG icon fallback
 
 const Testimonial = () => {
+  const [testimonials, setTestimonials] = useState([]);
   const [active, setActive] = useState(0);
+  const [showForm, setShowForm] = useState(false);
+  const [formData, setFormData] = useState({ name: "", text: "" });
+  const [imageFile, setImageFile] = useState(null);
+  const [submitting, setSubmitting] = useState(false);
+  const [formMessage, setFormMessage] = useState("");
+
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/testimonial/testimonials/`,
+        );
+        if (res.data?.length > 0) {
+          setTestimonials(res.data);
+        }
+      } catch (err) {
+        console.error("Error fetching testimonials:", err);
+      }
+    };
+    fetchTestimonials();
+  }, []);
+
+  const handleSubmitTestimonial = async (e) => {
+    e.preventDefault();
+    if (!formData.name.trim() || !formData.text.trim()) return;
+
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("text", formData.text);
+    if (imageFile) data.append("file", imageFile);
+
+    try {
+      setSubmitting(true);
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_PYTHON_BACKEND_URL}/testimonial/testimonials/`,
+        data,
+      );
+      setTestimonials((prev) => [res.data, ...prev]);
+      setFormData({ name: "", text: "" });
+      setImageFile(null);
+      setFormMessage("Thank you! Your testimonial has been submitted.");
+      setTimeout(() => {
+        setShowForm(false);
+        setFormMessage("");
+      }, 2000);
+    } catch (err) {
+      setFormMessage("Something went wrong. Please try again.");
+      console.error(err);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (testimonials.length === 0) return null;
 
   return (
-    <section className={styles.section}>
+    <section id="testimonials" className={styles.section}>
       <div className={styles.container}>
         <div className={styles.sectionHeader}>
-          <span className={styles.label}>Testimonials</span>
+          <a href="#testimonials" className={styles.label}>
+            Testimonials
+          </a>
           <h2 className={styles.title}>
             What Our <span className={styles.accent}>Clients</span> Say
           </h2>
@@ -68,9 +96,9 @@ const Testimonial = () => {
               transition={{ duration: 0.35 }}
               className={styles.quoteText}
             >
-              <p>"{testimonials[active].text}"</p>
+              <p>&ldquo;{testimonials[active].text}&rdquo;</p>
               <span className={styles.quoteName}>
-                — {testimonials[active].name}
+                &mdash; {testimonials[active].name}
               </span>
             </motion.div>
           </AnimatePresence>
@@ -80,16 +108,113 @@ const Testimonial = () => {
         <div className={styles.avatars}>
           {testimonials.map((person, index) => (
             <button
-              key={index}
+              key={person.id || index}
               onClick={() => setActive(index)}
               className={`${styles.avatar} ${
                 active === index ? styles.avatarActive : ""
               }`}
             >
-              <img src={person.image} alt={person.name} />
+              {person.image ? (
+                <img
+                  src={person.image}
+                  alt={person.name}
+                  onError={(e) => {
+                    e.target.style.display = "none";
+                    e.target.nextSibling.style.display = "flex";
+                  }}
+                />
+              ) : null}
+              <span
+                className={styles.avatarFallback}
+                style={{ display: person.image ? "none" : "flex" }}
+              >
+                <FiUser />
+              </span>
             </button>
           ))}
         </div>
+
+        {/* Add Testimonial Button */}
+        <div className={styles.addTestimonialWrap}>
+          <button
+            onClick={() => setShowForm(!showForm)}
+            className={styles.addTestimonialBtn}
+          >
+            <FiPlus
+              className={`${styles.addIcon} ${showForm ? styles.addIconRotate : ""}`}
+            />
+            {showForm ? "Cancel" : "Add Your Testimonial"}
+          </button>
+        </div>
+
+        {/* Testimonial Form */}
+        <AnimatePresence>
+          {showForm && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
+              className={styles.formWrapper}
+            >
+              <form
+                onSubmit={handleSubmitTestimonial}
+                className={styles.testimonialForm}
+              >
+                <div className={styles.formGroup}>
+                  <label>Your Name</label>
+                  <input
+                    type="text"
+                    value={formData.name}
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                    placeholder="e.g. Jane Doe — CEO, Acme Inc."
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Your Testimonial</label>
+                  <textarea
+                    value={formData.text}
+                    onChange={(e) =>
+                      setFormData({ ...formData, text: e.target.value })
+                    }
+                    placeholder="Share your experience working with us..."
+                    rows={4}
+                    required
+                  />
+                </div>
+                <div className={styles.formGroup}>
+                  <label>Your Photo (optional)</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setImageFile(e.target.files[0] || null)}
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  className={styles.submitBtn}
+                >
+                  {submitting ? "Submitting..." : "Submit Testimonial"}
+                </button>
+                {formMessage && (
+                  <p
+                    className={`${styles.formMessage} ${
+                      formMessage.includes("wrong")
+                        ? styles.formError
+                        : styles.formSuccess
+                    }`}
+                  >
+                    {formMessage}
+                  </p>
+                )}
+              </form>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </section>
   );

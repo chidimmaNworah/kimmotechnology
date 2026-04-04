@@ -10,6 +10,7 @@ import { fetchProjects } from "@/utils/api";
 import { Navbar } from "@/components";
 import Head from "next/head";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Footer from "@/container/Footer/Footer";
 
 // Helper function to strip HTML tags for plain text display
@@ -93,7 +94,12 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
   useEffect(() => {
     if (!works || !Array.isArray(works)) return;
 
-    let result = [...works].sort((a, b) => b.id - a.id);
+    let result = [...works].sort((a, b) => {
+      if (a.updated_at && b.updated_at) {
+        return new Date(b.updated_at) - new Date(a.updated_at);
+      }
+      return b.id - a.id;
+    });
 
     // Search filter
     if (searchQuery.trim()) {
@@ -427,34 +433,38 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
                           unoptimized
                         />
                         <div className="absolute inset-0 bg-deep/60 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity duration-300">
-                          {work.preview_link && (
-                            <a
-                              href={work.preview_link}
-                              target="_blank"
-                              rel="noreferrer"
-                              onClick={(e) => e.stopPropagation()}
-                              className="w-10 h-10 rounded-full bg-cyan-accent/20 border border-cyan-accent/40 flex items-center justify-center text-cyan-accent hover:bg-cyan-accent hover:text-deep transition-all"
-                            >
-                              <AiFillEye size={18} />
-                            </a>
-                          )}
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedProject(work);
+                            }}
+                            className="w-10 h-10 rounded-full bg-cyan-accent/20 border border-cyan-accent/40 flex items-center justify-center text-cyan-accent hover:bg-cyan-accent hover:text-deep transition-all"
+                          >
+                            <AiFillEye size={18} />
+                          </button>
                         </div>
                       </div>
                       <div className="p-4">
                         {/* Category & Tags */}
                         <div className="flex flex-wrap gap-1.5 mb-2">
                           {work.category && (
-                            <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-cyan-accent/10 text-cyan-accent border border-cyan-accent/20">
+                            <Link
+                              href={`/portfolio?category=${encodeURIComponent(work.category.name)}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-cyan-accent/10 text-cyan-accent border border-cyan-accent/20 hover:bg-cyan-accent/20 transition-colors"
+                            >
                               {work.category.name}
-                            </span>
+                            </Link>
                           )}
                           {work.tags?.slice(0, 2).map((tag) => (
-                            <span
+                            <Link
                               key={tag.id}
-                              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-surface text-txt-muted border border-border-subtle"
+                              href={`/portfolio?tags=${encodeURIComponent(tag.name)}`}
+                              onClick={(e) => e.stopPropagation()}
+                              className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-violet-500/10 text-violet-400 border border-violet-500/20 hover:bg-violet-500/20 transition-colors"
                             >
-                              {tag.name}
-                            </span>
+                              #{tag.name}
+                            </Link>
                           ))}
                         </div>
                         <h3 className="font-display font-semibold text-sm text-txt-primary line-clamp-2 mb-1">
@@ -504,71 +514,80 @@ const PortfolioPage = ({ works, categories, tags, initialQuery }) => {
               initial={{ scale: 0.92, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.92, opacity: 0 }}
-              className="bg-card border border-border-subtle rounded-2xl p-6 max-w-xl w-full max-h-[90vh] overflow-y-auto relative shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
+              className="bg-card border border-border-subtle rounded-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative shadow-[0_30px_80px_rgba(0,0,0,0.5)]"
               onClick={(e) => e.stopPropagation()}
             >
               <button
                 onClick={() => setSelectedProject(null)}
-                className="absolute top-3 right-4 w-8 h-8 rounded-full bg-surface border border-border-subtle flex items-center justify-center text-txt-muted hover:text-txt-primary hover:border-cyan-accent/30 transition-all"
+                className="sticky top-3 float-right mr-4 mt-3 z-10 w-8 h-8 rounded-full bg-surface/80 backdrop-blur-sm border border-border-subtle flex items-center justify-center text-txt-muted hover:text-txt-primary hover:border-cyan-accent/30 transition-all"
               >
                 &times;
               </button>
-              <Image
-                src={selectedProject.img_url}
-                alt={selectedProject.title}
-                width={800}
-                height={400}
-                className="rounded-xl w-full h-56 object-cover mb-4"
-                unoptimized
-              />
-              <h3 className="font-display text-xl font-bold text-txt-primary mb-2">
-                {selectedProject.title}
-              </h3>
-              <div
-                className="text-txt-secondary text-sm mb-4 prose prose-invert prose-sm max-w-none project-description"
-                dangerouslySetInnerHTML={{
-                  __html: selectedProject.description,
-                }}
-              />
+              <div className="p-6 pt-0">
+                <Image
+                  src={selectedProject.img_url}
+                  alt={selectedProject.title}
+                  width={800}
+                  height={400}
+                  className="rounded-xl w-full h-56 object-cover mb-4"
+                  unoptimized
+                />
+                <h3 className="font-display text-xl font-bold text-txt-primary mb-2">
+                  {selectedProject.title}
+                </h3>
 
-              <div className="flex flex-wrap gap-2 text-xs mb-4">
-                {selectedProject.category && (
-                  <span className="bg-cyan-accent/10 border border-cyan-accent/20 px-3 py-1 rounded-full text-cyan-accent">
-                    {selectedProject.category.name}
-                  </span>
-                )}
-                {selectedProject.tags?.map((tag) => (
-                  <span
-                    key={tag.id}
-                    className="bg-surface border border-border-subtle px-3 py-1 rounded-full text-txt-muted"
-                  >
-                    {tag.name}
-                  </span>
-                ))}
-              </div>
+                <div className="flex flex-wrap gap-2 text-xs mb-4">
+                  {selectedProject.category && (
+                    <Link
+                      href={`/portfolio?category=${encodeURIComponent(selectedProject.category.name)}`}
+                      onClick={() => setSelectedProject(null)}
+                      className="bg-cyan-accent/10 border border-cyan-accent/20 px-3 py-1 rounded-full text-cyan-accent hover:bg-cyan-accent/20 transition-colors"
+                    >
+                      {selectedProject.category.name}
+                    </Link>
+                  )}
+                  {selectedProject.tags?.map((tag) => (
+                    <Link
+                      key={tag.id}
+                      href={`/portfolio?tags=${encodeURIComponent(tag.name)}`}
+                      onClick={() => setSelectedProject(null)}
+                      className="bg-violet-500/10 border border-violet-500/20 px-3 py-1 rounded-full text-violet-400 hover:bg-violet-500/20 transition-colors"
+                    >
+                      #{tag.name}
+                    </Link>
+                  ))}
+                </div>
 
-              <div className="flex items-center gap-4">
-                {selectedProject.preview_link && (
-                  <a
-                    href={selectedProject.preview_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-accent hover:underline"
-                  >
-                    View live <FiExternalLink className="text-xs" />
-                  </a>
-                )}
-                {selectedProject.github_link && (
-                  <a
-                    href={selectedProject.github_link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="inline-flex items-center gap-1.5 text-xs font-medium text-txt-muted hover:text-txt-primary transition-colors"
-                  >
-                    <FaGithub className="text-sm" />
-                    Source code
-                  </a>
-                )}
+                <div className="flex items-center mb-4 gap-4">
+                  {selectedProject.preview_link && (
+                    <a
+                      href={selectedProject.preview_link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-accent hover:underline"
+                    >
+                      View live <FiExternalLink className="text-xs" />
+                    </a>
+                  )}
+                  {selectedProject.github_link && (
+                    <a
+                      href={selectedProject.github_link}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs font-medium text-txt-muted hover:text-txt-primary transition-colors"
+                    >
+                      <FaGithub className="text-sm" />
+                      Source code
+                    </a>
+                  )}
+                </div>
+
+                <div
+                  className="text-txt-secondary text-sm mb-4 prose prose-invert prose-sm max-w-none project-description"
+                  dangerouslySetInnerHTML={{
+                    __html: selectedProject.description,
+                  }}
+                />
               </div>
             </motion.div>
           </motion.div>

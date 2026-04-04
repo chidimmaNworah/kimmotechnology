@@ -1,22 +1,19 @@
 import React from "react";
 import { Navbar } from "@/components";
 import { Footer, Header, Testimonial, Work } from "@/container";
-import Articles from "@/container/Articles/Articles";
-import { fetchAbouts, fetchExpertise, fetchProjects } from "@/utils/api";
+import ExpertiseSection from "@/container/Expertise/ExpertiseSection";
+import Awards from "@/container/Awards/Awards";
+import { fetchProjects } from "@/utils/api";
 import Head from "next/head";
 import { motion } from "framer-motion";
 import Link from "next/link";
 
 export async function getServerSideProps() {
   try {
-    const abouts = await fetchAbouts();
-    const expertise = await fetchExpertise();
     const projects = await fetchProjects();
 
     return {
       props: {
-        aboutsData: abouts || [],
-        expertiseData: expertise || [],
         projectsData: projects || [],
       },
     };
@@ -24,19 +21,13 @@ export async function getServerSideProps() {
     console.error("Error fetching data:", error);
     return {
       props: {
-        aboutsData: [],
-        expertiseData: [],
         projectsData: [],
       },
     };
   }
 }
 
-export default function Homescreen({
-  aboutsData,
-  expertiseData,
-  projectsData,
-}) {
+export default function Homescreen({ projectsData }) {
   return (
     <>
       <Head>
@@ -70,7 +61,8 @@ export default function Homescreen({
         <Navbar />
         <Header />
         <Work works={projectsData} />
-        <Articles abouts={aboutsData} />
+        <ExpertiseSection />
+        <Awards />
 
         {/* === Pricing Section === */}
         <section
@@ -82,9 +74,12 @@ export default function Homescreen({
 
           <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-12">
-              <span className="inline-block text-xs font-semibold uppercase tracking-[0.15em] text-cyan-accent bg-cyan-accent/8 border border-cyan-accent/15 px-3.5 py-1 rounded-full mb-4">
+              <a
+                href="#pricing"
+                className="inline-block text-xs font-semibold uppercase tracking-[0.15em] text-cyan-accent bg-cyan-accent/8 border border-cyan-accent/15 px-3.5 py-1 rounded-full mb-4 no-underline hover:bg-cyan-accent/15 transition-colors cursor-pointer"
+              >
                 Pricing
-              </span>
+              </a>
               <h2 className="font-display text-3xl md:text-4xl font-bold text-txt-primary tracking-tight mb-3">
                 Choose How You Want to{" "}
                 <span className="bg-gradient-to-r from-cyan-400 to-violet-500 bg-clip-text text-transparent">
