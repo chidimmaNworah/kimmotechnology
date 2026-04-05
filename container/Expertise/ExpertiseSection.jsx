@@ -7,6 +7,8 @@ import {
   FiDatabase,
   FiShield,
   FiTrendingUp,
+  FiActivity,
+  FiDribbble,
 } from "react-icons/fi";
 
 const expertiseItems = [
@@ -56,6 +58,30 @@ const expertiseItems = [
     description:
       "Driving organic growth through technical SEO, performance optimization, and data-driven decision making.",
     tools: ["Google Analytics", "Search Console", "Lighthouse"],
+    color: "#EC4899",
+  },
+  {
+    icon: FiActivity,
+    title: "Social Media Management",
+    description:
+      "Driving organic growth through social media strategies, content creation, and community engagement.",
+    tools: ["Hootsuite", "Buffer", "Canva"],
+    color: "#aa48ec",
+  },
+  {
+    icon: FiDribbble,
+    title: "Graphic Design",
+    description:
+      "Creating visually compelling graphics and illustrations that communicate your brand's message effectively.",
+    tools: ["Adobe Photoshop", "Adobe Illustrator", "Figma"],
+    color: "#48d9ec",
+  },
+  {
+    icon: FiVideo,
+    title: "Video Editing",
+    description:
+      "Creating engaging video content that captures attention and communicates your brand's message effectively.",
+    tools: ["Adobe Premiere Pro", "Final Cut Pro", "After Effects"],
     color: "#EC4899",
   },
 ];
