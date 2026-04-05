@@ -9,6 +9,7 @@ import {
   FiTrendingUp,
   FiActivity,
   FiDribbble,
+  FiVideo,
 } from "react-icons/fi";
 
 const expertiseItems = [
