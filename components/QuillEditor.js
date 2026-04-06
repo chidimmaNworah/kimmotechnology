@@ -1,6 +1,6 @@
 // components/QuillEditor.js
 import dynamic from "next/dynamic";
-import { useEffect, useState, useMemo, useRef, useCallback } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
@@ -61,18 +61,6 @@ export default function QuillEditor({ value, onChange, placeholder = "" }) {
   const quillRef = useRef(null);
   useEffect(() => setMounted(true), []);
 
-  // Custom video handler that accepts both URLs and iframe embed codes
-  const videoHandler = useCallback(() => {
-    const input = prompt("Enter a video URL or paste an iframe embed code:");
-    const url = extractVideoUrl(input);
-    if (!url) return;
-    const editor = quillRef.current?.getEditor();
-    if (!editor) return;
-    const range = editor.getSelection(true);
-    editor.insertEmbed(range.index, "video", url);
-    editor.setSelection(range.index + 1);
-  }, []);
-
   // Memoize modules so reference stays stable across re-renders
   const modules = useMemo(
     () => ({
@@ -90,7 +78,16 @@ export default function QuillEditor({ value, onChange, placeholder = "" }) {
           ["clean"],
         ],
         handlers: {
-          video: videoHandler,
+          video: function () {
+            const input = prompt(
+              "Enter a video URL or paste an iframe embed code:",
+            );
+            const url = extractVideoUrl(input);
+            if (!url) return;
+            const range = this.quill.getSelection(true);
+            this.quill.insertEmbed(range.index, "video", url);
+            this.quill.setSelection(range.index + 1);
+          },
         },
       },
       imageResize: {
@@ -101,7 +98,7 @@ export default function QuillEditor({ value, onChange, placeholder = "" }) {
         modules: ["Resize", "DisplaySize"],
       },
     }),
-    [videoHandler],
+    [],
   );
 
   if (!mounted) return null;
