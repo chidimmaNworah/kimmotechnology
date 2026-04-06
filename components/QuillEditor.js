@@ -9,7 +9,9 @@ const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 if (typeof window !== "undefined") {
   const Quill = require("react-quill-new").Quill;
   if (Quill) {
-    // Register custom Video blot to ensure iframes serialize correctly
+    // Register custom Video blot to ensure iframes serialize correctly.
+    // Quill 2.x's built-in Video blot serializes via html() as <a> links
+    // instead of <iframe>, so we override it to output proper iframes.
     try {
       const BlockEmbed = Quill.import("blots/block/embed");
       class VideoBlot extends BlockEmbed {
@@ -26,6 +28,10 @@ if (typeof window !== "undefined") {
         }
         static value(node) {
           return node.getAttribute("src");
+        }
+        html() {
+          const { video } = this.value();
+          return `<iframe class="ql-video" src="${video}" frameborder="0" allowfullscreen="true" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>`;
         }
       }
       VideoBlot.blotName = "video";
