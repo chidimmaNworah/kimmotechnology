@@ -1,6 +1,6 @@
 // components/QuillEditor.js
 import dynamic from "next/dynamic";
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useRef, useCallback } from "react";
 import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
@@ -44,40 +44,72 @@ const quillFormats = [
   "style",
 ];
 
-const defaultModules = {
-  toolbar: [
-    [{ font: [] }],
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
-    ["bold", "italic", "underline", "strike"],
-    [{ color: [] }, { background: [] }],
-    [{ script: "sub" }, { script: "super" }],
-    ["blockquote", "code-block"],
-    [{ list: "ordered" }, { list: "bullet" }],
-    [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
-    ["link", "image", "video"],
-    ["clean"],
-  ],
-  imageResize: {
-    parchment:
-      typeof window !== "undefined"
-        ? require("react-quill-new").Quill?.import("parchment")
-        : null,
-    modules: ["Resize", "DisplaySize"],
-  },
-};
+// Extract video URL from iframe embed code or plain URL
+function extractVideoUrl(input) {
+  if (!input) return null;
+  const trimmed = input.trim();
+  // If it's an iframe embed code, extract the src
+  const srcMatch = trimmed.match(/<iframe[^>]+src=["']([^"']+)["']/i);
+  if (srcMatch) return srcMatch[1];
+  // Otherwise treat as plain URL
+  if (trimmed.startsWith("http")) return trimmed;
+  return null;
+}
 
 export default function QuillEditor({ value, onChange, placeholder = "" }) {
   const [mounted, setMounted] = useState(false);
+  const quillRef = useRef(null);
   useEffect(() => setMounted(true), []);
 
+  // Custom video handler that accepts both URLs and iframe embed codes
+  const videoHandler = useCallback(() => {
+    const input = prompt("Enter a video URL or paste an iframe embed code:");
+    const url = extractVideoUrl(input);
+    if (!url) return;
+    const editor = quillRef.current?.getEditor();
+    if (!editor) return;
+    const range = editor.getSelection(true);
+    editor.insertEmbed(range.index, "video", url);
+    editor.setSelection(range.index + 1);
+  }, []);
+
   // Memoize modules so reference stays stable across re-renders
-  const modules = useMemo(() => defaultModules, []);
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ font: [] }],
+          [{ header: [1, 2, 3, 4, 5, 6, false] }],
+          ["bold", "italic", "underline", "strike"],
+          [{ color: [] }, { background: [] }],
+          [{ script: "sub" }, { script: "super" }],
+          ["blockquote", "code-block"],
+          [{ list: "ordered" }, { list: "bullet" }],
+          [{ indent: "-1" }, { indent: "+1" }, { align: [] }],
+          ["link", "image", "video"],
+          ["clean"],
+        ],
+        handlers: {
+          video: videoHandler,
+        },
+      },
+      imageResize: {
+        parchment:
+          typeof window !== "undefined"
+            ? require("react-quill-new").Quill?.import("parchment")
+            : null,
+        modules: ["Resize", "DisplaySize"],
+      },
+    }),
+    [videoHandler],
+  );
 
   if (!mounted) return null;
 
   return (
     <>
       <ReactQuill
+        ref={quillRef}
         theme="snow"
         modules={modules}
         formats={quillFormats}
@@ -143,6 +175,14 @@ export default function QuillEditor({ value, onChange, placeholder = "" }) {
           height: auto;
           cursor: pointer;
           border-radius: 6px;
+        }
+        .quill-editor-dark .ql-editor .ql-video {
+          max-width: 100%;
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          border-radius: 6px;
+          border: none;
+          margin: 0.5rem 0;
         }
         .quill-editor-dark .ql-editor img.is-resizing {
           outline: 2px solid #22d3ee;
