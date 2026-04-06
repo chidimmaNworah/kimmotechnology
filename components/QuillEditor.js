@@ -5,10 +5,38 @@ import "react-quill-new/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
-// Register image resize module on client side
+// Register custom blots and modules on client side
 if (typeof window !== "undefined") {
   const Quill = require("react-quill-new").Quill;
   if (Quill) {
+    // Register custom Video blot to ensure iframes serialize correctly
+    try {
+      const BlockEmbed = Quill.import("blots/block/embed");
+      class VideoBlot extends BlockEmbed {
+        static create(value) {
+          const node = super.create();
+          node.setAttribute("src", value);
+          node.setAttribute("frameborder", "0");
+          node.setAttribute("allowfullscreen", "true");
+          node.setAttribute(
+            "allow",
+            "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture",
+          );
+          return node;
+        }
+        static value(node) {
+          return node.getAttribute("src");
+        }
+      }
+      VideoBlot.blotName = "video";
+      VideoBlot.tagName = "IFRAME";
+      VideoBlot.className = "ql-video";
+      Quill.register(VideoBlot, true);
+    } catch (e) {
+      console.warn("Video blot registration failed:", e);
+    }
+
+    // Register image resize module
     try {
       const ImageResize = require("quill-image-resize-module-react").default;
       Quill.register("modules/imageResize", ImageResize);
